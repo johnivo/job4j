@@ -1,0 +1,19 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ru.job4j</groupId>
+    <artifactId>junior</artifactId>
+    <packaging>pom</packaging>
+    <version>2.0</version>
+    <name>junior</name>
+    <url>http://job4j.ru/</url>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>chapter_001</module>
+    </modules>
+</project>
