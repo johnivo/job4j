@@ -14,11 +14,20 @@ import static org.junit.Assert.assertThat;
 public class MaxTest {
 
     /**
-     * max test.
+     * тест на поиск максимума из двух чисел.
      */
     @Test
     public void whenFirstLessSecond() {
         Max maxim = new Max();
         assertThat(maxim.max(1, 2), is(2));
+    }
+
+    /**
+     * тест на поиск максимума из трех чисел.
+     */
+    @Test
+    public void whenFirsMoreSecondAndThird() {
+        Max maxim = new Max();
+        assertThat(maxim.max(2, 5, 9), is(9));
     }
 }
