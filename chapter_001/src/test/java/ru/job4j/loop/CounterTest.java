@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class CounterTest {
 
     /**
-     * тест подсчета четных чисел в диапазоне от 2 до 8.
+     * тест подсчета суммы четных чисел в диапазоне от 2 до 8.
      */
     @Test
     public void whenSumEvenNumbersFromTwoToEightThenTwenty() {
@@ -24,7 +24,7 @@ public class CounterTest {
     }
 
     /**
-     * тест подсчета четных чисел в диапазоне от 2 до 7.
+     * тест подсчета суммы четных чисел в диапазоне от 2 до 7.
      */
     @Test
     public void whenSumEvenNumbersFromTwoToSevenThenTwelve() {
@@ -33,7 +33,7 @@ public class CounterTest {
     }
 
     /**
-     * тест подсчета четных чисел в диапазоне от 0 до 7.
+     * тест подсчета суммы четных чисел в диапазоне от 0 до 7.
      */
     @Test
     public void whenSumEvenNumbersFromOneToSevenThenTwelve() {
