@@ -18,7 +18,7 @@ public class Square {
         int[] rst = new int[bound];
         // заполнить массив через цикл элементами от 1 до bound возведенными в квадрат
         for (int i = 1; i <= bound; i++) {
-            rst[i-1] = i*i;
+            rst[i - 1] = i * i;
         }
         return rst;
     }
