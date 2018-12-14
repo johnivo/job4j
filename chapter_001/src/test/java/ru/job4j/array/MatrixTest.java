@@ -26,12 +26,5 @@ public class MatrixTest {
                 {3, 6, 9}
         };
         assertThat(table, is(expect));
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(table[i][j]);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
     }
 }
