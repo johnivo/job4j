@@ -24,9 +24,5 @@ public class BubbleSortTest {
         int[] result = bubble.sort(input);
         int[] expect = new int[]{2, 3, 5, 7, 8, 10, 15};
         assertThat(result, is(expect));
-        for (int x : result) {
-            System.out.print(x);
-            System.out.print(", ");
-        }
     }
 }
