@@ -22,13 +22,6 @@ public class ArrayDuplicateTest {
         ArrayDuplicate duplicate = new ArrayDuplicate();
         String[] input = {"mike", "tanya", "john", "mike", "bob", "mike"};
         String[] result = duplicate.remove(input);
-
-        for (String x : result) {
-            System.out.print(x);
-            System.out.print(" ");
-        }
-        System.out.println();
-
         String[] except = {"mike", "tanya", "john", "bob"};
         assertThat(result, is(except));
     }
@@ -39,15 +32,8 @@ public class ArrayDuplicateTest {
     @Test
     public void whenArrayHasAllDuplicatesThenArrayWithoutDuplicate() {
         ArrayDuplicate duplicate = new ArrayDuplicate();
-        String[] input = {"mike", "mike", "tanya", "tanya", "john", "john"};
+        String[] input = {"mike", "mike", "tanya", "tanya", "john", "mike"};
         String[] result = duplicate.remove(input);
-
-        for (String x : result) {
-            System.out.print(x);
-            System.out.print(" ");
-        }
-        System.out.println();
-
         String[] except = {"mike", "tanya", "john"};
         assertThat(result, arrayContainingInAnyOrder(except));
     }
