@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>chapter_001</artifactId>
     <version>2.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <parent>
         <groupId>ru.job4j</groupId>
         <artifactId>junior</artifactId>
