@@ -45,6 +45,19 @@ public class StartUI {
     private static final String EXIT = "6";
 
     /**
+     * Константа для меню.
+     */
+    private static final String MENU = new StringBuilder()
+            .append("Меню.").append(System.lineSeparator())
+            .append("1. Вывести список всех заявок").append(System.lineSeparator())
+            .append("2. Редактировать заявку").append(System.lineSeparator())
+            .append("3. Удалить заявку").append(System.lineSeparator())
+            .append("4. Найти заявку по ID").append(System.lineSeparator())
+            .append("5. Найти заявки по имени").append(System.lineSeparator())
+            .append("6. Выход").append(System.lineSeparator())
+            .toString();
+
+    /**
      * Получение данных от пользователя.
      */
     private final Input input;
@@ -115,7 +128,6 @@ public class StartUI {
         if (items.length != 0) {
             for (Item item : items) {
                 System.out.println(item);
-                System.out.println("------------------------------------------------------------");
             }
         } else {
             System.out.println("------------ Заявок нет -----------");
@@ -183,14 +195,7 @@ public class StartUI {
     }
 
     private void showMenu() {
-        System.out.println("Меню.");
-        System.out.println("0. Добавить новую заявку "
-                            + "1. Вывести список всех заявок "
-                            + "2. Редактировать заявку "
-                            + "3. Удалить заявку "
-                            + "4. Найти заявку по ID "
-                            + "5. Найти заявки по имени "
-                            + "6. Выход ");
+        System.out.println(MENU);
     }
 
     /**

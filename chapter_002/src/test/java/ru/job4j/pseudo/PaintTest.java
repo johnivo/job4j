@@ -54,7 +54,7 @@ public class PaintTest {
                 )
         );
         // возвращаем обратно стандартный вывод в консоль.
-        System.setOut(stdout);
+        //System.setOut(stdout);
     }
 
 
@@ -74,6 +74,5 @@ public class PaintTest {
                         .toString()
                 )
         );
-        System.setOut(stdout);
     }
 }
