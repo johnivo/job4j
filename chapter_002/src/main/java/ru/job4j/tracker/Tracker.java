@@ -91,18 +91,18 @@ public class Tracker {
 
     /**
      * Метод реализует получение списка заявок по имени.
-     * @param key имя заявки.
+     * @param nameItem имя заявки.
      * @return result список одноименных заявок.
      */
-    public Item[] findByName(String key) {
+    public Item[] findByName(String nameItem) {
         Item[] itemsKey = new Item[this.position];
-        int countKey = 0;
+        int count = 0;
         for (int i = 0; i < this.position; i++) {
-            if (items[i].getName().equals(key)) {
-                itemsKey[countKey++] = items[i];
+            if (items[i].getName().equals(nameItem)) {
+                itemsKey[count++] = items[i];
             }
         }
-        return Arrays.copyOf(itemsKey, countKey);
+        return Arrays.copyOf(itemsKey, count);
     }
 
     /**
