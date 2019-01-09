@@ -94,9 +94,7 @@ public class MenuTracker {
             String created = input.ask("Please, provide item time created:");
             Item item = new Item(name, desc, Long.parseLong(created));
             tracker.add(item);
-            System.out.println("------------ New Item with Id : " + item.getId());
-            System.out.println("------------ New Item with Name : " + item.getName());
-            System.out.println("------------ New Item with Description : " + item.getDesc());
+            System.out.println("New Item: " + item.toString());
         }
 
         @Override
@@ -120,7 +118,7 @@ public class MenuTracker {
             Item[] items = tracker.findAll();
             if (items.length != 0) {
                 for (Item item : items) {
-                    System.out.println(item.getName() + " " + item.getId() + " " + item.getDesc());
+                    System.out.println(item.toString());
                 }
             } else {
                 System.out.println("------------ No items available. -----------");
@@ -151,7 +149,7 @@ public class MenuTracker {
             String created = input.ask("Please, edit item create:");
             Item item = new Item(name, desc, Long.parseLong(created));
             if (tracker.replace(id, item)) {
-                System.out.println("Item with id:" + item.getId() + " edited!");
+                System.out.println("Item with id:" + id + " edited!");
             } else {
                 System.out.println("------------ No item with such id. -----------");
             }
@@ -204,7 +202,7 @@ public class MenuTracker {
             String id = input.ask("Please, provide id item:");
             Item item = tracker.findById(id);
             if (item != null) {
-                System.out.println("Item found: " + item.getId() + " " + item.getName());
+                System.out.println("Item found: " + item.toString());
             } else {
                 System.out.println("------------ No item with such id. -----------");
             }
@@ -232,7 +230,7 @@ public class MenuTracker {
             Item[] items = tracker.findByName(nameItem);
             if (items.length != 0) {
                 for (Item item : items) {
-                    System.out.println(item.getName() + " " + item.getId() + " " + item.getDesc());
+                    System.out.println(item.toString());
                 }
             } else {
                 System.out.println("------------ No items with such name. -----------");

@@ -66,8 +66,8 @@ public class StartUITest {
                 is(new StringBuilder()
                         .append(MENU)
                         .append("------------ All available items: --------------").append(System.lineSeparator())
-                        .append(items[0].getName() + " " + items[0].getId() + " " + items[0].getDesc()).append(System.lineSeparator())
-                        .append(items[1].getName() + " " + items[1].getId() + " " + items[1].getDesc()).append(System.lineSeparator())
+                        .append(items[0].toString()).append(System.lineSeparator())
+                        .append(items[1].toString()).append(System.lineSeparator())
                         .toString()
                 )
         );
@@ -93,7 +93,7 @@ public class StartUITest {
                 is(new StringBuilder()
                         .append(MENU)
                         .append("------------ Find item by id: --------------").append(System.lineSeparator())
-                        .append("Item found: " + items[2].getId() + " " + items[2].getName()).append(System.lineSeparator())
+                        .append("Item found: " + items[2].toString()).append(System.lineSeparator())
                         .toString()
                 )
         );
@@ -118,8 +118,8 @@ public class StartUITest {
                 is(new StringBuilder()
                         .append(MENU)
                         .append("------------ Find item by name: --------------").append(System.lineSeparator())
-                        .append(items[0].getName() + " " + items[0].getId() + " " + items[0].getDesc()).append(System.lineSeparator())
-                        .append(items[1].getName() + " " + items[1].getId() + " " + items[0].getDesc()).append(System.lineSeparator())
+                        .append(items[0].toString()).append(System.lineSeparator())
+                        .append(items[1].toString()).append(System.lineSeparator())
                         .toString()
                 )
         );
