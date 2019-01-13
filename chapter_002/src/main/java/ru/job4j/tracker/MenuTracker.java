@@ -20,8 +20,9 @@ public class MenuTracker {
      */
     private final Tracker tracker;
     /**
-     * Хранит ссылку на массив типа UserAction.
+     * Хранит ссылку на объект.
      */
+
     private final List<UserAction> actions = new ArrayList<>();
 
     /**
@@ -47,14 +48,14 @@ public class MenuTracker {
     /**
      * Метод заполняет массив.
      */
-    public void fillActions() {
-        this.actions.add(new AddItem());
-        this.actions.add(new ShowItems());
-        this.actions.add(new EditItem());
-        this.actions.add(new DeleteItem());
-        this.actions.add(new FindItemById());
-        this.actions.add(new FindItemsByName());
-        this.actions.add(new ExitProgram());
+    public void fillActions(StartUI startUI) {
+        this.actions.add(new AddItem(0, "Add new Item."));
+        this.actions.add(new ShowItems(1, "Show all items."));
+        this.actions.add(new EditItem(2, "Edit item."));
+        this.actions.add(new DeleteItem(3, "Delete item."));
+        this.actions.add(new FindItemById(4, "Find item by Id."));
+        this.actions.add(new FindItemsByName(5, "Find items by name."));
+        this.actions.add(new ExitProgram(6, "Exit Program."));
     }
 
     /**
@@ -80,10 +81,10 @@ public class MenuTracker {
     /**
      * 0 Добавление новой заявки.
      */
-    public class AddItem implements UserAction {
-        @Override
-        public int key() {
-            return 0;
+    public class AddItem extends BaseAction {
+
+        public AddItem(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -96,20 +97,15 @@ public class MenuTracker {
             tracker.add(item);
             System.out.println("New Item: " + item.toString());
         }
-
-        @Override
-        public String info() {
-            return "0. Add new Item.";
-        }
     }
 
     /**
      * 1 Вывод списока всех заявок.
      */
-    public class ShowItems implements UserAction {
-        @Override
-        public int key() {
-            return 1;
+    public class ShowItems extends BaseAction {
+
+        public ShowItems(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -124,20 +120,15 @@ public class MenuTracker {
                 System.out.println("------------ No items available. -----------");
             }
         }
-
-        @Override
-        public String info() {
-            return "1. Show all items.";
-        }
     }
 
     /**
      * 2 Редактирование выбранной заявки.
      */
-    public class EditItem implements UserAction {
-        @Override
-        public int key() {
-            return 2;
+    public class EditItem extends BaseAction {
+
+        public EditItem(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -154,20 +145,15 @@ public class MenuTracker {
                 System.out.println("------------ No item with such id. -----------");
             }
         }
-
-        @Override
-        public String info() {
-            return "2. Edit item.";
-        }
     }
 
     /**
      * 3 Удаление выбранной заявки.
      */
-    public class DeleteItem implements UserAction {
-        @Override
-        public int key() {
-            return 3;
+    public class DeleteItem extends BaseAction {
+
+        public DeleteItem(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -180,20 +166,15 @@ public class MenuTracker {
                 System.out.println("------------ No item with such id. -----------");
             }
         }
-
-        @Override
-        public String info() {
-            return "3. Delete item.";
-        }
     }
 
     /**
      * 4 Поиск заявки по id.
      */
-    public class FindItemById implements UserAction {
-        @Override
-        public int key() {
-            return 4;
+    public class FindItemById extends BaseAction {
+
+        public FindItemById(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -207,20 +188,15 @@ public class MenuTracker {
                 System.out.println("------------ No item with such id. -----------");
             }
         }
-
-        @Override
-        public String info() {
-            return "4. Find item by Id.";
-        }
     }
 
     /**
      * 5 Поиск одноименных заявок.
      */
-    public class FindItemsByName implements UserAction {
-        @Override
-        public int key() {
-            return 5;
+    public class FindItemsByName extends BaseAction {
+
+        public FindItemsByName(int key, String name) {
+            super(key, name);
         }
 
         @Override
@@ -236,30 +212,20 @@ public class MenuTracker {
                 System.out.println("------------ No items with such name. -----------");
             }
         }
-
-        @Override
-        public String info() {
-            return "5. Find items by name.";
-        }
     }
 
     /**
      * 6 Выход из программы.
      */
-    public class ExitProgram implements UserAction {
-        @Override
-        public int key() {
-            return 6;
+    public class ExitProgram extends BaseAction {
+
+        public ExitProgram(int key, String name) {
+            super(key, name);
         }
 
         @Override
         public void execute(Input input, Tracker tracker) {
 
             }
-
-        @Override
-        public String info() {
-            return "6. Exit Program.";
-        }
     }
 }
