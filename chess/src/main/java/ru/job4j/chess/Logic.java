@@ -2,8 +2,10 @@ package ru.job4j.chess;
 
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
+import ru.job4j.chess.firuges.OccupiedWayException;
+import ru.job4j.chess.firuges.FigureNotFoundException;
 
-import java.util.Optional;
+//import java.util.Optional;
 
 /**
  * //TODO add comments.
@@ -25,10 +27,17 @@ public class Logic {
         int index = this.findBy(source);
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
+            for (Cell step : steps) {
+                if (this.findBy(step) != -1) {
+                    throw new OccupiedWayException("Move closed. ");
+                }
+            }
             if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
                 rst = true;
                 this.figures[index] = this.figures[index].copy(dest);
             }
+        } else {
+            throw new FigureNotFoundException("Empty cell, no figure. ");
         }
         return rst;
     }
