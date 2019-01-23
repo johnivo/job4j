@@ -19,7 +19,7 @@ public abstract class Bishop implements Figure {
     }
 
     /**
-     * bishopWay проверяет, является ли траектория движения диагональю.
+     * bishopWay проверяет, может ли слон так ходить и возвращает массив клеток, кот. он должен пройти.
      */
     public Cell[] bishopWay(Cell source, Cell dest) {
         // Если не диагональ, генерируем исключение - неверная траектория.

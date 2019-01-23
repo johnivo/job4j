@@ -2,6 +2,7 @@ package ru.job4j.chess.firuges.white;
 
 import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
+import ru.job4j.chess.firuges.Knight;
 
 /**
  *
@@ -9,7 +10,7 @@ import ru.job4j.chess.firuges.Figure;
  * @version $Id$
  * @since 0.1
  */
-public class KnightWhite implements Figure {
+public class KnightWhite extends Knight {
     private final Cell position;
 
     public KnightWhite(final Cell position) {
@@ -23,7 +24,7 @@ public class KnightWhite implements Figure {
 
     @Override
     public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] { dest };
+        return knightWay(source, dest);
     }
 
     @Override
