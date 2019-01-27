@@ -29,6 +29,8 @@ public class ConvertList2Array {
             for (int j = 0; j < cells; j++) {
                 if (it.hasNext()) {
                     array[i][j] = it.next();
+                } else {
+                    break;
                 }
             }
         }
