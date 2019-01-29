@@ -1,5 +1,6 @@
 package ru.job4j.list;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,4 +37,30 @@ public class ConvertList2Array {
         }
         return array;
     }
+
+    /**
+     * Метод конвертирует лист массивов в один лист Integer.
+     * Массивы в списке list могут быть разного размера.
+     *
+     * @param list входящий список массивов int[].
+     * @return genericList общий лист Integer.
+     */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> genericList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            for (Integer j : list.get(i)) {
+                genericList.add(j);
+            }
+        }
+        return genericList;
+    }
+     //2й вариант
+     //  List<Integer> genericList = new ArrayList<>();
+     //  for (int[] lists : list) {
+     //       for (Integer cell : lists) {
+     //           genericList.add(cell);
+     //       }
+     //    }
+     //   return genericList;
+     //}
 }
