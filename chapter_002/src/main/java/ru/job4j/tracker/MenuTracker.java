@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Реализация меню трекера.
@@ -111,8 +112,10 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ All available items: --------------");
-            Item[] items = tracker.findAll();
-            if (items.length != 0) {
+            //Item[] items = tracker.findAll();
+            //if (items.length != 0) {
+            List<Item> items = tracker.findAll();
+            if (items.size() != 0) {
                 for (Item item : items) {
                     System.out.println(item.toString());
                 }
@@ -203,8 +206,10 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Find item by name: --------------");
             String nameItem = input.ask("Please, provide name item:");
-            Item[] items = tracker.findByName(nameItem);
-            if (items.length != 0) {
+            //Item[] items = tracker.findByName(nameItem);
+            //if (items.length != 0) {
+            List<Item> items = tracker.findByName(nameItem);
+            if (items.size() != 0) {
                 for (Item item : items) {
                     System.out.println(item.toString());
                 }

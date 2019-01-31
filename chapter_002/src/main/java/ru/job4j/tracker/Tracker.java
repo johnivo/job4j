@@ -1,6 +1,8 @@
 package ru.job4j.tracker;
 
-import java.util.*;
+import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Класс трэкер.
@@ -11,14 +13,15 @@ import java.util.*;
  */
 public class Tracker {
     /**
-     * Массив для хранения заявок.
+     * Лист для хранения заявок.
      */
-    private final Item[] items = new Item[100];
+    //private final Item[] items = new Item[100];
+    private List<Item> items = new ArrayList<>();
 
-    /**
-     * Указатель ячейки для новой заявки.
-     */
-    private int position = 0;
+    ///**
+     //* Указатель ячейки для новой заявки.
+     //*/
+    //private int position = 0;
 
     /**
      * Произвольная числовая часть уникального ключа.
@@ -40,7 +43,8 @@ public class Tracker {
      */
     public Item add(Item item) {
         item.setId(this.generateId());
-        this.items[this.position++] = item;
+        //this.items[this.position++] = item;
+        this.items.add(item);
         return item;
     }
 
@@ -53,11 +57,17 @@ public class Tracker {
     public boolean replace(String id, Item item) {
         boolean result = false;
         item.setId(id);
-        for (int i = 0; i < this.position; i++) {
-            if (items[i].getId().equals(id)) {
-                items[i] = item;
+        //for (int i = 0; i < this.position; i++) {
+        //    if (items[i].getId().equals(id)) {
+        //       items[i] = item;
+        //        result = true;
+        //        break;
+        //    }
+        //}
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId().equals(id)) {
+                this.items.set(i, item);
                 result = true;
-                break;
             }
         }
         return result;
@@ -70,11 +80,16 @@ public class Tracker {
      */
     public boolean delete(String id) {
         boolean result = false;
-        for (int i = 0; i < this.position; i++) {
-            if (items[i].getId().equals(id)) {
-                System.arraycopy(items, i + 1, items, i, position - i);
-                position--;
-                result = true;
+        //for (int i = 0; i < this.position; i++) {
+        //    if (items[i].getId().equals(id)) {
+        //        System.arraycopy(items, i + 1, items, i, position - i);
+        //        position--;
+        //        result = true;
+        //        break;
+        //    }
+        for (Item i: this.items) {
+            if (i.getId().equals(id)) {
+                result = this.items.remove(i);
                 break;
             }
         }
@@ -85,8 +100,11 @@ public class Tracker {
      * Метод возвращает список всех заявок.
      * @return result список заявок.
      */
-    public Item[] findAll() {
-        return Arrays.copyOf(items, this.position);
+    //public Item[] findAll() {
+    //   return Arrays.copyOf(items, this.position);
+    //}
+    public List<Item> findAll() {
+        return this.items;
     }
 
     /**
@@ -94,15 +112,24 @@ public class Tracker {
      * @param nameItem имя заявки.
      * @return result список одноименных заявок.
      */
-    public Item[] findByName(String nameItem) {
-        Item[] itemsKey = new Item[this.position];
-        int count = 0;
-        for (int i = 0; i < this.position; i++) {
-            if (items[i].getName().equals(nameItem)) {
-                itemsKey[count++] = items[i];
+    //public Item[] findByName(String nameItem) {
+     //   Item[] itemsKey = new Item[this.position];
+     //   int count = 0;
+     //   for (int i = 0; i < this.position; i++) {
+     //       if (items[i].getName().equals(nameItem)) {
+     //           itemsKey[count++] = items[i];
+     //       }
+     //   }
+     //   return Arrays.copyOf(itemsKey, count);
+    //}
+    public List<Item> findByName(String nameItem) {
+        List<Item> itemsKey = new ArrayList<>();
+        for (Item i: this.items) {
+            if (i.getName().equals(nameItem)) {
+                itemsKey.add(i);
             }
         }
-        return Arrays.copyOf(itemsKey, count);
+        return itemsKey;
     }
 
     /**
