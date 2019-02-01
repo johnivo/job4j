@@ -28,7 +28,7 @@ public class CoffeeMachineTest {
     public void whenValue50ThenChanges38() {
         int value = 50;
         int price = 12;
-        CoffeeMachine coffee = new CoffeeMachine(value,price);
+        CoffeeMachine coffee = new CoffeeMachine(value, price);
         int[] result = coffee.changes(value, price);
         int[] expected = {10, 10, 10, 5, 2, 1};
         assertThat(result, is(expected));
@@ -38,7 +38,7 @@ public class CoffeeMachineTest {
     public void whenValue100ThenChanges36() {
         int value = 100;
         int price = 64;
-        CoffeeMachine coffee = new CoffeeMachine(value,price);
+        CoffeeMachine coffee = new CoffeeMachine(value, price);
         int[] result = coffee.changes(value, price);
         int[] expected = {10, 10, 10, 5, 1};
         assertThat(result, is(expected));
@@ -48,7 +48,7 @@ public class CoffeeMachineTest {
     public void whenValueEqualsPriceThenNoChange() {
         int value = 50;
         int price = 50;
-        CoffeeMachine coffee = new CoffeeMachine(value,price);
+        CoffeeMachine coffee = new CoffeeMachine(value, price);
         int[] result = coffee.changes(value, price);
         int[] expected = {};
         assertThat(result, is(expected));
@@ -58,7 +58,7 @@ public class CoffeeMachineTest {
     public void whenValueIsLessThanPriceThenException() {
         int value = 50;
         int price = 54;
-        CoffeeMachine coffee = new CoffeeMachine(value,price);
+        CoffeeMachine coffee = new CoffeeMachine(value, price);
         int[] result = coffee.changes(value, price);
     }
 }
