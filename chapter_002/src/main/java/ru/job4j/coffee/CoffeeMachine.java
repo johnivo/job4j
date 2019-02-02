@@ -48,15 +48,13 @@ public class CoffeeMachine {
             if (change > 0 && change % coins[i] != 0) {
                 sum = 0;
                 for (int j = 0; j < (change / coins[i]); j++) {
-                    result[size] = coins[i];
-                    size++;
+                    result[size++] = coins[i];
                     sum = sum + coins[i];
                 }
                 change = change - sum;
             } else {
                 for (int j = 0; j < (change / coins[i]); j++) {
-                    result[size] = coins[i];
-                    size++;
+                    result[size++] = coins[i];
                 }
                 break;
             }
