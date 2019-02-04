@@ -28,10 +28,12 @@ public class User implements Comparable<User> {
 
     @Override
     public String toString() {
-        return "User{"
-                + "name='" + name + '\''
-                + ", age=" + age
-                + '}';
+        return new StringBuilder()
+                .append("name ")
+                .append(name)
+                .append(" age ")
+                .append(age)
+                .toString();
     }
 
     /**

@@ -59,8 +59,60 @@ public class SortUserTest {
         users.add(user3);
         users.add(user4);
         Set<User> sort = sortUser.sort(users);
-        System.out.println(sort);
+        //System.out.println(sort);
         String result = sort.iterator().next().getName();
         assertThat(result, is("Nata"));
+    }
+
+    /**
+     * Test sortNameLength with Comparable.
+     */
+    @Test
+    public void whenSortListByNameLengthThenSortedList() {
+        SortUser sortUser = new SortUser();
+        List<User> users = new ArrayList<>();
+        users.addAll(
+                Arrays.asList(
+                        new User("Olga", 24),
+                        new User("Bob", 29),
+                        new User("Nikolay", 30),
+                        new User("Bob", 26)
+
+                )
+        );
+        List<User> expect = new ArrayList<>();
+        expect.add(users.get(1));
+        expect.add(users.get(3));
+        expect.add(users.get(0));
+        expect.add(users.get(2));
+        List<User> result = sortUser.sortNameLength(users);
+        //System.out.println(result);
+        assertThat(result, is(expect));
+    }
+
+    /**
+     * Test sortByAllFields with Comparable.
+     */
+    @Test
+    public void whenSortListByAllFieldsLengthThenSortedList() {
+        SortUser sortUser = new SortUser();
+        List<User> users = new ArrayList<>();
+        users.addAll(
+                Arrays.asList(
+                        new User("Tanya", 24),
+                        new User("Bob", 29),
+                        new User("Tanya", 30),
+                        new User("Bob", 26)
+
+                )
+        );
+        List<User> expect = new ArrayList<>();
+        expect.add(users.get(3));
+        expect.add(users.get(1));
+        expect.add(users.get(0));
+        expect.add(users.get(2));
+        List<User> result = sortUser.sortByAllFields(users);
+        System.out.println(result);
+        assertThat(result, is(expect));
     }
 }
