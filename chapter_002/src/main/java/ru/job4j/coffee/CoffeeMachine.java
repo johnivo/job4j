@@ -11,6 +11,11 @@ import java.util.Arrays;
 public class CoffeeMachine {
 
     /**
+     * Константа: номинал разменных монет.
+     */
+    private static final int[] COINS = {1, 2, 5, 10};
+
+    /**
      * Поля: купюра, цена кофе.
      */
     private int value;
@@ -29,7 +34,6 @@ public class CoffeeMachine {
 
     /**
      * Метод рассчитывает выдачу сдачи для автомата наименьшим количеством монет.
-     * В автомате монеты номиналом 1, 2, 5, 10.
      *
      * @param value купюра 50, 100 и тд.
      * @param price цена кофе.
@@ -37,27 +41,15 @@ public class CoffeeMachine {
      */
     int[] changes(int value, int price) {
         int[] result = new int[100];
-        int[] coins = {10, 5, 2, 1};
         int change = value - price;
-        if (change < 0) {
-            throw new ArithmeticException();
-        }
         int size = 0;
-        int sum;
-        for (int i = 0; i < coins.length; i++) {
-            if (change > 0 && change % coins[i] != 0) {
-                sum = 0;
-                for (int j = 0; j < (change / coins[i]); j++) {
-                    result[size++] = coins[i];
-                    sum = sum + coins[i];
-                }
-                change = change - sum;
-            } else {
-                for (int j = 0; j < (change / coins[i]); j++) {
-                    result[size++] = coins[i];
-                }
-                break;
+        int i = COINS.length - 1;
+        while (change > 0) {
+            while (change >= COINS[i]) {
+                result[size++] = COINS[i];
+                change -= COINS[i];
             }
+            i--;
         }
         return Arrays.copyOf(result, size);
     }
