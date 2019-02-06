@@ -1,3 +1,7 @@
-# Проекты по курсу https://job4j.ru/
+[![Build Status](https://travis-ci.org/johnivo/job4j.svg?branch=master)](https://travis-ci.org/johnivo/job4j)
 
-Цель обучения: стать java developer, время достижения: 1 год.
+[![codecov](https://codecov.io/gh/johnivo/job4j/branch/master/graph/badge.svg)](https://codecov.io/gh/johnivo/job4j)
+
+Проекты по курсу https://job4j.ru/
+
+Цель стажировки: стать java developer, время достижения: 1 год.
