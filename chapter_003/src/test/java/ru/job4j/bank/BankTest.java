@@ -23,8 +23,14 @@ public class BankTest {
     @Test
     public void whenAddUserThenSortedList() {
         Bank bank = new Bank();
-        bank.addUser(new User("Max", "123"));
-        bank.addUser(new User("Bob", "127"));
+        User user1 = new User("Max", "123");
+        User user2 = new User("Bob", "127");
+        bank.addUser(user1);
+        bank.addUser(user2);
+        //System.out.println(bank);
+        User user3 = new User("Max", "123");
+        bank.addUser(user3);
+        //System.out.println(bank);
         int result = bank.getHashMap().size();
         assertThat(result, is(2));
     }
@@ -37,10 +43,14 @@ public class BankTest {
         Bank bank = new Bank();
         User user1 = new User("Max", "123");
         User user2 = new User("Bob", "127");
+        User user3 = new User("Nik", "128");
         bank.addUser(user1);
         bank.addUser(user2);
+        bank.addUser(user3);
         //System.out.println(bank);
-        bank.deleteUser(user1);
+        User user4 = new User("Max", "123");
+        bank.deleteUser(user2);
+        bank.deleteUser(user4);
         int result = bank.getHashMap().size();
         //System.out.println(bank);
         assertThat(result, is(1));
@@ -103,7 +113,7 @@ public class BankTest {
         bank.addAccountToUser(user1.getPassport(), account2);
         bank.addAccountToUser(user1.getPassport(), account3);
         bank.getUserAccounts(user1.getPassport());
-        //System.out.println(bank.getUserAccounts(user1));
+        //System.out.println(bank.getUserAccounts(user1.getPassport()));
         int result = bank.getUserAccounts(user1.getPassport()).size();
         assertThat(result, is(3));
     }

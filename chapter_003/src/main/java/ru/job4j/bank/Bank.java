@@ -33,7 +33,7 @@ public class Bank {
      */
     public void addUser(User user) {
         //this.dataBase.put(user, new ArrayList<>());
-        this.dataBase.putIfAbsent(user, getUserAccounts(user.getPassport()));
+        this.dataBase.putIfAbsent(user, new ArrayList<>());
     }
 
     /**
@@ -53,9 +53,9 @@ public class Bank {
      */
     public void addAccountToUser(String passport, Account account) {
         if (!dataBase.isEmpty()) {
-            for (Map.Entry<User, List<Account>> entry : this.dataBase.entrySet()) {
-                if (entry.getKey().getPassport().equals(passport)) {
-                    entry.getValue().add(account);
+            for (User user : this.dataBase.keySet()) {
+                if (user.getPassport().equals(passport) && (getActualAccount(passport, account.getRequisites()) == null)) {
+                    this.dataBase.get(user).add(account);
                     break;
                 }
             }
@@ -70,9 +70,9 @@ public class Bank {
      */
     public void deleteAccountFromUser(String passport, Account account) {
         if (!dataBase.isEmpty()) {
-            for (Map.Entry<User, List<Account>> entry : this.dataBase.entrySet()) {
-                if (entry.getKey().getPassport().equals(passport)) {
-                    entry.getValue().remove(account);
+            for (User user : this.dataBase.keySet()) {
+                if (getActualAccount(passport, account.getRequisites()) != null) {
+                    this.dataBase.get(user).remove(account);
                     break;
                 }
             }
@@ -103,7 +103,7 @@ public class Bank {
      *
      * @param passport номер паспорта.
      * @param requisite номер банковского счета.
-     * @return true or false.
+     * @return result возвращает счет или null.
      */
     public Account getActualAccount(String passport, String requisite) {
         Account result = null;
@@ -129,13 +129,14 @@ public class Bank {
                                   String destPassport, String destRequisite, double amount) {
         Account src = getActualAccount(srcPassport, srcRequisite);
         Account dest = getActualAccount(destPassport, destRequisite);
-        boolean success = false;
-        if (src != null && amount > 0 && amount <= src.getValue() && dest != null) {
-            success = true;
-            src.setValue(src.getValue() - amount);
-            dest.setValue(dest.getValue() + amount);
-        }
-        return success;
+        //boolean success = false;
+        //if (src != null && amount > 0 && amount <= src.getValue() && dest != null) {
+        //    success = true;
+        //    src.setValue(src.getValue() - amount);
+        //    dest.setValue(dest.getValue() + amount);
+        //}
+        //return success;
+        return src.transfer(src, dest, amount);
     }
 
     @Override
@@ -146,13 +147,4 @@ public class Bank {
                 .append("}")
                 .toString();
     }
-
-    //List<Account> list = this.dataBase.get(getUserAccounts(passport));
-     //Account result = null;
-     //for (Account account : list) {
-     //if (list.get(list.indexOf(requisite)) != null) {
-     //result = account;
-     //}
-     //}
-     //return result;
 }

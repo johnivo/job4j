@@ -46,8 +46,18 @@ public class Account {
     /**
      * Сеттер к полю value.
      */
-    public void setValue(double value) {
-        this.value = value;
+    //public void setValue(double value) {
+    //    this.value = value;
+    //}
+
+    public boolean transfer(Account src, Account dest, double amount) {
+        boolean success = false;
+        if (src != null && amount > 0 && amount <= src.getValue() && dest != null) {
+            success = true;
+            src.value -= amount;
+            dest.value += amount;
+        }
+        return success;
     }
 
     @Override
