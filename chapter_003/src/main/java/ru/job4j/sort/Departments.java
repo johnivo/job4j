@@ -44,8 +44,9 @@ public class Departments {
             for (int i = 0; i < dep.length(); i++) {
                 if (dep.charAt(i) == '\\') {
                     String headDep = dep.substring(0, i);
-                    if (!departments.contains(headDep))
+                    if (!departments.contains(headDep)) {
                         deps.add(headDep);
+                    }
                 }
             }
         }
