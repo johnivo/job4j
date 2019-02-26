@@ -29,9 +29,19 @@ public class DepartmentsTest {
             "K2\\SK1\\SSK2"
     };
 
-    /**
-     * Test sort with Comparable.
-     */
+    @Test
+    public void whenAddDep() {
+        ArrayList<String> deps = new ArrayList<>();
+        deps.addAll(
+                Arrays.asList(
+                        arrayDep
+                )
+        );
+        Departments sortDep = new Departments(deps);
+        int result = sortDep.addDep(deps).size();
+        assertThat(result, is(9));
+    }
+
     @Test
     public void whenSortUp() {
         ArrayList<String> deps = new ArrayList<>();
@@ -41,9 +51,7 @@ public class DepartmentsTest {
                 )
         );
         Departments sortDep = new Departments(deps);
-        //System.out.println(deps);
         Set<String> result = sortDep.sortUp(deps);
-        //System.out.println(result);
         Set<String> expect = new TreeSet<>();
         expect.addAll(
                 Arrays.asList(
@@ -70,9 +78,9 @@ public class DepartmentsTest {
                 )
         );
         Departments sortDep = new Departments(deps);
-        //System.out.println(deps);
+        System.out.println(deps);
         List<String> result = sortDep.sortDown(deps);
-        //System.out.println(result);
+        System.out.println(result);
         List<String> expect = new ArrayList<>();
         expect.addAll(
                 Arrays.asList(

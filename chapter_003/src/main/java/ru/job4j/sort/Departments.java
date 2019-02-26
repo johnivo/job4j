@@ -1,10 +1,6 @@
 package ru.job4j.sort;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * Class Departments.
@@ -37,35 +33,62 @@ public class Departments {
     }
 
     /**
-     * Метод принимает список кодов подразделений и добавляет недостающие в иерархии.
-     * выполняет сортировку natural ordering.
+     * Метод добавляет недостающие в иерархии коды подразделений.
      *
      * @param departments входящий список кодов.
-     * @return множество кодов.
+     * @return полнная иерархия кодов (несортированное множество).
      */
-    Set<String> sortUp(ArrayList<String> departments) {
-        Set<String> sortedDep = new TreeSet<>();
+    public Set<String> addDep(ArrayList<String> departments) {
+        Set<String> deps = new HashSet<>(departments);
         for (String dep : departments) {
             for (int i = 0; i < dep.length(); i++) {
                 if (dep.charAt(i) == '\\') {
-                    sortedDep.add(dep.substring(0, i));
+                    String headDep = dep.substring(0, i);
+                    if (!departments.contains(headDep))
+                        deps.add(headDep);
                 }
             }
-            if (dep.endsWith("1") || dep.endsWith("2")) {
-                sortedDep.add(dep);
-            }
         }
+        return deps;
+    }
+
+    /**
+     * Метод выполняет сортировку по возрастанию.
+     *
+     * @param departments входящий список кодов.
+     * @return отсортированное множество кодов.
+     */
+    public Set<String> sortUp(ArrayList<String> departments) {
+        Set<String> sortedDep = new TreeSet<>(departments);
+        sortedDep.addAll(addDep(departments));
         return sortedDep;
     }
 
     /**
-     * Метод принимает список кодов подразделений и добавляет недостающие в иерархии.
-     * выполняет сортировку по убыванию.
+     * Метод выполняет сортировку по убыванию.
      *
      * @param departments входящий список кодов.
-     * @return отсортированный список.
+     * @return отсортированный по убыванию список кодов.
      */
-    List<String> sortDown(ArrayList<String> departments) {
+    public List<String> sortDown(ArrayList<String> departments) {
+        Set<String> setDep = sortUp(departments);
+        List<String> listDep = new ArrayList<>(setDep);
+        listDep.sort(
+                new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        int result = 0;
+                        int min = Math.min(o1.length(), o2.length());
+                        String a = o1.substring(0, min);
+                        String b = o2.substring(0, min);
+                        return b.compareTo(a);
+                    }
+                }
+        );
+        return listDep;
+    }
+    /**
+    public List<String> sortDown(ArrayList<String> departments) {
         Set<String> setDep = sortUp(departments);
         List<String> listDep = new ArrayList<>(setDep);
         listDep.sort(
@@ -86,4 +109,5 @@ public class Departments {
         );
         return listDep;
     }
+    */
 }
