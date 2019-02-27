@@ -26,13 +26,6 @@ public class Departments {
     }
 
     /**
-     * Геттер к списку.
-     */
-    public ArrayList<String> getDepartments() {
-        return this.departments;
-    }
-
-    /**
      * Метод добавляет недостающие в иерархии коды подразделений.
      *
      * @param departments входящий список кодов.
@@ -71,10 +64,8 @@ public class Departments {
      * @param departments входящий список кодов.
      * @return отсортированный по убыванию список кодов.
      */
-    public List<String> sortDown(ArrayList<String> departments) {
-        Set<String> setDep = sortUp(departments);
-        List<String> listDep = new ArrayList<>(setDep);
-        listDep.sort(
+    public Set<String> sortDown(ArrayList<String> departments) {
+        Set<String> sortedDep = new TreeSet<>(
                 new Comparator<String>() {
                     @Override
                     public int compare(String o1, String o2) {
@@ -82,33 +73,18 @@ public class Departments {
                         int min = Math.min(o1.length(), o2.length());
                         String a = o1.substring(0, min);
                         String b = o2.substring(0, min);
-                        return b.compareTo(a);
-                    }
-                }
-        );
-        return listDep;
-    }
-    /**
-    public List<String> sortDown(ArrayList<String> departments) {
-        Set<String> setDep = sortUp(departments);
-        List<String> listDep = new ArrayList<>(setDep);
-        listDep.sort(
-                new Comparator<String>() {
-                    @Override
-                    public int compare(String o1, String o2) {
-                        int result = 0;
-                        int min = Math.min(o1.length(), o2.length());
                         for (int i = 0; i < min; i++) {
-                            if (o1.charAt(i) != o2.charAt(i)) {
-                                result = o2.charAt(i) - o1.charAt(i);
+                            result = b.compareTo(a);
+                            if (result != 0) {
                                 break;
                             }
                         }
-                        return result;
+                        return result != 0 ? result : Integer.compare(o1.length(), o2.length());
                     }
                 }
+                //или Comparator.reverseOrder()
         );
-        return listDep;
+        sortedDep.addAll(addDep(departments));
+        return sortedDep;
     }
-    */
 }

@@ -57,9 +57,9 @@ public class DepartmentsTest {
                 Arrays.asList(
                         "K1",
                         "K1\\SK1",
-                        "K1\\SK2",
                         "K1\\SK1\\SSK1",
                         "K1\\SK1\\SSK2",
+                        "K1\\SK2",
                         "K2",
                         "K2\\SK1",
                         "K2\\SK1\\SSK1",
@@ -78,10 +78,9 @@ public class DepartmentsTest {
                 )
         );
         Departments sortDep = new Departments(deps);
-        System.out.println(deps);
-        List<String> result = sortDep.sortDown(deps);
-        System.out.println(result);
-        List<String> expect = new ArrayList<>();
+        Set<String> result = sortDep.sortDown(deps);
+        //System.out.println(result);
+        Set<String> expect = new TreeSet<>();
         expect.addAll(
                 Arrays.asList(
                         "K2",
@@ -96,5 +95,30 @@ public class DepartmentsTest {
                 )
         );
         assertThat(result, is(expect));
+    }
+
+    @Test
+    public void whenSortDownTwo() {
+        ArrayList<String> deps = new ArrayList<>();
+        deps.addAll(
+                Arrays.asList(
+                        arrayDep
+                )
+        );
+        Departments sortDep = new Departments(deps);
+        Set<String> result = sortDep.sortDown(deps);
+        String[] array = result.toArray(new String[result.size()]);
+        String[] expect = {
+                "K2",
+                "K2\\SK1",
+                "K2\\SK1\\SSK2",
+                "K2\\SK1\\SSK1",
+                "K1",
+                "K1\\SK2",
+                "K1\\SK1",
+                "K1\\SK1\\SSK2",
+                "K1\\SK1\\SSK1"
+        };
+        assertThat(array, is(expect));
     }
 }
