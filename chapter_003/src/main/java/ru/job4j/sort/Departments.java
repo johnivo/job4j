@@ -36,10 +36,7 @@ public class Departments {
         for (String dep : departments) {
             for (int i = 0; i < dep.length(); i++) {
                 if (dep.charAt(i) == '\\') {
-                    String headDep = dep.substring(0, i);
-                    if (!departments.contains(headDep)) {
-                        deps.add(headDep);
-                    }
+                    deps.add(dep.substring(0, i));
                 }
             }
         }
