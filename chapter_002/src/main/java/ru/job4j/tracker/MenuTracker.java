@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Реализация меню трекера.
@@ -13,16 +14,19 @@ import java.util.List;
 public class MenuTracker {
 
     /**
-     * Хранит ссылку на объект.
+     * Получение данных от пользователя.
      */
     private final Input input;
+
     /**
-     * Хранит ссылку на объект.
+     * Хранилище заявок.
      */
     private final Tracker tracker;
+
     /**
-     * Хранит ссылку на объект.
+     * Вывод данных.
      */
+    private final Consumer<String> output;
 
     private final List<UserAction> actions = new ArrayList<>();
 
@@ -32,9 +36,10 @@ public class MenuTracker {
      * @param input   объект типа Input.
      * @param tracker объект типа Tracker.
      */
-    public MenuTracker(Input input, Tracker tracker) {
+    public MenuTracker(Input input, Tracker tracker, Consumer<String> output) {
         this.input = input;
         this.tracker = tracker;
+        this.output = output;
     }
 
     /**
@@ -74,7 +79,7 @@ public class MenuTracker {
     public void show() {
         for (UserAction action : this.actions) {
             if (action != null) {
-                System.out.println(action.info());
+                output.accept(action.info());
             }
         }
     }
@@ -90,13 +95,13 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ Adding new item --------------");
+            output.accept("------------ Adding new item --------------");
             String name = input.ask("Please, provide item name:");
             String desc = input.ask("Please, provide item description:");
             String created = input.ask("Please, provide item time created:");
             Item item = new Item(name, desc, Long.parseLong(created));
             tracker.add(item);
-            System.out.println("New Item: " + item.toString());
+            output.accept("New Item: " + item.toString());
         }
     }
 
@@ -111,16 +116,16 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ All available items: --------------");
+            output.accept("------------ All available items: --------------");
             //Item[] items = tracker.findAll();
             //if (items.length != 0) {
             List<Item> items = tracker.findAll();
             if (items.size() != 0) {
                 for (Item item : items) {
-                    System.out.println(item.toString());
+                    output.accept(item.toString());
                 }
             } else {
-                System.out.println("------------ No items available. -----------");
+                output.accept("------------ No items available. -----------");
             }
         }
     }
@@ -136,16 +141,16 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ Editing item: --------------");
+            output.accept("------------ Editing item: --------------");
             String id = input.ask("Please, provide id item:");
             String name = input.ask("Please, edit item name:");
             String desc = input.ask("Please, edit item description:");
             String created = input.ask("Please, edit item create:");
             Item item = new Item(name, desc, Long.parseLong(created));
             if (tracker.replace(id, item)) {
-                System.out.println("Item with id:" + id + " edited!");
+                output.accept("Item with id:" + id + " edited!");
             } else {
-                System.out.println("------------ No item with such id. -----------");
+                output.accept("------------ No item with such id. -----------");
             }
         }
     }
@@ -161,12 +166,12 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ Deleting item: --------------");
+            output.accept("------------ Deleting item: --------------");
             String id = input.ask("Please, provide id item:");
             if (tracker.delete(id)) {
-                System.out.println("Item with id:" + id + " deleted!");
+                output.accept("Item with id:" + id + " deleted!");
             } else {
-                System.out.println("------------ No item with such id. -----------");
+                output.accept("------------ No item with such id. -----------");
             }
         }
     }
@@ -182,13 +187,13 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ Find item by id: --------------");
+            output.accept("------------ Find item by id: --------------");
             String id = input.ask("Please, provide id item:");
             Item item = tracker.findById(id);
             if (item != null) {
-                System.out.println("Item found: " + item.toString());
+                output.accept("Item found: " + item.toString());
             } else {
-                System.out.println("------------ No item with such id. -----------");
+                output.accept("------------ No item with such id. -----------");
             }
         }
     }
@@ -204,17 +209,17 @@ public class MenuTracker {
 
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println("------------ Find item by name: --------------");
+            output.accept("------------ Find item by name: --------------");
             String nameItem = input.ask("Please, provide name item:");
             //Item[] items = tracker.findByName(nameItem);
             //if (items.length != 0) {
             List<Item> items = tracker.findByName(nameItem);
             if (items.size() != 0) {
                 for (Item item : items) {
-                    System.out.println(item.toString());
+                    output.accept(item.toString());
                 }
             } else {
-                System.out.println("------------ No items with such name. -----------");
+                output.accept("------------ No items with such name. -----------");
             }
         }
     }

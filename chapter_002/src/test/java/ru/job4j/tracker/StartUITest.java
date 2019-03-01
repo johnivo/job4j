@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.function.Consumer;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -29,10 +31,18 @@ public class StartUITest {
             .append("6. Exit Program.").append(System.lineSeparator())
             .toString();
 
-    // поле содержит дефолтный вывод в консоль.
-    private final PrintStream stdout = System.out;
     // буфер для результата.
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    // поле содержит дефолтный вывод в консоль.
+    private final Consumer<String> output = new Consumer<String>() {
+        private final PrintStream stdout = new PrintStream(out);
+
+        @Override
+        public void accept(String s) {
+            stdout.println(s);
+        }
+    };
 
     @Before
     public void loadOutput() {
@@ -42,7 +52,7 @@ public class StartUITest {
 
     @After
     public void backOutput() {
-        System.setOut(this.stdout);
+        System.setOut(new PrintStream(this.out));
         System.out.println("execute after method");
     }
 
@@ -59,7 +69,7 @@ public class StartUITest {
         }
         Input input = new StubInput(new String[]{"1", "y"});
         // выполняем действия пишушиее в консоль.
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, output).init();
         // проверяем результат вычисления
         assertThat(
                 new String(this.out.toByteArray()),
@@ -87,7 +97,7 @@ public class StartUITest {
             tracker.add(x);
         }
         Input input = new StubInput(new String[]{"4", items[2].getId(), "y"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, output).init();
         assertThat(
                 new String(this.out.toByteArray()),
                 is(new StringBuilder()
@@ -112,7 +122,7 @@ public class StartUITest {
             tracker.add(x);
         }
         Input input = new StubInput(new String[]{"5", items[0].getName(), "y"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, output).init();
         assertThat(
                 new String(this.out.toByteArray()),
                 is(new StringBuilder()
@@ -135,7 +145,7 @@ public class StartUITest {
         // создаём StubInput с последовательностью действий.
         Input input = new StubInput(new String[]{"0", "test name", "desc", "00", "y"});
         // создаём StartUI и вызываем метод init()
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, output).init();
         // проверяем, что нулевой элемент массива в трекере содержит имя, введённое при эмуляции.
         //assertThat(tracker.findAll()[0].getName(), is("test name"));
         assertThat(tracker.findAll().get(0).getName(), is("test name"));
@@ -161,7 +171,7 @@ public class StartUITest {
         // создаём StubInput с последовательностью действий(производим замену заявки)
         Input input = new StubInput(new String[]{"2", items[1].getId(), "test replace", "заменили заявку", "00", "y"});
         // создаём StartUI и вызываем метод init()
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, output).init();
         // проверяем, что нужный элемент массива в трекере содержит имя, введённое при эмуляции.
         assertThat(tracker.findById(items[1].getId()).getName(), is("test replace"));
     }
@@ -179,7 +189,7 @@ public class StartUITest {
             tracker.add(x);
         }
         Input input = new StubInput(new String[]{"3", items[1].getId(), "y"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, output).init();
         //assertThat(tracker.findAll()[1].getName(), is("test name3"));
         assertThat(tracker.findAll().get(1).getName(), is("test name3"));
     }
