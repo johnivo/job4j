@@ -17,7 +17,7 @@ public class DepartmentsSort {
     }
 
     public List<String> sortUp(List<String> departments) {
-        Set<String> sortedDep = new TreeSet<>(
+        departments.sort(
                 new Comparator<String>() {
                     @Override
                     public int compare(String o1, String o2) {
@@ -25,13 +25,11 @@ public class DepartmentsSort {
                     }
                 }
         );
-        sortedDep.addAll(addDep(departments));
-        List<String> result = new ArrayList<>(sortedDep);
-        return result;
+        return departments;
     }
 
     public List<String> sortDown(List<String> departments) {
-        Set<String> sortedDep = new TreeSet<>(
+        departments.sort(
                 new Comparator<String>() {
                     @Override
                     public int compare(String o1, String o2) {
@@ -49,9 +47,7 @@ public class DepartmentsSort {
                     }
                 }
         );
-        sortedDep.addAll(addDep(departments));
-        List<String> result = new ArrayList<>(sortedDep);
-        return result;
+        return departments;
     }
 
     public List<String> addDep(List<String> departments) {

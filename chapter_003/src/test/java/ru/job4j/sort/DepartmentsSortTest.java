@@ -41,7 +41,7 @@ public class DepartmentsSortTest {
     @Test
     public void whenSortUp() {
         DepartmentsSort sortDep = new DepartmentsSort(departments);
-        List<String> result = sortDep.sortUp(departments);
+        List<String> result = sortDep.sortUp(sortDep.addDep(departments));
         List<String> expect = new ArrayList<>();
         expect.addAll(
                 Arrays.asList(
@@ -62,7 +62,7 @@ public class DepartmentsSortTest {
     @Test
     public void whenSortDown() {
         DepartmentsSort sortDep = new DepartmentsSort(departments);
-        List<String> result = sortDep.sortDown(departments);
+        List<String> result = sortDep.sortDown(sortDep.addDep(departments));
         //System.out.println(result);
         List<String> expect = new ArrayList<>();
         expect.addAll(
@@ -84,7 +84,7 @@ public class DepartmentsSortTest {
     @Test
     public void whenSortDownTwo() {
         DepartmentsSort sortDep = new DepartmentsSort(departments);
-        List<String> result = sortDep.sortDown(departments);
+        List<String> result = sortDep.sortDown(sortDep.addDep(departments));
         String[] array = result.toArray(new String[result.size()]);
         String[] expect = {
                 "K2",
