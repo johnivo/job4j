@@ -1,9 +1,5 @@
 package ru.job4j.school;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.function.Consumer;
-
 /**
  * Student.
  *

@@ -1,6 +1,5 @@
 package ru.job4j.school;
 
-
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import static org.junit.Assert.assertThat;
  *@version $Id$
  *@since 02.03.2019
  */
-
 public class SchoolTest {
 
     @Test
@@ -31,7 +29,7 @@ public class SchoolTest {
         List<Student> students = new ArrayList<>();
         students.addAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
         School part = new School();
-        int result = part.collect(students, School.isClassA()).size();
+        int result = part.collect(students, p -> p.getScore() >= 70 && p.getScore() <= 100).size();
         assertThat(result, is(2));
     }
 
@@ -46,7 +44,7 @@ public class SchoolTest {
         List<Student> students = new ArrayList<>();
         students.addAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
         School part = new School();
-        int result = part.collect(students, School.isClassB()).size();
+        int result = part.collect(students, p -> p.getScore() >= 50 && p.getScore() <= 70).size();
         assertThat(result, is(3));
     }
 
@@ -65,7 +63,7 @@ public class SchoolTest {
         expect.addAll(
                 Arrays.asList(st6)
         );
-        List<Student> result = part.collect(students, School.isClassV());
+        List<Student> result = part.collect(students, p -> p.getScore() > 0 && p.getScore() < 50);
         assertThat(result, is(expect));
     }
 }
