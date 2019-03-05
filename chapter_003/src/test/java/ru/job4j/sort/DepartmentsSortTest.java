@@ -32,7 +32,7 @@ public class DepartmentsSortTest {
     @Test
     public void whenSortUp() {
         DepartmentsSort sortDep = new DepartmentsSort();
-        List<String> result = sortDep.sort(list, true);
+        List<String> result = sortDep.sort(list.toArray(new String[list.size()]), true);
         //System.out.println(result);
         List<String> expect = new ArrayList<>();
         expect.addAll(
@@ -54,7 +54,7 @@ public class DepartmentsSortTest {
     @Test
     public void whenSortDown() {
         DepartmentsSort sortDep = new DepartmentsSort();
-        List<String> result = sortDep.sort(list, false);
+        List<String> result = sortDep.sort(list.toArray(new String[list.size()]), false);
         //System.out.println(result);
         List<String> expect = new ArrayList<>();
         expect.addAll(
