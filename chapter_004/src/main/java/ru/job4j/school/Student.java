@@ -9,10 +9,16 @@ package ru.job4j.school;
  */
 public class Student {
 
+    private String lastName;
     private int score;
 
-    public Student(int score) {
+    public Student(String lastName, int score) {
+        this.lastName = lastName;
         this.score = score;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public int getScore() {
@@ -21,10 +27,6 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{"
-                +
-                "score=" + score
-                +
-                '}';
+        return "Student{" + "lastName='" + lastName + '\'' + ", score=" + score + '}';
     }
 }

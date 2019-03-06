@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -20,12 +21,12 @@ public class SchoolTest {
 
     @Test
     public void whenFilterForListClassA() {
-        Student st1 = new Student(90);
-        Student st2 = new Student(80);
-        Student st3 = new Student(65);
-        Student st4 = new Student(60);
-        Student st5 = new Student(55);
-        Student st6 = new Student(30);
+        Student st1 = new Student("A", 90);
+        Student st2 = new Student("B", 80);
+        Student st3 = new Student("C", 65);
+        Student st4 = new Student("D", 60);
+        Student st5 = new Student("E", 55);
+        Student st6 = new Student("F", 30);
         List<Student> students = new ArrayList<>();
         students.addAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
         School part = new School();
@@ -35,12 +36,12 @@ public class SchoolTest {
 
     @Test
     public void whenFilterForListClassB() {
-        Student st1 = new Student(90);
-        Student st2 = new Student(80);
-        Student st3 = new Student(65);
-        Student st4 = new Student(60);
-        Student st5 = new Student(55);
-        Student st6 = new Student(30);
+        Student st1 = new Student("A", 90);
+        Student st2 = new Student("B", 80);
+        Student st3 = new Student("C", 65);
+        Student st4 = new Student("D", 60);
+        Student st5 = new Student("E", 55);
+        Student st6 = new Student("F", 30);
         List<Student> students = new ArrayList<>();
         students.addAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
         School part = new School();
@@ -50,12 +51,12 @@ public class SchoolTest {
 
     @Test
     public void whenFilterForListClassC() {
-        Student st1 = new Student(90);
-        Student st2 = new Student(80);
-        Student st3 = new Student(65);
-        Student st4 = new Student(60);
-        Student st5 = new Student(55);
-        Student st6 = new Student(30);
+        Student st1 = new Student("A", 90);
+        Student st2 = new Student("B", 80);
+        Student st3 = new Student("C", 65);
+        Student st4 = new Student("D", 60);
+        Student st5 = new Student("E", 55);
+        Student st6 = new Student("F", 30);
         List<Student> students = new ArrayList<>();
         students.addAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
         School part = new School();
@@ -65,5 +66,33 @@ public class SchoolTest {
         );
         List<Student> result = part.collect(students, p -> p.getScore() > 0 && p.getScore() < 50);
         assertThat(result, is(expect));
+    }
+
+    @Test
+    public void whenListConvertToMap() {
+        Student st1 = new Student("A", 90);
+        Student st2 = new Student("C", 80);
+        Student st3 = new Student("B", 65);
+        List<Student> students = new ArrayList<>();
+        students.addAll(Arrays.asList(st1, st2, st3));
+        School school = new School();
+        int result = school.convertToMap(students).size();
+        assertThat(result, is(3));
+    }
+
+    @Test
+    public void whenListConvertToMap2() {
+        Student st1 = new Student("B", 90);
+        Student st2 = new Student("A", 80);
+        List<Student> students = new ArrayList<>();
+        students.addAll(Arrays.asList(st1, st2));
+        School school = new School();
+        Map<String, Student> map = school.convertToMap(students);
+        boolean result = map.keySet().contains("B");
+        //for (Map.Entry<String, Student> entry : map.entrySet()) {
+        //    System.out.println(entry);
+        //}
+        //map.forEach((k, v) -> System.out.println("Key: " + k + " Value: " + v));
+        assertThat(result, is(true));
     }
 }
