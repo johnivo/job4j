@@ -17,14 +17,16 @@ public class ProfilesTest {
 
     @Test
     public void whenCollectThreeAddressesToList() {
-        Address ad1 = new Address("A", "a", 1, 1);
-        Address ad2 = new Address("B", "b", 2, 2);
-        Address ad3 = new Address("C", "c", 3, 3);
+        Address ad1 = new Address("B", "a", 1, 1);
+        Address ad2 = new Address("C", "b", 2, 2);
+        Address ad3 = new Address("A", "c", 3, 3);
+        Address ad4 = new Address("A", "c", 3, 3);
         Profile pr1 = new Profile(ad1);
         Profile pr2 = new Profile(ad2);
         Profile pr3 = new Profile(ad3);
+        Profile pr4 = new Profile(ad4);
         List<Profile> list = new ArrayList<>();
-        list.addAll(Arrays.asList(pr1, pr2, pr3));
+        list.addAll(Arrays.asList(pr1, pr2, pr3, pr4));
         Profiles profiles = new Profiles();
         int result = profiles.collect(list).size();
         assertThat(result, is(3));
@@ -32,8 +34,8 @@ public class ProfilesTest {
 
     @Test
     public void whenCollectTwoAddressesToList() {
-        Profile pr1 = new Profile(new Address("A", "a", 1, 1));
-        Profile pr2 = new Profile(new Address("B", "b", 2, 2));
+        Profile pr1 = new Profile(new Address("B", "c", 2, 2));
+        Profile pr2 = new Profile(new Address("B", "b", 1, 1));
         List<Profile> list = new ArrayList<>();
         list.addAll(Arrays.asList(pr1, pr2));
         Profiles profiles = new Profiles();
@@ -44,15 +46,21 @@ public class ProfilesTest {
                         .append(result.getHome()).append(" ")
                         .append(result.getApartment())
                         .toString(),
-                is("B b 2 2"));
+                is("B b 1 1"));
     }
 
     @Test
     public void whenCollectOneAddressesToList() {
         List<Profile> list = new ArrayList<>();
-        list.addAll(Arrays.asList(new Profile(new Address("A", "a", 1, 1))));
+        list.addAll(
+                Arrays.asList(
+                        new Profile(new Address("B", "b", 1, 1)),
+                        new Profile(new Address("B", "b", 1, 1)),
+                        new Profile(new Address("B", "b", 1, 1))
+                )
+        );
         Profiles profiles = new Profiles();
         String result = profiles.collect(list).get(0).getStreet();
-        assertThat(result, is("a"));
+        assertThat(result, is("b"));
     }
 }
