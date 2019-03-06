@@ -1,7 +1,5 @@
 package ru.job4j.profiles;
 
-import java.util.Objects;
-
 /**
  * @author John Ivanov (johnivo@mail.ru)
  * @since 05.03.2019
