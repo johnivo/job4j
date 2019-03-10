@@ -3,6 +3,7 @@ package ru.job4j.tracker;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Класс трэкер.
@@ -122,13 +123,21 @@ public class Tracker {
      //   }
      //   return Arrays.copyOf(itemsKey, count);
     //}
+     //public List<Item> findByName(String nameItem) {
+     //   List<Item> itemsKey = new ArrayList<>();
+     //   for (Item i: this.items) {
+     //       if (i.getName().equals(nameItem)) {
+     //           itemsKey.add(i);
+     //       }
+     //   }
+     //   return itemsKey;
+    //}
     public List<Item> findByName(String nameItem) {
-        List<Item> itemsKey = new ArrayList<>();
-        for (Item i: this.items) {
-            if (i.getName().equals(nameItem)) {
-                itemsKey.add(i);
-            }
-        }
+        List<Item> itemsKey = items.stream()
+                .filter(
+                        items -> items.getName().contains(nameItem)
+                )
+                .collect(Collectors.toList());
         return itemsKey;
     }
 
@@ -138,13 +147,18 @@ public class Tracker {
      * @return result искомая заявка.
      */
     public Item findById(String id) {
-        Item result = null;
-        for (Item item : this.items) {
-            if (item != null && item.getId().equals(id)) {
-                result = item;
-                break;
-            }
-        }
-        return result;
+        //Item result = null;
+        //for (Item item : this.items) {
+        //    if (item != null && item.getId().equals(id)) {
+        //        result = item;
+        //        break;
+        //    }
+        //}
+        List<Item> itemsId = items.stream()
+                .filter(
+                        items -> items != null && items.getId().contains(id)
+                )
+                .collect(Collectors.toList());
+        return itemsId.get(0);
     }
 }
