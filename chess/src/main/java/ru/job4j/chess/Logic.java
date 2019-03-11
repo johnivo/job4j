@@ -5,6 +5,8 @@ import ru.job4j.chess.firuges.Figure;
 import ru.job4j.chess.firuges.OccupiedWayException;
 import ru.job4j.chess.firuges.FigureNotFoundException;
 
+import java.util.stream.IntStream;
+
 //import java.util.Optional;
 
 /**
@@ -50,13 +52,20 @@ public class Logic {
     }
 
     private int findBy(Cell cell) {
-        int rst = -1;
-        for (int index = 0; index != this.figures.length; index++) {
-            if (this.figures[index] != null && this.figures[index].position().equals(cell)) {
-                rst = index;
-                break;
-            }
-        }
+        //int rst = -1;
+        //for (int index = 0; index != this.figures.length; index++) {
+        //    if (this.figures[index] != null && this.figures[index].position().equals(cell)) {
+        //        rst = index;
+        //        break;
+        //    }
+        //}
+        int rst = IntStream
+                .range(0, this.figures.length)
+                .filter(
+                        e -> figures[e] != null && figures[e].position().equals(cell)
+                )
+                .findAny()
+                .orElse(-1);
         return rst;
     }
 }
