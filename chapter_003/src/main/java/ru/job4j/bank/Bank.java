@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class Bank.
@@ -53,12 +54,21 @@ public class Bank {
      */
     public void addAccountToUser(String passport, Account account) {
         if (!dataBase.isEmpty()) {
-            for (User user : this.dataBase.keySet()) {
-                if (user.getPassport().equals(passport) && (getActualAccount(passport, account.getRequisites()) == null)) {
-                    this.dataBase.get(user).add(account);
-                    break;
-                }
-            }
+            //for (User user : this.dataBase.keySet()) {
+            //    if (user.getPassport().equals(passport) && (getActualAccount(passport, account.getRequisites()) == null)) {
+            //        this.dataBase.get(user).add(account);
+            //        break;
+            //    }
+            //}
+            this.dataBase.entrySet()
+                    .stream()
+                    .filter(
+                            e -> e.getKey().getPassport().contains(passport)
+                    )
+                    .collect(Collectors.toMap(
+                            e -> e.getKey(),
+                            e -> e.getValue().add(account))
+                    );
         }
     }
 
@@ -70,12 +80,21 @@ public class Bank {
      */
     public void deleteAccountFromUser(String passport, Account account) {
         if (!dataBase.isEmpty()) {
-            for (User user : this.dataBase.keySet()) {
-                if (getActualAccount(passport, account.getRequisites()) != null) {
-                    this.dataBase.get(user).remove(account);
-                    break;
-                }
-            }
+            //for (User user : this.dataBase.keySet()) {
+            //    if (getActualAccount(passport, account.getRequisites()) != null) {
+            //        this.dataBase.get(user).remove(account);
+            //        break;
+            //    }
+            //}
+            this.dataBase.entrySet()
+                    .stream()
+                    .filter(
+                            e -> e.getKey().getPassport().contains(passport)
+                    )
+                    .collect(Collectors.toMap(
+                            e -> e.getKey(),
+                            e -> e.getValue().remove(account))
+                    );
         }
     }
 
@@ -88,12 +107,21 @@ public class Bank {
     public List<Account> getUserAccounts(String passport) {
         List<Account> accountsList = new ArrayList<>();
         if (!dataBase.isEmpty()) {
-            for (Map.Entry<User, List<Account>> entry : this.dataBase.entrySet()) {
-                if (entry.getKey().getPassport().equals(passport)) {
-                    accountsList = entry.getValue();
-                    break;
-                }
-            }
+            //for (Map.Entry<User, List<Account>> entry : this.dataBase.entrySet()) {
+            //    if (entry.getKey().getPassport().equals(passport)) {
+            //        accountsList = entry.getValue();
+            //        break;
+            //    }
+            //}
+            accountsList = this.dataBase.entrySet()
+                    .stream()
+                    .filter(
+                            e -> e.getKey().getPassport().contains(passport)
+                    )
+                    .map(
+                            e -> e.getValue()
+                    )
+                    .collect(Collectors.toList()).get(0);
         }
         return accountsList;
     }
@@ -106,12 +134,19 @@ public class Bank {
      * @return result возвращает счет или null.
      */
     public Account getActualAccount(String passport, String requisite) {
-        Account result = null;
-        for (Account account : getUserAccounts(passport)) {
-            if (account.getRequisites().equals(requisite)) {
-                result = account;
-            }
-        }
+        //Account result = null;
+        //for (Account account : getUserAccounts(passport)) {
+        //    if (account.getRequisites().equals(requisite)) {
+        //        result = account;
+        //    }
+        //}
+        Account result = getUserAccounts(passport)
+                .stream()
+                .filter(
+                        e -> e.getRequisites().equals(requisite)
+                )
+                .findFirst()
+                .orElse(null);
         return result;
     }
 
