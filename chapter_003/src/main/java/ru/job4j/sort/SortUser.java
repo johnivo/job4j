@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Class SortUser.
@@ -32,15 +33,22 @@ public class SortUser {
      * @return отсортированный лист.
      */
     public List<User> sortNameLength(List<User> list) {
-        list.sort(
-                new Comparator<User>() {
-                    @Override
-                    public int compare(User o1, User o2) {
-                        return Integer.compare(o1.getName().length(), o2.getName().length());
-                    }
-                }
-        );
-        return list;
+        //list.sort(
+        //        new Comparator<User>() {
+        //            @Override
+        //            public int compare(User o1, User o2) {
+        //                return Integer.compare(o1.getName().length(), o2.getName().length());
+        //            }
+        //        }
+        //);
+        List<User> result = list.stream()
+                //.sorted((o1, o2) -> Integer.compare(o1.getName().length(), o2.getName().length()))
+                .sorted(Comparator.comparing(
+                        e -> e.getName().length()
+                        )
+                )
+                .collect(Collectors.toList());
+        return result;
     }
 
     /**
@@ -50,15 +58,21 @@ public class SortUser {
      * @return отсортированный лист.
      */
     public List<User> sortByAllFields(List<User> list) {
-        list.sort(
-                new Comparator<User>() {
-                    @Override
-                    public int compare(User o1, User o2) {
-                        Integer rst = o1.getName().compareTo(o2.getName());
-                        return rst != 0 ? rst : Integer.compare(o1.getAge(), o2.getAge());
-                    }
-                }
-        );
-        return list;
+        //list.sort(
+        //        new Comparator<User>() {
+        //            @Override
+        //            public int compare(User o1, User o2) {
+        //                Integer rst = o1.getName().compareTo(o2.getName());
+        //                return rst != 0 ? rst : Integer.compare(o1.getAge(), o2.getAge());
+        //            }
+        //        }
+        //);
+        List<User> result = list.stream()
+                .sorted(Comparator
+                        .comparing(User::getName)
+                        .thenComparingInt(User::getAge)
+                )
+                .collect(Collectors.toList());
+        return result;
     }
 }

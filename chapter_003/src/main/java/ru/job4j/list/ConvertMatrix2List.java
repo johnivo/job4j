@@ -1,8 +1,10 @@
 package ru.job4j.list;
 
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -28,4 +30,12 @@ public class ConvertMatrix2List {
         }
         return list;
     }
+
+    public List<Integer> toList2(Integer[][] array) {
+        List<Integer> list = Stream.of(array)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+        return list;
+    }
+
 }

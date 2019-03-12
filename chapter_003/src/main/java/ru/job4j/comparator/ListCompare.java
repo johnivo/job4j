@@ -1,6 +1,7 @@
 package ru.job4j.comparator;
 
 import java.util.Comparator;
+import java.util.stream.IntStream;
 
 /**
  * Class ListCompare.
@@ -22,14 +23,22 @@ public class ListCompare implements Comparator<String> {
      */
     @Override
     public int compare(String left, String right) {
-        int result = Integer.compare(left.length(), right.length());
+        //int result = Integer.compare(left.length(), right.length());
         int counter = Math.min(left.length(), right.length());
-        for (int i = 0; i < counter; i++) {
-            if (left.charAt(i) != right.charAt(i)) {
-                result = Character.compare(left.charAt(i), right.charAt(i));
-                break;
-            }
-        }
-        return result;
+        //for (int i = 0; i < counter; i++) {
+        //    if (left.charAt(i) != right.charAt(i)) {
+        //        result = Character.compare(left.charAt(i), right.charAt(i));
+        //        break;
+        //    }
+        //}
+        int index = IntStream
+                .range(0, counter)
+                .filter(
+                        e -> left.charAt(e) != right.charAt(e)
+                )
+                .findFirst()
+                .orElse(-1);
+        return index == -1 ? Integer.compare(left.length(), right.length())
+                : Character.compare(left.charAt(index), right.charAt(index));
     }
 }

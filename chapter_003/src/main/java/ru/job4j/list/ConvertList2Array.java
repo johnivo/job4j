@@ -3,6 +3,8 @@ package ru.job4j.list;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -63,4 +65,12 @@ public class ConvertList2Array {
      //    }
      //   return genericList;
      //}
+
+    public List<Integer> convert2(List<Integer[]> list) {
+        List<Integer> genericList = list
+                .stream()
+                .flatMap(e -> Stream.of(e))
+                .collect(Collectors.toList());
+        return genericList;
+    }
 }

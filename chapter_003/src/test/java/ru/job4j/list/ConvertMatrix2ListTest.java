@@ -34,14 +34,14 @@ public class ConvertMatrix2ListTest {
     @Test
     public void when2on3ArrayThenList6() {
         ConvertMatrix2List list = new ConvertMatrix2List();
-        int[][] input = {
+        Integer[][] input = {
                 {7, 8, 7},
                 {6, 4, 5},
         };
         List<Integer> expect = Arrays.asList(
                 7, 8, 7, 6, 4, 5
         );
-        List<Integer> result = list.toList(input);
+        List<Integer> result = list.toList2(input);
         assertThat(result, is(expect));
     }
 }

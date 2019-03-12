@@ -20,16 +20,23 @@ public class PriorityQueue {
     public void put(Task task) {
 
         //TODO добавить вставку в связанный список.
-        int i = 0;
-        for (Task t : tasks) {
-            if (t.getPriority() < task.getPriority()) {
-                i++;
-            }
-        }
+        //int i = 0;
+        //for (Task t : tasks) {
+        //    if (t.getPriority() < task.getPriority()) {
+        //        i++;
+        //    }
+        //}
+        int i = (int) tasks.stream()
+                .filter(
+                        e -> e.getPriority() < task.getPriority()
+                ).count();
         this.tasks.add(i, task);
     }
 
     public Task take() {
+        tasks.stream()
+                .map(Task::getPriority)
+                .forEach(System.out::println);
         return this.tasks.poll();
     }
 }
