@@ -95,4 +95,37 @@ public class SchoolTest {
         //map.forEach((k, v) -> System.out.println("Key: " + k + " Value: " + v));
         assertThat(result, is(true));
     }
+
+    @Test
+    public void whenLevelOfGreaterUpperBoundThen() {
+        Student st1 = new Student("E", 90);
+        Student st2 = new Student("B", 90);
+        Student st3 = null;
+        Student st4 = new Student("D", 50);
+        Student st5 = new Student("A", 75);
+        Student st6 = new Student("C", 30);
+        List<Student> students = new ArrayList<>();
+        students.addAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
+        School school = new School();
+        List<Student> lvl = school.levelOf(students, 60);
+        int result = lvl.size();
+        assertThat(result, is(3));
+    }
+
+    @Test
+    public void whenLevelOfGreaterUpperBoundThen2() {
+        Student st1 = new Student("E", 90);
+        Student st2 = new Student("B", 90);
+        Student st3 = null;
+        Student st4 = new Student("D", 50);
+        Student st5 = new Student("A", 75);
+        Student st6 = new Student("C", 30);
+        List<Student> students = new ArrayList<>();
+        students.addAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
+        School school = new School();
+        List<Student> lvl = school.levelOf2(students, 60);
+        boolean result = lvl.contains(st5);
+        assertThat(result, is(true));
+    }
+
 }
