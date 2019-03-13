@@ -38,7 +38,14 @@ public class ConvertMatrix2ListTest {
                 {7, 8, 7},
                 {6, 4, 5},
         };
-        List<Integer> expect = Arrays.asList(
+        // Arrays.asList возвращает изменяемый список, допускает нулевые элементы,
+        // возвращает представление переданного массива, поэтому изменения в массиве также будут отражены в списке
+        //List<Integer> expect = Arrays.asList(
+        //        7, 8, 7, 6, 4, 5
+        //);
+        // List.of возвращает НЕизменяемый список, НЕ допускает нулевые элементы,
+        // изменения в переданном массиве не будут отражены в списке.
+        List<Integer> expect = List.of(
                 7, 8, 7, 6, 4, 5
         );
         List<Integer> result = list.toList2(input);

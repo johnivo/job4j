@@ -1,6 +1,7 @@
 package ru.job4j.sort;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class DepartmentsSort.
@@ -81,15 +82,16 @@ public class DepartmentsSort {
         } else {
             orgs = new TreeSet<>(new ReverseComporator());
         }
-        for (String s: allDep) {
+        for (String s : allDep) {
             orgs.add(new Org(s));
         }
-
-        List<String> result = new ArrayList<>();
-        for (Org org: orgs) {
-            result.add(org.getCode());
-        }
-
+        //List<String> result = new ArrayList<>();
+        //for (Org org: orgs) {
+        //    result.add(org.getCode());
+        //}
+        List<String> result = orgs.stream()
+                .map(e -> e.getCode())
+                .collect(Collectors.toList());
         return result;
     }
 }

@@ -17,36 +17,42 @@ import static org.junit.Assert.assertThat;
  *@since 3.03.2019
  */
 public class DepartmentsSortTest {
-    private List<String> list = new ArrayList<>(
-            Arrays.asList(
-                "K1\\SK1",
-                "K1\\SK2",
-                "K1\\SK1\\SSK1",
-                "K1\\SK1\\SSK2",
-                "K2",
-                "K2\\SK1\\SSK1",
-                "K2\\SK1\\SSK2"
-                )
-            );
+    //private List<String> list = new ArrayList<>(
+    //        Arrays.asList(
+    //            "K1\\SK1",
+    //            "K1\\SK2",
+    //            "K1\\SK1\\SSK1",
+    //            "K1\\SK1\\SSK2",
+    //            "K2",
+    //            "K2\\SK1\\SSK1",
+    //            "K2\\SK1\\SSK2"
+    //            )
+    //        );
+    private List<String> list = List.of(
+                    "K1\\SK1",
+                    "K1\\SK2",
+                    "K1\\SK1\\SSK1",
+                    "K1\\SK1\\SSK2",
+                    "K2",
+                    "K2\\SK1\\SSK1",
+                    "K2\\SK1\\SSK2"
+    );
 
     @Test
     public void whenSortUp() {
         DepartmentsSort sortDep = new DepartmentsSort();
         List<String> result = sortDep.sort(list.toArray(new String[list.size()]), true);
         //System.out.println(result);
-        List<String> expect = new ArrayList<>();
-        expect.addAll(
-                Arrays.asList(
-                        "K1",
-                        "K1\\SK1",
-                        "K1\\SK1\\SSK1",
-                        "K1\\SK1\\SSK2",
-                        "K1\\SK2",
-                        "K2",
-                        "K2\\SK1",
-                        "K2\\SK1\\SSK1",
-                        "K2\\SK1\\SSK2"
-                )
+        List<String> expect = List.of(
+                "K1",
+                "K1\\SK1",
+                "K1\\SK1\\SSK1",
+                "K1\\SK1\\SSK2",
+                "K1\\SK2",
+                "K2",
+                "K2\\SK1",
+                "K2\\SK1\\SSK1",
+                "K2\\SK1\\SSK2"
         );
         assertThat(result, is(expect));
     }
@@ -56,19 +62,16 @@ public class DepartmentsSortTest {
         DepartmentsSort sortDep = new DepartmentsSort();
         List<String> result = sortDep.sort(list.toArray(new String[list.size()]), false);
         //System.out.println(result);
-        List<String> expect = new ArrayList<>();
-        expect.addAll(
-                Arrays.asList(
-                        "K2",
-                        "K2\\SK1",
-                        "K2\\SK1\\SSK2",
-                        "K2\\SK1\\SSK1",
-                        "K1",
-                        "K1\\SK2",
-                        "K1\\SK1",
-                        "K1\\SK1\\SSK2",
-                        "K1\\SK1\\SSK1"
-                )
+        List<String> expect = List.of(
+                "K2",
+                "K2\\SK1",
+                "K2\\SK1\\SSK2",
+                "K2\\SK1\\SSK1",
+                "K1",
+                "K1\\SK2",
+                "K1\\SK1",
+                "K1\\SK1\\SSK2",
+                "K1\\SK1\\SSK1"
         );
         assertThat(result, is(expect));
     }

@@ -59,10 +59,15 @@ public class ConvertList2ArrayTest {
     @Test
     public void whenList3ArraysThenListInteger() {
         ConvertList2Array convertList = new ConvertList2Array();
-        List<int[]> lists = new ArrayList<>();
-        lists.add(new int[]{1, 2});
-        lists.add(new int[]{3, 4, 5, 6});
-        lists.add(new int[]{0, 1});
+        //List<int[]> lists = new ArrayList<>();
+        //lists.add(new int[]{1, 2});
+        //lists.add(new int[]{3, 4, 5, 6});
+        //lists.add(new int[]{0, 1});
+        List<int[]> lists = List.of(
+                new int[]{1, 2},
+                new int[]{3, 4, 5, 6},
+                new int[]{0, 1}
+        );
         List<Integer> result = convertList.convert(lists);
         List<Integer> expect = Arrays.asList(
                 1, 2, 3, 4, 5, 6, 0, 1
