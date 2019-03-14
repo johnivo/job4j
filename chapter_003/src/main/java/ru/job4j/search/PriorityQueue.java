@@ -21,12 +21,14 @@ public class PriorityQueue {
 
         //TODO добавить вставку в связанный список.
         //int i = 0;
+        // или var i = 0;
         //for (Task t : tasks) {
+        // или for (var t : tasks) {
         //    if (t.getPriority() < task.getPriority()) {
         //        i++;
         //    }
         //}
-        int i = (int) tasks.stream()
+        var i = (int) tasks.stream()
                 .filter(
                         e -> e.getPriority() < task.getPriority()
                 ).count();

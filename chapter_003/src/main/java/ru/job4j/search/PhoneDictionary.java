@@ -25,7 +25,9 @@ public class PhoneDictionary {
      */
     public List<Person> find(String key) {
         //List<Person> result = new ArrayList<>();
-        //for (Person person : persons) {
+        // или var result = new ArrayList<>();
+        // for (Person person : persons) {
+        // или for (var person : persons) {
         //    if (person.getName().contains(key)
         //            || person.getSurname().contains(key)
         //            || person.getPhone().contains(key)
@@ -33,7 +35,8 @@ public class PhoneDictionary {
         //        result.add(person);
         //    }
         //}
-        List<Person> result = persons.stream()
+        //List<Person> result = persons.stream()
+        var result = persons.stream()
                 .filter(
                         e -> e.getName().contains(key)
                                 || e.getSurname().contains(key)

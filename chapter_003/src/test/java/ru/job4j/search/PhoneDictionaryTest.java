@@ -19,11 +19,13 @@ public class PhoneDictionaryTest {
      */
     @Test
     public void whenFindByName() {
-        PhoneDictionary phones = new PhoneDictionary();
+        //PhoneDictionary phones = new PhoneDictionary();
+        var phones = new PhoneDictionary();
         phones.add(
                 new Person("Petr", "Arsentev", "534872", "Bryansk")
         );
-        List<Person> persons = phones.find("Petr");
+        //List<Person> persons = phones.find("Petr");
+        var persons = phones.find("Petr");
         assertThat(persons.iterator().next().getSurname(), is("Arsentev"));
     }
 
@@ -32,11 +34,11 @@ public class PhoneDictionaryTest {
      */
     @Test
     public void whenFindByPhone() {
-        PhoneDictionary phones = new PhoneDictionary();
+        var phones = new PhoneDictionary();
         phones.add(
                 new Person("Petr", "Arsentev", "534872", "Bryansk")
         );
-        List<Person> persons = phones.find("534872");
+        var persons = phones.find("534872");
         assertThat(persons.iterator().next().getName(), is("Petr"));
     }
 
@@ -45,11 +47,11 @@ public class PhoneDictionaryTest {
      */
     @Test
     public void whenFindByAddress() {
-        PhoneDictionary phones = new PhoneDictionary();
+        var phones = new PhoneDictionary();
         phones.add(
                 new Person("Petr", "Arsentev", "534872", "Bryansk")
         );
-        List<Person> persons = phones.find("Bryansk");
+        var persons = phones.find("Bryansk");
         assertThat(new StringBuilder()
                         .append(persons.iterator().next().getName()).append(" ")
                         .append(persons.iterator().next().getSurname()).append(" ")
