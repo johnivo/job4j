@@ -44,23 +44,8 @@ public class Logic3T {
         return this.isWinner(Figure3T::hasMarkO);
     }
 
-    //public boolean hasGap() {
-    //    boolean result = false;
-    //    for (int i = 0; i != this.table.length; i++) {
-    //        for (int j = 0; j != this.table[i].length; j++) {
-    //            if (!table[i][j].hasMarkX() & !table[i][j].hasMarkO()) {
-    //                result = true;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    return result;
-    //}
-
     public boolean hasGap() {
-        //var r = false;
         boolean r = !Stream.of(this.table)
-                //.flatMap(e -> Arrays.stream(e))
                 .flatMap(Arrays::stream)
                 .allMatch(e -> e.hasMarkO() || e.hasMarkX());
         return r;
