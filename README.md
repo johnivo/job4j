@@ -3,5 +3,6 @@
 [![codecov](https://codecov.io/gh/johnivo/job4j/branch/master/graph/badge.svg)](https://codecov.io/gh/johnivo/job4j)
 
 Проекты по курсу https://job4j.ru/
+В курсе производилась работа с ветках git.
 
 Цель стажировки: стать java developer, время достижения: 1 год.
