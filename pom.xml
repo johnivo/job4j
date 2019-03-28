@@ -21,6 +21,7 @@
         <module>chapter_003</module>
         <module>chapter_004</module>
         <module>tictactoe</module>
+        <module>chapter_005</module>
     </modules>
 	
 	<dependencies>
