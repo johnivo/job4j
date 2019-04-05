@@ -20,7 +20,7 @@ public class SimpleArrayTest {
 
     @Before
     public void setUp() {
-        this.simple = new SimpleArray(5);
+        this.simple = new SimpleArray(10);
         simple.add(1);
         simple.add(2);
         simple.add(3);
@@ -44,12 +44,12 @@ public class SimpleArrayTest {
         assertThat(simple.get(1), is(2));
     }
 
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void invocationOfAddMethodShouldThrowArrayIndexOutOfBoundsException() {
-        simple.add(6);
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void invocationOfRemoveMethodShouldThrowArrayIndexOutOfBoundsException() {
+        simple.remove(7);
     }
 
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void invocationOfSetMethodShouldThrowArrayIndexOutOfBoundsException() {
         simple.set(5, 3);
     }
@@ -70,7 +70,7 @@ public class SimpleArrayTest {
 
     @Test
     public void hasNextShouldReturnFalseInCaseOfEmptyIterators() {
-        Iterator<Integer> it = (new SimpleArray<Integer>(0)).iterator();
+        Iterator<Integer> it = (new SimpleArray<Integer>(3)).iterator();
         assertThat(it.hasNext(), is(false));
     }
 

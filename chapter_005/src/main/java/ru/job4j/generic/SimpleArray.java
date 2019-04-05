@@ -17,7 +17,6 @@ public class SimpleArray<E> implements Iterable<E> {
     }
 
     public void add(E model) {
-        check(this.index);
         this.models[index++] = model;
     }
 
@@ -39,8 +38,8 @@ public class SimpleArray<E> implements Iterable<E> {
     }
 
     private void check(int position) {
-        if (this.models.length <= position || position < 0) {
-            throw new ArrayIndexOutOfBoundsException("Выход за границы массива");
+        if (index <= position || position < 0) {
+            throw new IndexOutOfBoundsException("Позиция вне диапазона значений");
         }
     }
 
@@ -52,7 +51,7 @@ public class SimpleArray<E> implements Iterable<E> {
 
             @Override
             public boolean hasNext() {
-                return pointer < models.length;
+                return pointer < index;
             }
 
             @Override
