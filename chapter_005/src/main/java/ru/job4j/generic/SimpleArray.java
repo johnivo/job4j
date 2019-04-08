@@ -43,6 +43,10 @@ public class SimpleArray<E> implements Iterable<E> {
         }
     }
 
+    public int size() {
+        return this.index;
+    }
+
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
