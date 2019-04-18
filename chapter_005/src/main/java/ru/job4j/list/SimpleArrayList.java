@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import java.util.ConcurrentModificationException;
 
 /**
+ * Динамический список на базе массива.
+ *
  * @author John Ivanov (johnivo@mail.ru)
  * @since 11.04.2019
  */
