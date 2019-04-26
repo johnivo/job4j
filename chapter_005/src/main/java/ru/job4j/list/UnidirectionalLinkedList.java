@@ -1,6 +1,8 @@
 package ru.job4j.list;
 
 /**
+ * Реализация односвязного списка.
+ *
  * @author John Ivanov (johnivo@mail.ru)
  * @since 09.04.2019
  */
