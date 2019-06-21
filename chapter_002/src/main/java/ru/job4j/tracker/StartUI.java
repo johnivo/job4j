@@ -21,7 +21,7 @@ public class StartUI {
     /**
      * Хранилище заявок.
      */
-    private final Tracker tracker;
+    private final ITracker tracker;
 
     /**
      * Вывод данных.
@@ -34,7 +34,7 @@ public class StartUI {
      * @param tracker хранилище заявок.
      * @param output вывод данных.
      */
-    public StartUI(Input input, Tracker tracker, Consumer<String> output) {
+    public StartUI(Input input, ITracker tracker, Consumer<String> output) {
         this.input = input;
         this.tracker = tracker;
         this.output = output;
@@ -46,7 +46,7 @@ public class StartUI {
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker, this.output);
         List<Integer> range = new ArrayList<>();
-        menu.fillActions(this);
+        menu.fillActions();
         for (int i = 0; i < menu.getActionsLength(); i++) {
             range.add(i);
         }

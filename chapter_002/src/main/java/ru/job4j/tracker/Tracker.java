@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  *@version $Id$
  *@since 28.12.2018
  */
-public class Tracker {
+public class Tracker implements ITracker {
     /**
      * Лист для хранения заявок.
      */
@@ -42,6 +42,7 @@ public class Tracker {
      * Метод реализует добавление заявки в хранилище.
      * @param item новая заявка.
      */
+    @Override
     public Item add(Item item) {
         item.setId(this.generateId());
         //this.items[this.position++] = item;
@@ -55,6 +56,7 @@ public class Tracker {
      * @param item новая заявка;
      * @return result удалось ли провести операцию.
      */
+    @Override
     public boolean replace(String id, Item item) {
         boolean result = false;
         item.setId(id);
@@ -79,6 +81,7 @@ public class Tracker {
      * @param id номер заявки.
      * @return result удалось ли провести операцию.
      */
+    @Override
     public boolean delete(String id) {
         boolean result = false;
         //for (int i = 0; i < this.position; i++) {
@@ -104,6 +107,7 @@ public class Tracker {
     //public Item[] findAll() {
     //   return Arrays.copyOf(items, this.position);
     //}
+    @Override
     public List<Item> findAll() {
         return this.items;
     }
@@ -132,6 +136,7 @@ public class Tracker {
      //   }
      //   return itemsKey;
     //}
+    @Override
     public List<Item> findByName(String nameItem) {
         List<Item> itemsKey = items.stream()
                 .filter(
@@ -146,6 +151,7 @@ public class Tracker {
      * @param id номер заявки;
      * @return result искомая заявка.
      */
+    @Override
     public Item findById(String id) {
         //Item result = null;
         //for (Item item : this.items) {

@@ -17,7 +17,7 @@ public class ValidateInput implements Input {
      */
     private final Input input;
 
-    public ValidateInput(final  Input input) {
+    public ValidateInput(final Input input) {
         this.input = input;
     }
 
@@ -26,6 +26,7 @@ public class ValidateInput implements Input {
         return this.input.ask(question);
     }
 
+    @Override
     public int ask(String question, List<Integer> range) {
         boolean invalid = true;
         int value = -1;

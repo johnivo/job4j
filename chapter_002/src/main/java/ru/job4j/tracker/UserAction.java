@@ -21,7 +21,7 @@ public interface UserAction {
      * @param input объект типа Input.
      * @param tracker объект типа Tracker.
      */
-    void execute(Input input, Tracker tracker);
+    void execute(Input input, ITracker tracker);
 
     /**
      * Метод возвращает информацию о данном пункте меню.

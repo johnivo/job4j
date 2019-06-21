@@ -1,5 +1,8 @@
 package ru.job4j.tracker;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Реализация массива для хранения заявок.
  *
@@ -14,7 +17,7 @@ public class Item {
     private long created;
     private String[] comments;
 
-    private Item() {
+    public Item() {
     }
 
     public Item(String name, String desc, long created) {
@@ -23,8 +26,19 @@ public class Item {
         this.created = created;
     }
 
+    public Item(String id, String name, String desc, long created) {
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+        this.created = created;
+    }
+
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getId() {
@@ -39,8 +53,16 @@ public class Item {
         return this.desc;
     }
 
-    public long getCreated(long created) {
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public long getCreated() {
         return this.created;
+    }
+
+    public void setCreated(long created) {
+        this.created = created;
     }
 
     public String[] getComments() {
@@ -52,7 +74,36 @@ public class Item {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Item item = (Item) o;
+        return created == item.created
+                && Objects.equals(name, item.name)
+                && Objects.equals(id, item.id)
+                && Objects.equals(desc, item.desc)
+                && Arrays.equals(comments, item.comments);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(name, id, desc, created);
+        result = 31 * result + Arrays.hashCode(comments);
+        return result;
+    }
+
+    @Override
     public String toString() {
-        return getName() + " " + getId() + " " + getDesc();
+        return "Item{"
+                + "name='" + name + '\''
+                + ", id='" + id + '\''
+                + ", desc='" + desc + '\''
+                + ", created=" + created
+                + ", comments=" + Arrays.toString(comments)
+                + '}';
     }
 }
