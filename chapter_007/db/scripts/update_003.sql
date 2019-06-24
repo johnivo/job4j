@@ -1,0 +1,3 @@
+INSERT INTO Item (name, description, created, user_id, category_id, state_id) VALUES ('Goods by mail', 'Заказ номер х потерялся на таможне', '2019-06-01 10:00:00', 1, 4, 1), ('Estimated delivery time', 'Превышен срок доставки', '2019-07-01 11:00:00', 3, 3, 3), ('Goods by mail', 'Получен товар ненадлежащего качества', '2019-07-02 12:00:00', 3, 2, 3), ('Technical problem', 'Не отслеживается трек по заказу х', '2018-09-06 10:00:00', 2, 1, 2);
+INSERT INTO Comments (comment, item_id) VALUES ('ожидаемый срок доставки 5 дней', 1), ('aaa', 2), ('bbb', 2);
+INSERT INTO Attached (link, item_id) VALUES ('image.jpg', 2);

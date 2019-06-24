@@ -135,6 +135,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     public List<Item> findAll() {
         List<Item> items = new ArrayList<>();
         String selectAll = "select i.item_id, i.name, i.description, i.created, c.comment from item as i left outer join comments as c on i.item_id = c.item_id";
+        //String selectAll = "select i.item_id, i.name, i.description, i.created from item as i";
         try (PreparedStatement ps = this.connection.prepareStatement(selectAll)) {
             LOG.info(ps.toString());
             ResultSet rs = ps.executeQuery();

@@ -87,7 +87,7 @@ public class TrackerSQLTest {
         }
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void whenFindAllThenFindsAllItems() {
         try (TrackerSQL tracker = new TrackerSQL(ConnectionRollback.create(this.init()))) {
@@ -99,7 +99,7 @@ public class TrackerSQLTest {
                 tracker.add(item);
             }
             List<Item> actual = tracker.findAll();
-            //в базе есть 4 элеммента, в т.ч. один с двумя комментами, плюс здесь 2 создаются
+            //в базе есть 4 элеммента, в т.ч. один с двумя комментами, плюс эти 2
             assertThat(actual.size(), is(7));
         } catch (Exception e) {
             throw new IllegalStateException(e);
