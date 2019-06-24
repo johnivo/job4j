@@ -4,9 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.job4j.tracker.*;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -31,13 +29,13 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     /**
      * For select comment by id.
      */
-    private final String commentById = "select comment from comments where item_id = ?";
+    private final String commentById = "select c.comment from comments as c where item_id = ?";
 
     /**
      * Constructor.
      */
-    public TrackerSQL() {
-        this.init();
+    public TrackerSQL(Connection connection) {
+        this.connection = connection;
     }
 
     /**
@@ -54,34 +52,10 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                     config.getProperty("username"),
                     config.getProperty("password")
             );
-            DatabaseMetaData dbm = this.connection.getMetaData();
-            ResultSet tables = dbm.getTables(null, null, "item", null);
-            if (tables == null || !tables.next()) {
-                createStructure();
-            }
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
         return this.connection != null;
-    }
-
-    /**
-     * Creating a table structure by script from a file.
-     */
-    private void createStructure() {
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(
-                        TrackerSQL.class.getClassLoader().getResourceAsStream("structure.sql")))
-        ) {
-            String line;
-            try (Statement st = this.connection.createStatement()) {
-                while ((line = br.readLine()) != null) {
-                    st.execute(line);
-                }
-            }
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
     }
 
     @Override
@@ -93,7 +67,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
             ps.setInt(3, 1);
             ps.setInt(4, 1);
             ps.setInt(5, 1);
-            ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+            ps.setTimestamp(6, new Timestamp(item.getCreated()));
             LOG.info(ps.toString());
             if (ps.executeUpdate() > 0) {
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -108,6 +82,8 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                                 for (String comment : comments) {
                                     psComment.setInt(1, itemId);
                                     psComment.setString(2, comment);
+                                    psComment.addBatch();
+                                    psComment.executeBatch();
                                 }
                             }
                         }
@@ -127,7 +103,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         try (PreparedStatement ps = this.connection.prepareStatement(replaceItem)) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDesc());
-            ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            ps.setTimestamp(3, new Timestamp(item.getCreated()));
             ps.setInt(4, Integer.parseInt(item.getId()));
             LOG.info(ps.toString());
             if (ps.executeUpdate() > 0) {
@@ -225,7 +201,6 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                                 rs.getString("comment")
                         )
                 );
-                //System.out.println(item.toString());
             }
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
@@ -234,7 +209,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     }
 
     /**
-     * Selected item from the database..
+     * Selected item from the database.
      * @param rs instance of ResultSet.
      * @return item.
      */
@@ -262,18 +237,6 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     @Override
     public void close() throws Exception {
         connection.close();
-    }
-
-    public static void main(String[] args) {
-        TrackerSQL sql = new TrackerSQL();
-        Item item = new Item("new item 2", "test 2", System.currentTimeMillis());
-        sql.add(item);
-        item.setName("replaced 2");
-        sql.replace(item.getId(), item);
-        sql.delete("10");
-        sql.findById("3");
-        sql.findByName("Goods by mail");
-        sql.findAll();
     }
 
 }
