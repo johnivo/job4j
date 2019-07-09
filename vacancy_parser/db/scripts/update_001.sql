@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS Vacancy (id serial primary key, name varchar(512), description text, link varchar(2048), created timestamp);
