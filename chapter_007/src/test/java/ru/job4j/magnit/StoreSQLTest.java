@@ -1,7 +1,6 @@
 package ru.job4j.magnit;
 
 import com.google.common.base.Joiner;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -23,7 +22,6 @@ public class StoreSQLTest {
 
     private static final String LN = System.lineSeparator();
 
-    @Ignore
     @Test
     public void whenGenerate10EntriesThenReturned10Entries() {
         Config config = new Config();
@@ -37,7 +35,6 @@ public class StoreSQLTest {
         }
     }
 
-    @Ignore
     @Test
     public void whenGenerateXMLFromDatabaseDataThenGetXMFile() {
         Config config = new Config();
@@ -85,7 +82,6 @@ public class StoreSQLTest {
         }
     }
 
-    @Ignore
     @Test
     public void whenTestConvertXSLT() throws IOException {
 
@@ -137,7 +133,6 @@ public class StoreSQLTest {
         }
     }
 
-    @Ignore
     @Test
     public void whenTestParserXML() throws IOException {
 

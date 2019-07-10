@@ -3,7 +3,6 @@ package ru.job4j.magnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,6 @@ public class StoreSQL implements AutoCloseable {
                 ps.addBatch();
 
                 if (++count % batchSize == 0) {
-                    System.out.println(count);
                     ps.executeBatch();
                     this.connect.commit();
                 }
@@ -85,22 +83,12 @@ public class StoreSQL implements AutoCloseable {
      * Инициализация соединения и создание структуры в базе.
      */
     private void databaseConnection() {
-        String url = config.get("url");
-        String file = url.replace("jdbc:sqlite:", "");
-        System.out.println(file);
-        File db = new File(file);
         try {
-            Connection conn = DriverManager.getConnection(url);
-            Statement st = conn.createStatement();
-            if (db.exists()) {
-                st.executeUpdate("CREATE TABLE IF NOT EXISTS entry (field INTEGER)");
-                st.executeUpdate("DELETE FROM entry");
-                System.out.println("A table is ready to write.");
-            } else {
-                st.executeUpdate("CREATE TABLE IF NOT EXISTS entry (field INTEGER)");
-                System.out.println("A new database has been created.");
-            }
-            this.connect = conn;
+            this.connect = DriverManager.getConnection("jdbc:sqlite:test.db");
+            Statement st = this.connect.createStatement();
+            st.executeUpdate("CREATE TABLE IF NOT EXISTS entry (field INTEGER)");
+            st.executeUpdate("DELETE FROM entry");
+            System.out.println("A table is ready to write.");
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
         }
@@ -111,6 +99,26 @@ public class StoreSQL implements AutoCloseable {
         if (connect != null) {
             connect.close();
         }
+    }
+
+    /**
+     * Инициализирует соединение, создает структуру в базе и заполняет ее данными.
+     * Возвращает список всех записей поля field из базы.
+     * @return list список с данными
+     */
+    public List<Entry> startSSQL() {
+        List<Entry> list;
+        config.init();
+
+        try (StoreSQL sql = new StoreSQL(config)) {
+
+            sql.generate(1000000);
+            list = sql.load();
+
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return list;
     }
 
 }

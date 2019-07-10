@@ -6,13 +6,11 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.*;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,15 +59,70 @@ public class ParserXML extends DefaultHandler {
         }
     }
 
-    public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException {
+    /**
+     * Запускает программу на выполнение.
+     * Создает структуру в базе и возвращает лист с данными.
+     * Генерирует файл формата XML.
+     * Преобразовывает файл XML в файл другого XML формата через XSTL
+     * Парсит файл XML и выводит арифметическую сумму значений всех атрибутов field в консоль.
+     */
+    public void start() {
+        Config config = new Config();
+        StoreSQL storeSQL = new StoreSQL(config);
+        List<Entry> list = storeSQL.startSSQL();
+
+        String temp = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator");
+        File source = new File(temp + "source.xml");
+        StoreXML storeXML = new StoreXML();
+        storeXML.save(list, source);
+
+        File dest = new File(temp + "dest.xml");
+        File scheme = new File(temp + "scheme.xslt");
+        try {
+            Files.copy(ConvertXSLT.class.getClassLoader().getResourceAsStream("scheme.xslt"), scheme.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ConvertXSLT convertXSLT = new ConvertXSLT();
+        convertXSLT.convert(source, dest, scheme);
+
+        parsing(dest);
+
+    }
+
+    public static void main(String[] args) throws SAXException, IOException {
+
+        //for example
 
         XMLReader xr = XMLReaderFactory.createXMLReader();
         ParserXML handler = new ParserXML();
         xr.setContentHandler(handler);
         xr.setErrorHandler(handler);
-        FileReader r = new FileReader(new File("C:/Users/Barclay/AppData/Local/Temp/dest.xml"));
-        xr.parse(new InputSource(r));
+        String file = "dest2.xml";
+        File source = new File(
+                System.getProperty("java.io.tmpdir")
+                        + System.getProperty("file.separator")
+                        + file
+        );
+        source.createNewFile();
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(source))
+        ) {
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            writer.newLine();
+            writer.write("<entries>");
+            writer.newLine();
+            writer.write("<entry field=\"1\"/>");
+            writer.newLine();
+            writer.write("<entry field=\"2\"/>");
+            writer.newLine();
+            writer.write("</entries>");
+            writer.flush();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        FileReader r = new FileReader(source);
+        xr.parse(new InputSource(r));
     }
 
 }
