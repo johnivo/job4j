@@ -9,12 +9,14 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
+ * Класс содержит настройки планировщика (задание, время запуска приложения).
+ *
  * @author John Ivanov (johnivo@mail.ru)
  * @since 08.07.2019
  */
 public class ParserJob implements Job {
 
-    private static final Logger LOG = LogManager.getLogger(SqlRuParser.class.getName());
+    private static final Logger LOG = LogManager.getLogger(ParserJob.class.getName());
 
     public ParserJob() {
     }
@@ -31,8 +33,9 @@ public class ParserJob implements Job {
         JobDataMap data = context.getJobDetail().getJobDataMap();
 
         Properties config = (Properties) data.get("config");
-        SqlRuParser sql = new SqlRuParser();
-        sql.start(config);
+
+        DBService dbs = new DBService();
+        dbs.start(config);
 
         LOG.info("Parsing is completed");
 
