@@ -18,7 +18,7 @@ Used stuff:
 #### Level 2
  * [**Collections. Pro** (_generics pro_, iterators, advanced lists and maps, trees, hashcode and equals)](https://github.com/johnivo/job4j/tree/master/chapter_005 "chapter_005")
  * [**IO** (readers, writers, sockets, file managers, external file sorting)](https://github.com/johnivo/job4j/tree/master/chapter_006 "chapter_006")
- * **SQL, JDBC** (sql language, pure jdbc, xml, xslt)
+ * [**SQL, JDBC** (sql language, pure jdbc, xml, xslt)](https://github.com/johnivo/job4j/tree/master/chapter_007 "chapter_007")
 
 #### Interesting tasks
  * Statistics on the collection. ([decision](https://github.com/johnivo/job4j/blob/master/chapter_005/src/main/java/ru/job4j/statistics/Analize.java "Analize"), [test](https://github.com/johnivo/job4j/blob/master/chapter_005/src/test/java/ru/job4j/statistics/AnalizeTest.java "AnalizeTest"))
@@ -28,6 +28,6 @@ Used stuff:
 
 
 
-**To be continued!** The purpose of the internship: to become a java developer, time to achieve: 1 year.
+
 
 Цель стажировки: стать java developer, время достижения: 1 год.
