@@ -40,6 +40,16 @@
             </properties>
         </profile>
 
+        <profile>
+            <id>vacancy_parser</id>
+            <properties>
+                <db.url>jdbc:postgresql://127.0.0.1:5432/vacancy_parser1</db.url>
+                <db.username>postgres</db.username>
+                <db.password>password</db.password>
+                <db.driver>org.postgresql.Driver</db.driver>
+            </properties>
+        </profile>
+
     </profiles>
 
     <properties>
@@ -59,6 +69,7 @@
         <module>chapter_005</module>
         <module>chapter_006</module>
         <module>chapter_007</module>
+        <module>vacancy_parser</module>
         <module>chapter_008</module>
     </modules>
 	
