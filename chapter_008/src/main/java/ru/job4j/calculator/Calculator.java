@@ -1,7 +1,11 @@
 package ru.job4j.calculator;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 /**
  * Class for calculating arithmetic operations.
@@ -22,79 +26,57 @@ public class Calculator {
     private List<Double> secondStorage = new ArrayList<>();
 
     /**
-     * result of the operation.
+     * результат вычисления.
      */
     private double result;
 
     /**
-     * addition.
-     * @param first - first value.
-     * @param second - second value.
+     * Хранилище последовательности вычислений.
      */
-    public void add(double first, double second) {
-        this.result = first + second;
-        this.storage.add(this.result);
-        this.secondStorage.add(second);
-    }
+    private Map<Double, BiFunction> last = new LinkedHashMap<>();
 
     /**
-     * subtract.
-     * @param first - first value.
-     * @param second - second value.
-     */
-    public void subtract(double first, double second) {
-        this.result = first - second;
-        this.storage.add(this.result);
-        this.secondStorage.add(second);
-    }
-
-    /**
-     * division.
-     * @param first - first value.
-     * @param second - second value.
-     */
-    public void div(double first, double second) {
-        if (!(second == 0)) {
-            this.result = first / second;
-            this.storage.add(this.result);
-            this.secondStorage.add(second);
-        } else {
-            new MenuOutException("Division by zero");
-        }
-    }
-
-    /**
-     * multiplication.
-     * @param first - first value.
-     * @param second - second value.
-     */
-    public void multiple(double first, double second) {
-        this.result = first * second;
-        this.storage.add(this.result);
-        this.secondStorage.add(second);
-    }
-
-    /**
-     * getResult.
-     * @return - result.
-     */
-    public double getResult() {
-        return this.result;
-    }
-
-    /**
-     * Метод возвращает список результатов всех вычислений.
-     * @return result список результатов.
+     * Возвращает список результатов всех вычислений.
+     * @return storage список результатов.
      */
     public List<Double> getStorage() {
         return this.storage;
     }
 
     /**
-     * Метод возвращает список вторых аргументов в выражениях.
-     * @return result список результатов.
+     * Возвращает список вторых аргументов в выражениях.
+     * @return secondStorage список 2х аргументов.
      */
     public List<Double> getSecondStorage() {
         return this.secondStorage;
     }
+
+    /**
+     * Возвращает последовательность вычислений.
+     * @return last ассоциативный массив вычислений.
+     */
+    public Map<Double, BiFunction> getLastAction() {
+        return this.last;
+    }
+
+    /**
+     * Выполняет вычисление операции над двумя аргументами и принимает результат.
+     * @param one первый аргумент.
+     * @param two второй аргумент.
+     * @param op функция.
+     * @param media потребитель.
+     */
+    public void calculation(Double one, Double two,
+                     BiFunction<Double, Double, Double> op,
+                     Consumer<Double> media) {
+        result = op.apply(one, two);
+
+        this.storage.add(result);
+        this.secondStorage.add(two);
+
+        this.last.put(two, op);
+
+        media.accept(result);
+    }
+
 }

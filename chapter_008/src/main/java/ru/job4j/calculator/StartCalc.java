@@ -57,9 +57,9 @@ public class StartCalc {
         for (int i = 0; i < menu.getActionsLength(); i++) {
             range.add(i);
         }
+        menu.show();
         do {
-            menu.show();
-            menu.select(this.input.ask("select:", range));
+            menu.select(this.input.ask("select number of operation:", range));
         } while (!"y".equals(this.input.ask("Exit?(y): ")));
     }
 

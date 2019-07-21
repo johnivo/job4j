@@ -15,9 +15,8 @@ public interface UserAction {
     /**
      * Основной метод.
      * @param input объект типа Input.
-     * @param calc объект типа Tracker.
      */
-    void execute(Input input, Calculator calc);
+    void execute(Input input);
 
     /**
      * Метод возвращает информацию о данном пункте меню.

@@ -2,6 +2,8 @@ package ru.job4j.calculator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
@@ -54,7 +56,6 @@ public class InteractCalc {
 
     /**
      * Возвращает число пунктов меню.
-     *
      * @return размер листа.
      */
     public int getActionsLength() {
@@ -76,11 +77,10 @@ public class InteractCalc {
 
     /**
      * Выполняет действие по указанному ключу.
-     *
      * @param key ключ операции.
      */
     public void select(int key) {
-        this.actions.get(key).execute(this.input, this.calc);
+        this.actions.get(key).execute(this.input);
     }
 
     /**
@@ -96,13 +96,15 @@ public class InteractCalc {
 
     /**
      * Определяет аргументы в выражении.
+     * @param temp флаг переиспользования результата вычисления.
+     * @return массив аргументов.
      */
-    public String[] load(boolean temp, boolean secondTemp) {
+    public Double[] load(boolean temp) {
 
         String first = null;
         String second = null;
 
-        if (!temp && !secondTemp) {
+        if (!temp) {
             first = input.ask("enter first number: ");
             second = input.ask("enter second number: ");
 
@@ -114,20 +116,9 @@ public class InteractCalc {
             second = input.ask("enter second number: ");
         }
 
-        if (secondTemp) {
-            List<Double> storage = calc.getStorage();
-            Double previous = storage.get(storage.size() - 1);
-            first = String.valueOf(previous);
-
-            List<Double> secondStorage = calc.getSecondStorage();
-            Double repeat = secondStorage.get(secondStorage.size() - 1);
-            second = String.valueOf(repeat);
-        }
-
         reuse = false;
-        reselect = false;
 
-        return new String[] {first, second};
+        return new Double[] {Double.valueOf(first), Double.valueOf(second)};
     }
 
 
@@ -141,13 +132,21 @@ public class InteractCalc {
         }
 
         @Override
-        public void execute(Input input, Calculator calc) {
-            output.accept("addition of two numbers");
-            String[] source = load(reuse, reselect);
-            calc.add(Double.valueOf(source[0]), Double.valueOf(source[1]));
-            Double result = calc.getResult();
-            output.accept(result.toString());
+        public void execute(Input input) {
+
+            Double[] source = load(reuse);
+            calc.calculation(
+                    source[0], source[1],
+                    (one, two) -> {
+                        Double result = one + two;
+                        System.out.printf("%s + %s = ", one, two);
+                        return result;
+                    },
+                    //result -> System.out.println(result)
+                    result -> output.accept(result.toString())
+            );
         }
+
     }
 
     /**
@@ -160,12 +159,18 @@ public class InteractCalc {
         }
 
         @Override
-        public void execute(Input input, Calculator calc) {
-            output.accept("subtraction of two numbers");
-            String[] source = load(reuse, reselect);
-            calc.subtract(Double.valueOf(source[0]), Double.valueOf(source[1]));
-            Double result = calc.getResult();
-            output.accept(result.toString());
+        public void execute(Input input) {
+
+            Double[] source = load(reuse);
+            calc.calculation(
+                    source[0], source[1],
+                    (one, two) -> {
+                        Double result = one - two;
+                        System.out.printf("%s - %s = ", one, two);
+                        return result;
+                    },
+                    result -> System.out.println(result)
+            );
         }
     }
 
@@ -179,12 +184,23 @@ public class InteractCalc {
         }
 
         @Override
-        public void execute(Input input, Calculator calc) {
-            output.accept("division of two numbers");
-            String[] source = load(reuse, reselect);
-            calc.div(Double.valueOf(source[0]), Double.valueOf(source[1]));
-            Double result = calc.getResult();
-            output.accept(result.toString());
+        public void execute(Input input) {
+
+            Double[] source = load(reuse);
+            calc.calculation(
+                    source[0], source[1],
+                    (one, two) -> {
+                        Double result = null;
+                        if (!(two == 0)) {
+                            result = one / two;
+                            System.out.printf("%s / %s = ", one, two);
+                        } else {
+                            throw new ArithmeticException();
+                        }
+                        return result;
+                    },
+                    result -> System.out.println(result)
+            );
         }
     }
 
@@ -198,12 +214,18 @@ public class InteractCalc {
         }
 
         @Override
-        public void execute(Input input, Calculator calc) {
-            output.accept("multiplication of two numbers");
-            String[] source = load(reuse, reselect);
-            calc.multiple(Double.valueOf(source[0]), Double.valueOf(source[1]));
-            Double result = calc.getResult();
-            output.accept(result.toString());
+        public void execute(Input input) {
+
+            Double[] source = load(reuse);
+            calc.calculation(
+                    source[0], source[1],
+                    (one, two) -> {
+                        Double result = one * two;
+                        System.out.printf("%s * %s = ", one, two);
+                        return result;
+                    },
+                    result -> System.out.println(result)
+            );
         }
     }
 
@@ -217,17 +239,30 @@ public class InteractCalc {
         }
 
         @Override
-        public void execute(Input input, Calculator calc) {
-            output.accept("re-select operation");
-            List<Double> storage = calc.getStorage();
-            List<Double> secondStorage = calc.getSecondStorage();
-            if (secondStorage != null && !secondStorage.isEmpty()) {
-                reselect = true;
+        public void execute(Input input) {
+
+            Map<Double, BiFunction> last = calc.getLastAction();
+            if (last != null && !last.isEmpty()) {
+
+                List<Double> storage = calc.getStorage();
+                Double previousResult = storage.get(storage.size() - 1);
+
+                List<Double> secondStorage = calc.getSecondStorage();
+                Double repeatSecond = secondStorage.get(secondStorage.size() - 1);
+
+                BiFunction lastBiFunction = last.get(repeatSecond);
+
+                calc.calculation(
+                        previousResult, repeatSecond,
+                        lastBiFunction,
+                        result -> System.out.println(result)
+                );
+
             } else {
                 output.accept("this is first calculation");
             }
-
         }
+
     }
 
     /**
@@ -240,15 +275,18 @@ public class InteractCalc {
         }
 
         @Override
-        public void execute(Input input, Calculator calc) {
-            output.accept("reuse previous calculation.");
+        public void execute(Input input) {
+
             List<Double> storage = calc.getStorage();
+            Double previousResult = storage.get(storage.size() - 1);
+
             if (storage != null && !storage.isEmpty()) {
                 reuse = true;
             } else {
                 output.accept("this is first calculation");
             }
         }
+
     }
 
 }
