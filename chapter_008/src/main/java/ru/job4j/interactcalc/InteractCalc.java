@@ -69,9 +69,14 @@ public class InteractCalc {
         output.accept(this.calc.menu());
         boolean exit = false;
         do {
-            String first = reuse || reselect ? String.valueOf(last) : input.ask("Enter first arg: ");
+            String first = reuse || reselect ? String.valueOf(last) : input.ask("Enter arg: ");
             String operation = reselect ? previousOp : input.ask("Enter operation: ");
-            String second = reselect ? previousSec : input.ask("Enter second arg: ");
+
+            String second = "0";
+            if (!operation.equals("sin") && !operation.equals("cos")) {
+                second = reselect ? previousSec : input.ask("Enter second arg: ");
+            }
+
             this.calc.calculate(Double.valueOf(first), Double.valueOf(second), operation);
             Double result = calc.getResult();
             //System.out.printf("Result: %s", result);
