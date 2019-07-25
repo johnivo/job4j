@@ -69,10 +69,15 @@ public class InteractCalc {
         output.accept(this.calc.menu());
         boolean exit = false;
         do {
-            String first = reuse || reselect ? String.valueOf(last) : input.ask("Enter first arg: ");
-            String operation = reselect ? previousOp : input.ask("Enter operation: ");
-            String second = reselect ? previousSec : input.ask("Enter second arg: ");
-            this.calc.calculate(Double.valueOf(first), Double.valueOf(second), operation);
+            String first = reuse || reselect ? String.valueOf(last) : input.ask("Enter arg: ");
+            String op = reselect ? previousOp : input.ask("Enter operation: ");
+
+            String second = "0";
+            if (calc.operation.get(op).getArgs()) {
+                second = reselect ? previousSec : input.ask("Enter second arg: ");
+            }
+
+            this.calc.calculate(Double.valueOf(first), Double.valueOf(second), op);
             Double result = calc.getResult();
             //System.out.printf("Result: %s", result);
             //System.out.println();
@@ -86,7 +91,7 @@ public class InteractCalc {
                 reselect = false;
             } else if (option.equals("=")) {
                 last = result;
-                previousOp = operation;
+                previousOp = op;
                 previousSec = second;
                 reselect = true;
                 reuse = false;

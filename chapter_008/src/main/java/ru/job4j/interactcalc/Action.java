@@ -10,4 +10,6 @@ public interface Action {
 
     Double arithmetical(Double first, Double second);
 
+    Boolean getArgs();
+
 }

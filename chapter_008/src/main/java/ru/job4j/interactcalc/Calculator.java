@@ -21,7 +21,7 @@ public class Calculator {
     /**
      * Хранилище операций.
      */
-    private Map<String, Action> operation = new HashMap<>();
+    protected Map<String, Action> operation = new HashMap<>();
 
     /**
      * Список содержит доступные опции.
@@ -105,6 +105,12 @@ public class Calculator {
         public Double arithmetical(Double first, Double second) {
             return first + second;
         }
+
+        @Override
+        public Boolean getArgs() {
+            return true;
+        }
+
     }
 
     /**
@@ -121,6 +127,11 @@ public class Calculator {
         public Double arithmetical(Double first, Double second) {
             return first - second;
         }
+
+        @Override
+        public Boolean getArgs() {
+            return true;
+        }
     }
 
     /**
@@ -136,6 +147,11 @@ public class Calculator {
         @Override
         public Double arithmetical(Double first, Double second) {
             return first * second;
+        }
+
+        @Override
+        public Boolean getArgs() {
+            return true;
         }
     }
 
@@ -158,6 +174,11 @@ public class Calculator {
                 throw new ArithmeticException();
             }
             return result;
+        }
+
+        @Override
+        public Boolean getArgs() {
+            return true;
         }
     }
 

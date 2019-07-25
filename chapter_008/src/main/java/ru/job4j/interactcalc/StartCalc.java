@@ -9,7 +9,7 @@ public class StartCalc {
     public static void main(String[] args) {
 
         Input input = new ConsoleInput();
-        Calculator calc = new Calculator();
+        Calculator calc = new EngineerCalculator();
         InteractCalc interactCalc = new InteractCalc(input, calc, System.out::println);
 
         interactCalc.action();

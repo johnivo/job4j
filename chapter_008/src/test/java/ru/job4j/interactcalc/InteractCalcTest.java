@@ -132,11 +132,39 @@ public class InteractCalcTest {
     @Test
     public void whenTestReselectAndNewCalculation() {
         final Input input = new StubInput(new String[] {"1", "+", "3", "=", "n", "0", "+", "0", LN});
-        final Calculator calc = new Calculator();
+        final Calculator calc = new EngineerCalculator();
         final InteractCalc interactCalc = new InteractCalc(input, calc, output);
 
         interactCalc.action();
 
         assertThat(calc.getResult(), is(0.0));
+    }
+
+    /**
+     * Sine test.
+     */
+    @Test
+    public void whenSin0ThenResult0() {
+        final Input input = new StubInput(new String[] {"0", "sin", LN});
+        final Calculator calc = new EngineerCalculator();
+        final InteractCalc interactCalc = new InteractCalc(input, calc, output);
+
+        interactCalc.action();
+
+        assertThat(calc.getResult(), is(0.0));
+    }
+
+    /**
+     * Cosine test.
+     */
+    @Test
+    public void whenCos0ThenResult1() {
+        final Input input = new StubInput(new String[] {"0", "cos", LN});
+        final Calculator calc = new EngineerCalculator();
+        final InteractCalc interactCalc = new InteractCalc(input, calc, output);
+
+        interactCalc.action();
+
+        assertThat(calc.getResult(), is(1.0));
     }
 }
