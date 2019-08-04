@@ -45,6 +45,11 @@ public class EngineerCalculator extends Calculator {
             return Math.sin(first);
         }
 
+        @Override
+        public Boolean getArgs() {
+            return false;
+        }
+
     }
 
     /**
@@ -62,6 +67,10 @@ public class EngineerCalculator extends Calculator {
             return Math.cos(first);
         }
 
+        @Override
+        public Boolean getArgs() {
+            return false;
+        }
     }
 
 }
