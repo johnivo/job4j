@@ -2,11 +2,11 @@ package ru.job4j.warehouse;
 
 import org.junit.Test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -20,96 +20,68 @@ public class ControlQualityTest {
     @Test
     public void setDiscountTest() {
 
-        ControlQuality controlQuality = new ControlQuality();
+        List<Storage> storages = new ArrayList<>();
+        Shop shop = new Shop();
+        storages.add(shop);
 
-        Fruits fruits = new Fruits();
-        fruits.setName("apple golden");
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDateTime now = LocalDateTime.now();
 
-        Date date = new Date();
-
-        try {
-            fruits.setCreateDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.07.18"));
-            fruits.setExpiryDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.08.05"));
-
-            date = new SimpleDateFormat("yyyy.MM.dd").parse("2019.08.01");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Fruits fruits = new Fruits("apple golden", now.minusDays(90), now.plusDays(10), 100.00, 0.0);
 
         List<Food> foods = List.of(fruits);
-        Map<String, List<Food>> storage = controlQuality.distribute(foods, date);
-        //System.out.println(storage);
+        Map<Storage, List<Food>> storage = controlQuality.distribute(foods, now);
+        System.out.println(storage);
 
         int countShop = 0;
-
-        for (Map.Entry<String, List<Food>> entry : storage.entrySet()) {
-            if ("ru.job4j.warehouse.Shop".equals(entry.getKey())) {
+        for (Map.Entry<Storage, List<Food>> entry : storage.entrySet()) {
+            if (shop.equals(entry.getKey())) {
                 countShop = entry.getValue().size();
             }
         }
-        Double discount = storage.get("ru.job4j.warehouse.Shop").get(0).getDiscount();
+        Double discount = storage.get(shop).get(0).getDiscount();
 
         assertThat(countShop, is(1));
         assertThat(discount, is(0.5));
     }
 
-
-
     @Test
     public void whenControlQualityTest() {
 
-        ControlQuality controlQuality = new ControlQuality();
+        List<Storage> storages = new ArrayList<>();
+        Warehouse warehouse = new Warehouse();
+        Shop shop = new Shop();
+        Trash trash = new Trash();
 
-        Meat meat = new Meat();
-        meat.setName("beef steak");
-        Meat meat2 = new Meat();
-        meat2.setName("beef steak");
+        List.of(warehouse, shop, trash).stream().
+                collect(
+                        Collectors.toCollection(() -> storages)
+                );
 
-        Fruits fruits = new Fruits();
-        fruits.setName("apple golden");
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDateTime now = LocalDateTime.now();
 
-        Vegetables vegetables = new Vegetables();
-        vegetables.setName("carrot");
-
-        Date date = new Date();
-
-        try {
-            meat.setCreateDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.07.01"));
-            meat.setExpiryDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.07.31"));
-
-            meat2.setCreateDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.07.28"));
-            meat2.setExpiryDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.08.15"));
-
-            fruits.setCreateDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.07.18"));
-            fruits.setExpiryDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.08.05"));
-
-            vegetables.setCreateDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.07.15"));
-            vegetables.setExpiryDate(new SimpleDateFormat("yyyy.MM.dd").parse("2019.08.15"));
-
-            date = new SimpleDateFormat("yyyy.MM.dd").parse("2019.08.01");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Meat meat = new Meat("beef steak", now.minusDays(10), now.plusDays(90), 100.00, 0.0);
+        Meat meat2 = new Meat("beef steak2", now.minusDays(50), now.plusDays(50), 100.00, 0.0);
+        Fruits fruits = new Fruits("apple golden", now.minusDays(80), now.plusDays(20), 100.00, 0.0);
+        Vegetables vegetables = new Vegetables("carrot", now.minusDays(30), now.minusDays(5), 100.00, 0.0);
 
         List<Food> foods = List.of(meat, meat2, fruits, vegetables);
-        Map<String, List<Food>> storage = controlQuality.distribute(foods, date);
-        //System.out.println(storage);
+        Map<Storage, List<Food>> storage = controlQuality.distribute(foods, now);
+
+        System.out.println(storage);
 
         int countWarehouse = 0;
         int countShop = 0;
         int countTrash = 0;
-
-        for (Map.Entry<String, List<Food>> entry : storage.entrySet()) {
-
-            if ("ru.job4j.warehouse.Warehouse".equals(entry.getKey())) {
+        for (Map.Entry<Storage, List<Food>> entry : storage.entrySet()) {
+            if (warehouse.equals(entry.getKey())) {
                 countWarehouse = entry.getValue().size();
             }
-
-            if ("ru.job4j.warehouse.Shop".equals(entry.getKey())) {
+            if (shop.equals(entry.getKey())) {
                 countShop = entry.getValue().size();
             }
-
-            if ("ru.job4j.warehouse.Trash".equals(entry.getKey())) {
+            if (trash.equals(entry.getKey())) {
                 countTrash = entry.getValue().size();
             }
         }
@@ -117,5 +89,42 @@ public class ControlQualityTest {
         assertThat(countWarehouse, is(1));
         assertThat(countShop, is(2));
         assertThat(countTrash, is(1));
+    }
+
+    @Test
+    public void whenAdvancedControlQualityTest() {
+
+        List<Storage> storages = new ArrayList<>();
+        Warehouse warehouse = new Warehouse();
+        Shop shop = new Shop();
+        Trash trash = new Trash();
+
+        SecondWarehause secondWarehause = new SecondWarehause(warehouse);
+        Refrigerator ref = new Refrigerator(trash);
+        RecyclingFactory factory = new RecyclingFactory(trash);
+
+        List.of(ref, factory, trash, shop, secondWarehause).stream().
+                collect(
+                        Collectors.toCollection(() -> storages)
+                );
+
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDateTime now = LocalDateTime.now();
+
+        Meat meat = new Meat("beef steak", now.minusDays(10), now.plusDays(90), 100.00, 0.0);
+        Meat meat2 = new Meat("beef steak2", now.minusDays(50), now.minusDays(5), 100.00, 0.0);
+        Fruits fruits = new Fruits("apple golden", now.minusDays(80), now.plusDays(20), 100.00, 0.0);
+        Fruits fruits2 = new Fruits("lemon", now.minusDays(60), now.minusDays(5), 100.00, 0.0);
+        Vegetables vegetables = new Vegetables("carrot", now.minusDays(30), now.minusDays(5), 100.00, 0.0);
+
+        List<Food> foods = List.of(meat, meat2, fruits, fruits2, vegetables);
+        Map<Storage, List<Food>> storage = controlQuality.distribute(foods, now);
+        System.out.println(storage);
+
+        assertThat(ref.getList().size(), is(1));
+        assertThat(factory.getList().size(), is(1));
+        assertThat(secondWarehause.getList().size(), is(1));
+        assertThat(shop.getList().size(), is(1));
+        assertThat(trash.getList().size(), is(1));
     }
 }
