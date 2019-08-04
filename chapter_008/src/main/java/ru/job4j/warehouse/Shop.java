@@ -1,6 +1,8 @@
 package ru.job4j.warehouse;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author John Ivanov (johnivo@mail.ru)
@@ -8,8 +10,20 @@ import java.util.Date;
  */
 public class Shop implements Storage {
 
+    private List<Food> foods = new ArrayList();
+
     @Override
-    public boolean checkDate(Food food, Date current) {
+    public void add(Food food) {
+        this.foods.add(food);
+    }
+
+    @Override
+    public List<Food> getList() {
+        return foods;
+    }
+
+    @Override
+    public boolean checkExpiration(Food food, LocalDateTime current) {
         boolean result = false;
 
         double passed = Storage.duration(food.getCreateDate(), current);
@@ -26,4 +40,8 @@ public class Shop implements Storage {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Shop";
+    }
 }

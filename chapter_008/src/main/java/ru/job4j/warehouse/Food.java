@@ -1,7 +1,6 @@
 package ru.job4j.warehouse;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Класс определяет базовые параметры продуктов: название, даты срока годности, цену, скидку.
@@ -9,17 +8,25 @@ import java.util.Date;
  * @author John Ivanov (johnivo@mail.ru)
  * @since 29.07.2019
  */
-public abstract class Food {
+public abstract class Food implements Reproduct, VegetablesReproduct {
 
     private String name;
 
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
-    private Date createDate;
+    private LocalDateTime createDate;
 
     private Double price;
 
     private Double discount;
+
+    public Food(String name, LocalDateTime createDate, LocalDateTime expiryDate, Double price, Double discount) {
+        this.name = name;
+        this.createDate = createDate;
+        this.expiryDate = expiryDate;
+        this.price = price;
+        this.discount = discount;
+    }
 
     public String getName() {
         return name;
@@ -29,19 +36,19 @@ public abstract class Food {
         this.name = name;
     }
 
-    public Date getExpiryDate() {
+    public LocalDateTime getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -71,4 +78,5 @@ public abstract class Food {
                 + ", discount=" + discount
                 + '}';
     }
+
 }

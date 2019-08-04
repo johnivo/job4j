@@ -1,8 +1,8 @@
 package ru.job4j.warehouse;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author John Ivanov (johnivo@mail.ru)
@@ -26,12 +26,12 @@ public interface Storage {
     double DISCOUNT = 0.50;
 
     /**
-     * Метод будет проверять, подходит ли продукт в данный момент для данного склада.
+     * Проверяет, подходит ли продукт в данный момент для данного склада.
      * @param food продукт.
      * @param current текущая дата.
      * @return true or false.
      */
-    boolean checkDate(Food food, Date current);
+    boolean checkExpiration(Food food, LocalDateTime current);
 
     /**
      * Определяет временной интервал между двумя датами.
@@ -39,12 +39,19 @@ public interface Storage {
      * @param second вторая дата.
      * @return diff временной интервал в днях.
      */
-    static long duration(Date first, Date second) {
-        Instant one = first.toInstant();
-        Instant two = second.toInstant();
-        long diff = ChronoUnit.DAYS.between(one, two);
-        //System.out.println("diff " + diff);
-        return diff;
+    static long duration(LocalDateTime first, LocalDateTime second) {
+        Duration dur = Duration.between(first, second);
+        return dur.toMillis();
     }
+
+    /**
+     * Возвращает список продуктов на складе.
+     */
+    List<Food> getList();
+
+    /**
+     * Добавляет продукт.
+     */
+    void add(Food food);
 
 }
