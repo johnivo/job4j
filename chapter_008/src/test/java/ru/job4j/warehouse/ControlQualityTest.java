@@ -127,4 +127,38 @@ public class ControlQualityTest {
         assertThat(shop.getList().size(), is(1));
         assertThat(trash.getList().size(), is(1));
     }
+
+    @Test
+    public void whenResortingAfterChangingStorageConditionsResultIsInverted() {
+
+        List<Storage> storages = new ArrayList<>();
+        Shop shop = new Shop();
+        Trash trash = new Trash();
+
+        RecyclingFactory factory = new RecyclingFactory(trash);
+
+        List.of(factory, trash).stream().
+                collect(
+                        Collectors.toCollection(() -> storages)
+                );
+
+        ControlQuality controlQuality = new ControlQuality(storages);
+        LocalDateTime now = LocalDateTime.now();
+
+        Fruits fruits2 = new Fruits("lemon", now.minusDays(60), now.minusDays(5), 100.00, 0.0);
+
+        List<Food> foods = List.of(fruits2);
+        Map<Storage, List<Food>> storage = controlQuality.distribute(foods, now);
+        System.out.println(storage);
+
+        assertThat(factory.getList().size(), is(1));
+        assertThat(trash.getList().size(), is(0));
+
+        factory.setStorage(shop);
+        controlQuality.resort(storage, now);
+        System.out.println(storage);
+
+        assertThat(factory.getList().size(), is(0));
+        assertThat(trash.getList().size(), is(1));
+    }
 }

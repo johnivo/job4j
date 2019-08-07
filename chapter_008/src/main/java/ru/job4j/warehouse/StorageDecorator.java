@@ -23,6 +23,16 @@ public abstract class StorageDecorator implements Storage {
     }
 
     @Override
+    public void clear() {
+        this.foods.clear();
+    }
+
+    @Override
+    public void setStorage(Storage decoratedStorage) {
+        this.decoratedStorage = decoratedStorage;
+    }
+
+    @Override
     public List<Food> getList() {
         return foods;
     }

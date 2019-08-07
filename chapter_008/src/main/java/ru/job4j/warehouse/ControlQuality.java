@@ -33,12 +33,12 @@ public class ControlQuality {
      * Загружает хранилище в список.
      * @param storage хранилище.
      */
-    public void load(Storage storage) {
+    public void add(Storage storage) {
         this.storages.add(storage);
     }
 
     /**
-     * Заполняет мкарту хранилище=список продуктов.
+     * Заполняет карту хранилище=список продуктов.
      * @param foods список продуктов.
      * @param current текущая дата.
      * @return foodMap хранилище продуктов.
@@ -61,6 +61,23 @@ public class ControlQuality {
                 break;
             }
         }
+    }
+
+    /**
+     * Извлекает все продукты и перераспределяет их заново.
+     * @param foodMap карта хранилище=список продуктов.
+     * @param current текущая дата.
+     */
+    public Map<Storage, List<Food>> resort(Map<Storage, List<Food>> foodMap, LocalDateTime current) {
+        foodMap.clear();
+        List<Food> temp = new ArrayList<>();
+        storages.stream().forEach(
+                s -> {
+                    temp.addAll(s.getList());
+                    s.clear();
+                });
+        foodMap = this.distribute(temp, current);
+        return foodMap;
     }
 
 //    public Map<String, List<Food>> distribute(List<Food> allFoods, LocalDateTime current) {

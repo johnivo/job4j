@@ -54,4 +54,14 @@ public interface Storage {
      */
     void add(Food food);
 
+    /**
+     * Очищает хранилище.
+     */
+    void clear();
+
+    /**
+     * Задает хранилище.
+     */
+    void setStorage(Storage storage);
+
 }

@@ -18,6 +18,15 @@ public class Warehouse implements Storage {
     }
 
     @Override
+    public void clear() {
+        this.foods.clear();
+    }
+
+    @Override
+    public void setStorage(Storage storage) {
+    }
+
+    @Override
     public List<Food> getList() {
         return foods;
     }
