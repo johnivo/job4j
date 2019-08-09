@@ -5,7 +5,7 @@ This is an internship repository for keeping different projects and learning Jav
 Used stuff:
  * **Frameworks:** junit, hamcrest, mockito, commons cli, google guava, collections, stream api
  * **Tools:** maven, git (used branches), checkstyle, jacoco, travis ci, intellij idea, trackStudio
- * **Databases:** postgresql
+ * **Databases:** postgresql, sqlite
 
 ### Contents
 
@@ -19,12 +19,15 @@ Used stuff:
  * [**Collections. Pro** (_generics pro_, iterators, advanced lists and maps, trees, hashcode and equals)](https://github.com/johnivo/job4j/tree/master/chapter_005 "chapter_005")
  * [**IO** (readers, writers, sockets, file managers, external file sorting)](https://github.com/johnivo/job4j/tree/master/chapter_006 "chapter_006")
  * [**SQL, JDBC** (sql language, pure jdbc, xml, xslt)](https://github.com/johnivo/job4j/tree/master/chapter_007 "chapter_007")
+ * [**OOD** (SOLID, TDD)](https://github.com/johnivo/job4j/tree/master/chapter_008 "chapter_008")
+ * **Garbage Collection**
 
 #### Interesting tasks
- * Statistics on the collection. ([decision](https://github.com/johnivo/job4j/blob/master/chapter_005/src/main/java/ru/job4j/statistics/Analize.java "Analize"), [test](https://github.com/johnivo/job4j/blob/master/chapter_005/src/test/java/ru/job4j/statistics/AnalizeTest.java "AnalizeTest"))
- * Implement your own data structure - HashMap. ([decision](https://github.com/johnivo/job4j/blob/master/chapter_005/src/main/java/ru/job4j/map/SimpleHashMap.java "SimpleHashMap"), [test](https://github.com/johnivo/job4j/blob/master/chapter_005/src/test/java/ru/job4j/map/SimpleHashMapTest.java "SimpleHashMapTest"))
- * Archive the project. ([decision](https://github.com/johnivo/job4j/tree/master/chapter_006/src/main/java/ru/job4j/io/zip "Zip"), [test](https://github.com/johnivo/job4j/blob/master/chapter_006/src/test/java/ru/job4j/io/zip/ZipTest.java "ZipTest"))
- * Chessboard frame. Implement the logic of the movement of figures. ([decision](https://github.com/johnivo/job4j/tree/master/chess/src/main/java/ru/job4j/chess/firuges "Logic"), [test](https://github.com/johnivo/job4j/blob/master/chess/src/test/java/ru/job4j/chess/LogicTest.java "LogicTest"))
+ * [Statistics on the collection.](https://github.com/johnivo/job4j/commit/ff8f20cafad7883b7e26f042ebeb00dd1445e638 "Analize")
+ * [Implement your own data structure - HashMap.](https://github.com/johnivo/job4j/commit/80f8c1dbac9436cf906f6228a248bde651f41e6c "SimpleHashMap")
+ * [Archiving project.](https://github.com/johnivo/job4j/commit/036e12ab4f5285593e7a30fdb4e3ff440155a98e "Zip")
+ * [Vacancy parser.](https://github.com/johnivo/job4j/tree/master/vacancy_parser "Parser sql.ru")
+ * XML XSLT JDBC optimization. ([desc](https://github.com/johnivo/job4j/blob/master/chapter_007/src/main/java/ru/job4j/magnit "task description"), [commit](https://github.com/johnivo/job4j/commit/0bb75bbd17474909d784ae18501e3f06cb78af52 "link to squashed commit"))
 
 
 
