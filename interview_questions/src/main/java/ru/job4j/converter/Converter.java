@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class Converter {
 
-    private static final String NAME = "SOLID";
+    private static final String NAME = "OOD";
 
     private Integer num = 1;
 
@@ -34,8 +34,12 @@ public class Converter {
 
         QA qa = new QA();
 
+        str = str.replaceAll("\\.", "");
+        str = str.replaceAll("\\?", "");
+
         qa.question = question + "(#" + str + ")";
-        qa.answer = "## " + str.replaceAll("-", " ");
+
+        qa.answer = "## " + str.replaceAll("-", " ") + "?";
 
         return qa;
     }
