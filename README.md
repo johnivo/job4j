@@ -20,7 +20,7 @@ Used stuff:
  * [**IO** (readers, writers, sockets, file managers, external file sorting)](https://github.com/johnivo/job4j/tree/master/chapter_006 "chapter_006")
  * [**SQL, JDBC** (sql language, pure jdbc, xml, xslt)](https://github.com/johnivo/job4j/tree/master/chapter_007 "chapter_007")
  * [**OOD** (SOLID, TDD)](https://github.com/johnivo/job4j/tree/master/chapter_008 "chapter_008")
- * **Garbage Collection**
+ * [**Garbage Collection** (types of GC, types of references)](https://github.com/johnivo/job4j/tree/master/chapter_009 "chapter_009")
 
 #### Interesting tasks
  * [Statistics on the collection.](https://github.com/johnivo/job4j/commit/ff8f20cafad7883b7e26f042ebeb00dd1445e638 "Analize")

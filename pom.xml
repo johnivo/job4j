@@ -72,6 +72,7 @@
         <module>vacancy_parser</module>
         <module>chapter_008</module>
         <module>interview_questions</module>
+        <module>chapter_009</module>
     </modules>
 	
 	<dependencies>
