@@ -20,9 +20,13 @@
 
 [10. Чем они отличаются?](#10-Чем-они-отличаются)
 
-## 1 Чем java отличается от с++?
+## 1. Чем java отличается от с++?
 
+В C++ выделение и освобождение памяти - это ручной процесс (например, с помощью операторов new и delete). 
 
+В Java процесс освобождения памяти автоматически обрабатывается сборщиком мусора. (освобождает память в куче, занятой неиспользуемыми объектами)
+
+Т.е. в отличие от С++ нет явной необходимости уничтожать объект. 
 
 [к оглавлению](#garbage-collection)
 
@@ -52,13 +56,68 @@
 
 ## 6 Чем отличаются сборщики мусора?
 
+**Serial (последовательный)** — самый простой вариант для приложений с небольшим объемом данных и не требовательных к задержкам. 
+Редко когда используется, но на слабых компьютерах может быть выбран виртуальной машиной в качестве сборщика по умолчанию.
 
+**Parallel (параллельный)** — наследует подходы к сборке от последовательного сборщика, но добавляет параллелизм в 
+некоторые операции, а также возможности по автоматической подстройке под требуемые параметры производительности.
+
+**Concurrent Mark Sweep (CMS)** — нацелен на снижение максимальных задержек путем выполнения части работ по сборке мусора 
+параллельно с основными потоками приложения. Подходит для работы с относительно большими объемами данных в памяти.
+
+**Garbage-First (G1)** — создан для постепенной замены CMS, особенно в серверных приложениях, 
+работающих на многопроцессорных серверах и оперирующих большими объемами данных.
+
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_6.1.png)
+ 
+«Монолитный» означает то, что всё поколение должно быть очищено за проход.
+
+«В большинстве случаев одновременный» — mostly concurrent, одновременный имеется в виду фоновый, «работающий вместе с потоками приложения».
+
+Подробнее здесь https://habr.com/ru/post/269621/
 
 [к оглавлению](#garbage-collection)
 
 ## 7 Расскажите про утилиты для анализа памяти?
 
+встроенные в JDK утилиты: jps, jmap, jstat, jconsole, visualvm до java 9.
 
+внешние: VisualVM c java 9 и утилита от NetBeans - YourKit Java Profiler .
+
+jconsole, visualvm, yourkit profiler предоставляют удобный визуальный интерфейс.
+
+**jps** - выводит pid-ы процессов, которые использует VM
+
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.1.png)
+
+ 
+**jmap** - выводит информацию о состоянии памяти виртуальной машины
+	jmap -heap 14152
+	или jhsdb jmap --heap --pid 14152
+	
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.2.png)
+ 
+**jstat** аналогично jmap
+jstack - показывает какие процессы запущены в  виртуальной машине (нет инфы о памяти)
+
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.3.png)
+ 
+...
+
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.4.png) 
+
+**jconsole**
+ 
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.5.png) 
+
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.6.png)
+
+**visualvm**
+
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.7.png) 
+
+**yourkit profiler** - универсальный расширенный профилировщик, используется не только для анализа памяти, 
+но и ,например, для поиска узких мест в коде (повторения и тп)
 
 [к оглавлению](#garbage-collection)
 
