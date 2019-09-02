@@ -1061,6 +1061,8 @@ BDD предполагает описание тестировщиком или 
 
 "Чистая архитектура" Р.Мартин 2018
 
+https://academy.realm.io/posts/donn-felker-solid-part-1/
+
 https://habr.com/ru/post/348286/
 
 https://slide-share.ru/principi-solid-256783
