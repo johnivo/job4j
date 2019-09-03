@@ -1,9 +1,12 @@
 package ru.job4j.tracker;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+import static com.carrotsearch.sizeof.RamUsageEstimator.sizeOf;
 
 /**
  * Класс трэкер.
@@ -166,5 +169,27 @@ public class Tracker implements ITracker {
                 )
                 .collect(Collectors.toList());
         return itemsId.get(0);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println("start " + LocalDateTime.now());
+        Tracker tracker = new Tracker();
+        for (int i = 1; i < 10_000_000; i++) {
+            Item item = new Item("test " + i, "desc " + i, System.currentTimeMillis());
+            System.out.println(item);
+            tracker.add(item);
+            Runtime runtime = Runtime.getRuntime();
+            System.out.println(String.format(
+                    "Used memory %s B. Average item%s size %s B.",
+                    (runtime.totalMemory() - runtime.freeMemory()),
+                    i,
+                    (runtime.totalMemory() - runtime.freeMemory()) / i)
+            );
+
+            System.out.println(String.format("estimated object size %s", sizeOf(item)));
+
+        }
+
     }
 }

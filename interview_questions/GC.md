@@ -382,13 +382,14 @@ jconsole, visualvm, yourkit profiler предоставляют удобный �
 
  
 **jmap** - выводит информацию о состоянии памяти виртуальной машины
-	jmap -heap 14152
-	или jhsdb jmap --heap --pid 14152
+	
+jmap -heap 14152 или jhsdb jmap --heap --pid 14152
 	
 ![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.2.png)
  
-**jstat** аналогично jmap
-jstack - показывает какие процессы запущены в  виртуальной машине (нет инфы о памяти)
+**jstat** - аналогично jmap
+
+**jstack** - показывает какие процессы запущены в  виртуальной машине (нет инфы о памяти)
 
 ![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/gc_7.3.png)
  
