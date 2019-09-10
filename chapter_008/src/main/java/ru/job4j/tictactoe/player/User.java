@@ -1,12 +1,9 @@
 package ru.job4j.tictactoe.player;
 
 import ru.job4j.tictactoe.InvalidActionException;
-import ru.job4j.tictactoe.logic.Cell;
-import ru.job4j.tictactoe.logic.Logic;
+import ru.job4j.tictactoe.logic.*;
 
 import java.io.InputStream;
-import java.io.PrintStream;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -41,12 +38,19 @@ public class User implements Player {
         //this.ps = ps;
     }
 
+    @Override
     public void setMark(String mark) {
         this.mark = mark;
     }
 
+    @Override
     public String getMark() {
         return this.mark;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -77,7 +81,7 @@ public class User implements Player {
     private Cell getCell() {
         Cell cell = null;
 
-        output.accept("введите координаты точки в формате двух последовательных чисел xy:");
+        output.accept("Ваш ход, введите координаты точки в формате двух последовательных чисел xy:");
 
         String input = scanner.next();
         try {

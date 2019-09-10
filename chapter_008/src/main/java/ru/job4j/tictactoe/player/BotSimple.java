@@ -1,7 +1,6 @@
 package ru.job4j.tictactoe.player;
 
-import ru.job4j.tictactoe.logic.Cell;
-import ru.job4j.tictactoe.logic.Logic;
+import ru.job4j.tictactoe.logic.*;
 
 /**
  * Реализация простого игрока-бота
@@ -27,12 +26,19 @@ public class BotSimple implements Player {
         this.name = name;
     }
 
+    @Override
     public void setMark(String mark) {
         this.mark = mark;
     }
 
+    @Override
     public String getMark() {
         return this.mark;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 
     /**

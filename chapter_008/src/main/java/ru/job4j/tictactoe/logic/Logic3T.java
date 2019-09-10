@@ -42,7 +42,8 @@ public class Logic3T implements Logic {
     }
 
     /**
-     * Начинает новую игру
+     * Начинает новую игру.
+     * очищает поле, сбрасывает победителя
      */
     @Override
     public void newGame() {

@@ -12,7 +12,12 @@ public interface Player {
 
     Cell move();
 
-    //void setMark(String mark);
+    void setMark(String mark);
+
+    String getMark();
+
+    String getName();
+
     //String getMoveMessage();
 
 }

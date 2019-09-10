@@ -1,9 +1,7 @@
 package ru.job4j.tictactoe;
 
 import org.junit.Test;
-import ru.job4j.tictactoe.logic.Cell;
-import ru.job4j.tictactoe.logic.Logic;
-import ru.job4j.tictactoe.logic.Logic3T;
+import ru.job4j.tictactoe.logic.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
