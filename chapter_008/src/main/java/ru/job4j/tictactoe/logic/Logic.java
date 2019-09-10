@@ -1,7 +1,7 @@
 package ru.job4j.tictactoe.logic;
 
 /**
- * Описывает логику игры
+ * Описывает логику игры.
  *
  * @author John Ivanov (johnivo@mail.ru)
  * @since 09.09.2019

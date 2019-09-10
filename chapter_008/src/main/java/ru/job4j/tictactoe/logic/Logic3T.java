@@ -5,7 +5,7 @@ import ru.job4j.tictactoe.InvalidActionException;
 import java.util.function.Predicate;
 
 /**
- * Описывает логику игры для поля размером 3*3
+ * Реализация логики игры для поля размером 3*3
  *
  * @author John Ivanov (johnivo@mail.ru)
  * @since 09.09.2019
@@ -93,7 +93,7 @@ public class Logic3T implements Logic {
 
     /**
      * Проверяет допустимое количество ходов.
-     * @return possibility of move.
+     * @return возможность хода.
      */
     @Override
     public boolean checkPossibleOfMove() {

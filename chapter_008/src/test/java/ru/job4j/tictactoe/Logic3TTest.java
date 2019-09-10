@@ -2,6 +2,7 @@ package ru.job4j.tictactoe;
 
 import org.junit.Test;
 import ru.job4j.tictactoe.logic.Cell;
+import ru.job4j.tictactoe.logic.Logic;
 import ru.job4j.tictactoe.logic.Logic3T;
 
 import static org.hamcrest.Matchers.is;
@@ -15,7 +16,7 @@ public class Logic3TTest {
 
     @Test
     public void whenSetSizeTable3ThenGetTableSizeReturns3() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
 
         int result = logic3T.getTableSize();
 
@@ -24,7 +25,7 @@ public class Logic3TTest {
 
     @Test
     public void whenNewGameThenReturnedEmptyField() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
         Cell cell = new Cell(0, 0);
 
         logic3T.makeMove(cell, "x");
@@ -36,7 +37,7 @@ public class Logic3TTest {
 
     @Test
     public void whenMakeMoveThenMarkedOnField() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
         Cell cell = new Cell(0, 0);
 
         logic3T.makeMove(cell, "x");
@@ -47,7 +48,7 @@ public class Logic3TTest {
 
     @Test(expected = InvalidActionException.class)
     public void whenMakeMoveOnWrongCellThenTrowsAIE() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
         Cell cell = new Cell(5, 0);
 
         logic3T.makeMove(cell, "x");
@@ -55,7 +56,7 @@ public class Logic3TTest {
 
     @Test(expected = InvalidActionException.class)
     public void whenMakeMoveOnBusyCellThenTrowsAIE() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
         Cell cell = new Cell(1, 2);
 
         logic3T.makeMove(cell, "x");
@@ -64,7 +65,7 @@ public class Logic3TTest {
 
     @Test
     public void whenFirstStepThenMoveIsPossible() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
 
         logic3T.newGame();
         boolean result = logic3T.checkPossibleOfMove();
@@ -74,7 +75,7 @@ public class Logic3TTest {
 
     @Test
     public void whenFieldFullThenMoveIsNotPossible() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
 
         int size = logic3T.getTableSize();
         for (int i = 0; i < size; i++) {
@@ -89,7 +90,7 @@ public class Logic3TTest {
 
     @Test
     public void whenHorFilledXThenWinnerX() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
 
         logic3T.makeMove(new Cell(0, 0), "x");
         logic3T.makeMove(new Cell(0, 1), "x");
@@ -101,7 +102,7 @@ public class Logic3TTest {
 
     @Test
     public void whenVertFilledOThenWinnerO() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
 
         logic3T.makeMove(new Cell(0, 0), "o");
         logic3T.makeMove(new Cell(1, 0), "o");
@@ -113,7 +114,7 @@ public class Logic3TTest {
 
     @Test
     public void whenDiagFilledOThenWinnerO() {
-        Logic3T logic3T = new Logic3T(3);
+        Logic logic3T = new Logic3T(3);
 
         logic3T.makeMove(new Cell(0, 0), "o");
         logic3T.makeMove(new Cell(0, 1), "x");
