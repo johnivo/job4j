@@ -38,9 +38,15 @@ public class User implements Player {
         //this.ps = ps;
     }
 
+    /**
+     * Парсит введенный пользователем символ выбранной фигуры
+     */
     @Override
-    public void setMark(String mark) {
-        this.mark = mark;
+    public void setMark() {
+        output.accept(
+                String.format("Игра крестики-нолики. Выберите фигуру x или o:")
+        );
+        this.mark = scanner.next();
     }
 
     @Override
@@ -75,13 +81,13 @@ public class User implements Player {
     }
 
     /**
-     * Парсит введенные пользователем данные
+     * Парсит введенные пользователем коорлинаты точки
      * @return клетка с заданными координатами (xy)
      */
     private Cell getCell() {
         Cell cell = null;
 
-        output.accept("Ваш ход, введите координаты точки в формате двух последовательных чисел xy:");
+        output.accept("Ваш ход, введите координаты xy:");
 
         String input = scanner.next();
         try {

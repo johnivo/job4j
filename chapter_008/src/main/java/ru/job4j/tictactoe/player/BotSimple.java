@@ -3,7 +3,7 @@ package ru.job4j.tictactoe.player;
 import ru.job4j.tictactoe.logic.*;
 
 /**
- * Реализация простого игрока-бота
+ * Простой бот, ходит случайным образом
  *
  * @author John Ivanov (johnivo@mail.ru)
  * @since 10.09.2019
@@ -11,6 +11,7 @@ import ru.job4j.tictactoe.logic.*;
 public class BotSimple implements Player {
 
     private final Logic logic;
+    private final Player user;
     private final int tableSize;
     private final String name;
     private String mark;
@@ -20,15 +21,23 @@ public class BotSimple implements Player {
      * @param logic игровая логика.
      * @param name имя игрока.
      */
-    public BotSimple(Logic logic, String name) {
+    public BotSimple(Logic logic, Player user, String name) {
         this.logic = logic;
+        this.user = user;
         this.tableSize = logic.getTableSize();
         this.name = name;
     }
 
+    /**
+     * Устанавливает значение фигуры в соответствии с выбором пользователя
+     */
     @Override
-    public void setMark(String mark) {
-        this.mark = mark;
+    public void setMark() {
+        if ("x".equals(user.getMark())) {
+            this.mark = "o";
+        } else if ("o".equals(user.getMark())) {
+            this.mark = "x";
+        }
     }
 
     @Override

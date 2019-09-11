@@ -61,12 +61,20 @@ public class Logic3T implements Logic {
     }
 
     /**
+     * Возвращает количество совершенных ходов
+     */
+    @Override
+    public int getNumberOfMoves() {
+        return this.moveCounter;
+    }
+
+    /**
      * Возвращает значение заданной клетки поля
      * @param cell клетка
      * @return символ в клетке
      */
     @Override
-    public String getMark(Cell cell) {
+    public String getMark(Cell cell) throws InvalidActionException {
         int size = table.length;
         if (cell.getX() >= size || cell.getY() >= size) {
             throw new InvalidActionException(String.format("Размер поля %s на %s, повторите ввод", size, size));
@@ -82,7 +90,7 @@ public class Logic3T implements Logic {
      * @param mark символ в клетке
      */
     @Override
-    public void makeMove(Cell cell, String mark) {
+    public void makeMove(Cell cell, String mark) throws InvalidActionException {
         String markCell = getMark(cell);
         if (markCell != null) {
             throw new InvalidActionException(String.format("Клетка (%s;%s) занята, повторите ввод", cell.getX(), cell.getY()));

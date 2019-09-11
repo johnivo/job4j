@@ -62,4 +62,18 @@ public class UserTest {
         }
     }
 
+    @Test
+    public void whenUserMove02ThenReturnsCell02() {
+
+        Logic logic3T = new Logic3T(3);
+        Player user = new User(logic3T, "User", new ByteArrayInputStream("02".getBytes()), output);
+
+        Cell cell = user.move();
+        int x = cell.getX();
+        int y = cell.getY();
+
+        assertThat(x, is(0));
+        assertThat(y, is(2));
+    }
+
 }

@@ -6,6 +6,8 @@ import ru.job4j.tictactoe.player.*;
 import java.util.function.Consumer;
 
 /**
+ * Консольная версия игры с выводом в псевдографике
+ *
  * @author John Ivanov (johnivo@mail.ru)
  * @since 10.09.2019
  */
@@ -24,12 +26,12 @@ public class ConsoleGame implements Game {
     private int oWins;
 
     private final Consumer<String> output;
-    //private final PrintStream ps;
 
     private boolean exit;
 
     /**
      * Конструктор, инициализирует игровую логику, игроков, счетчик побед, вывод.
+     *
      * @param logic игровая логика.
      * @param first первый игрок.
      * @param second второй игрок.
@@ -42,52 +44,90 @@ public class ConsoleGame implements Game {
         this.second = second;
         this.winCounter = winCounter;
         this.output = output;
-        //this.ps = ps;
+
         this.gameCounter = 1;
         this.tableSize = logic.getTableSize();
-        this.first.setMark("x");
-        this.second.setMark("o");
-        //this.nextMovePlayer = first;
-        this.nextMovePlayer = second;
+        this.nextMovePlayer = first;
+
         this.exit = false;
     }
 
     /**
-     * Начинает новую игру
-     * выводит приветствие, начинает новую партию.
+     * Начинает новую игру.
+     *
+     * выводит приветствие,
+     * осуществляет выбор фигуры,
+     * выводит счет по партиям и условие победы,
+     * инкрементирует счетчик партий, начинает новую партию, выводит игровое поле.
      */
     @Override
     public void newGame() {
-        output.accept(
-                String.format(
-                        "Партия №%s, счет (%s %s:%s %s). Игра до %s побед.",
-                        gameCounter, first.getMark(), xWins, oWins, second.getMark(), winCounter
-                )
-        );
+
+        if (gameCounter == 1) {
+            this.first.setMark();
+            this.second.setMark();
+        }
+
+        if ("x".equals(first.getMark())) {
+            output.accept(
+                    String.format(
+                            "Партия №%s, счет (%s %s:%s %s). Игра до %s побед.",
+                            gameCounter, first.getMark(), xWins, oWins, second.getMark(), winCounter
+                    )
+            );
+        } else {
+            output.accept(
+                    String.format(
+                            "Партия №%s, счет (%s %s:%s %s). Игра до %s побед.",
+                            gameCounter, first.getMark(), oWins, xWins, second.getMark(), winCounter
+                    )
+            );
+        }
+
         this.gameCounter++;
         this.logic.newGame();
         showTable();
     }
 
     /**
-     * Выводит поле на консоль.
+     * Выводит игровое поле на консоль.
+     *
+     * при старте партии выводит поле с координатами,
+     * далее поле обновляется по мере заполнения фигурами.
      */
     @Override
     public void showTable() {
+
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < tableSize; i++) {
-            for (int j = 0; j < tableSize; j++) {
-                String mark = logic.getMark(new Cell(i, j));
-                sb.append(String.format("%s ", (mark == null ? "-" : mark)));
+        if (logic.getNumberOfMoves() == 0) {
+            for (int i = 0; i < tableSize; i++) {
+                for (int j = 0; j < tableSize; j++) {
+                    String mark = logic.getMark(new Cell(i, j));
+                    sb.append(String.format("%s", (mark == null ? i : mark)));
+                    sb.append(String.format("%s ", (mark == null ? j : mark)));
+                }
+                sb.append(System.lineSeparator());
             }
-            sb.append(System.lineSeparator());
+        } else {
+            for (int i = 0; i < tableSize; i++) {
+                for (int j = 0; j < tableSize; j++) {
+                    String mark = logic.getMark(new Cell(i, j));
+                    sb.append(String.format("%s ", (mark == null ? "-" : mark)));
+                }
+                sb.append(System.lineSeparator());
+            }
         }
+
         output.accept(sb.toString());
     }
 
     /**
-     * Осуществляет следующий ход игрока
-     * выводит обновленное поле и проверяет есть ли победитель
+     * Совершает ход и передает флаг хода следующему игроку.
+     *
+     * текущий игрок совершает ход,
+     * вывод информации о ходе,
+     * передача флага,
+     * выводит обновленное поле и проверяет есть ли победитель.
      */
     @Override
     public void nextMove() {
@@ -112,11 +152,11 @@ public class ConsoleGame implements Game {
 
         boolean hasWinner = false;
         if ("o".equals(logic.checkWinner())) {
-            output.accept("Победили нолики! Начните новую партию.");
+            output.accept(String.format("Победили нолики! Начните новую партию.%n"));
             this.oWins++;
             hasWinner = true;
         } else if ("x".equals(logic.checkWinner())) {
-            output.accept("Победили крестики! Начните новую партию.");
+            output.accept(String.format("Победили крестики! Начните новую партию.%n"));
             this.xWins++;
             hasWinner = true;
         }
@@ -151,21 +191,8 @@ public class ConsoleGame implements Game {
      * Флаг выхода из игры.
      */
     @Override
-    public boolean exit() {
+    public boolean exitGame() {
         return exit;
     }
 
-    public static void main(String[] args) {
-
-        Logic logic = new Logic3T(3);
-        Player one = new BotSimple(logic, "bot");
-        Player two = new User(logic, "user", System.in, System.out::println);
-        Game cg = new ConsoleGame(logic, one, two, 5, System.out::println);
-
-        cg.newGame();
-        while (!cg.exit()) {
-            cg.nextMove();
-        }
-
-    }
 }

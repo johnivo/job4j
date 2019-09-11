@@ -12,6 +12,8 @@ public interface Logic {
 
     int getTableSize();
 
+    int getNumberOfMoves();
+
     String getMark(Cell cell);
 
     void makeMove(Cell cell, String mark);
