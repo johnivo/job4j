@@ -42,11 +42,8 @@ public class User implements Player {
      * Парсит введенный пользователем символ выбранной фигуры
      */
     @Override
-    public void setMark() {
-        output.accept(
-                String.format("Игра крестики-нолики. Выберите фигуру x или o:")
-        );
-        this.mark = scanner.next();
+    public void setMark(String mark) {
+        this.mark = mark;
     }
 
     @Override

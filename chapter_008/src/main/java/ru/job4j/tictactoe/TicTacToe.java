@@ -14,7 +14,7 @@ public class TicTacToe {
         Logic logic = new Logic3T(3);
 
         Player first = new User(logic, "user", System.in, System.out::println);
-        Player second = new BotSimple(logic, first, "bot");
+        Player second = new BotSimple(logic, "bot");
 
         Game cg = new ConsoleGame(logic, first, second, 5, System.out::println);
 

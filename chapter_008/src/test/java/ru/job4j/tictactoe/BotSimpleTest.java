@@ -15,8 +15,7 @@ public class BotSimpleTest {
     @Test
     public void whenBotMoveThenCellIsWithinField() {
         Logic logic3T = new Logic3T(3);
-        Player user = new User(logic3T, "user", System.in, System.out::println);
-        Player bot = new BotSimple(logic3T, user, "Simple bot");
+        Player bot = new BotSimple(logic3T, "Simple bot");
 
         Cell cell = bot.move();
 

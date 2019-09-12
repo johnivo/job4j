@@ -35,21 +35,15 @@ public class ConsoleGameTest {
     };
 
     @Test
-    public void whenUserSelectedXThenGameScoreStartsWithX() {
-
+    public void whenUserVsBotThenGameScoreStartsWithGreeting() {
         Logic logic = new Logic3T(3);
-        String firstUsersStep = Joiner.on(LN).join(
-                "x",
-                ""
-        );
-        Player user = new User(logic, "user", new ByteArrayInputStream(firstUsersStep.getBytes()), output);
-        Player bot = new BotSimple(logic, user, "bot");
+        Player user = new User(logic, "user", System.in, output);
+        Player bot = new BotSimple(logic, "bot");
         Game game = new ConsoleGame(logic, user, bot, 5, output);
 
         game.newGame();
 
         String expected = Joiner.on(LN).join(
-                "Игра крестики-нолики. Выберите фигуру x или o:",
                 "Партия №1, счет (x 0:0 o). Игра до 5 побед.",
                 "00 01 02 ",
                 "10 11 12 ",
@@ -57,8 +51,94 @@ public class ConsoleGameTest {
                 "",
                 ""
         );
-        assertThat(baos.toString(), containsString("счет (x 0:0 o)"));
         assertThat(baos.toString(), is(expected));
+    }
+
+    @Test
+    public void whenUser1WinGameToOneVictoryThenExitTrue() {
+
+        Logic logic = new Logic3T(3);
+        String firstUsersStep = Joiner.on(LN).join("00", "01", "02");
+        Player user1 = new User(logic, "user1", new ByteArrayInputStream(firstUsersStep.getBytes()), output);
+        String secondUsersStep = Joiner.on(LN).join("10", "20");
+        Player user2 = new User(logic, "user2", new ByteArrayInputStream(secondUsersStep.getBytes()), output);
+        Game game = new ConsoleGame(logic, user1, user2, 1, output);
+
+        for (int i = 1; i <= 5; i++) {
+            game.nextMove();
+        }
+        boolean result = game.exitGame();
+
+        assertThat(result, is(true));
+    }
+
+    @Test
+    public void whenUser1ToTwoVictoriesThenExitTrue() {
+
+        Logic logic = new Logic3T(3);
+        String firstUsersStep = Joiner.on(LN).join("00", "01", "02",
+                "00", "01", "02"
+        );
+        Player user1 = new User(logic, "user1", new ByteArrayInputStream(firstUsersStep.getBytes()), output);
+        String secondUsersStep = Joiner.on(LN).join("10", "20",
+                "10", "20", "11"
+        );
+        Player user2 = new User(logic, "user2", new ByteArrayInputStream(secondUsersStep.getBytes()), output);
+        Game game = new ConsoleGame(logic, user1, user2, 2, output);
+
+        for (int i = 1; i <= 11; i++) {
+            game.nextMove();
+        }
+        boolean result = game.exitGame();
+
+        assertThat(result, is(true));
+    }
+
+    @Test
+    public void whenUser1VsUser2ThenUser1Wins() {
+        Logic logic = new Logic3T(3);
+        String firstUsersStep = Joiner.on(LN).join("11", "01", "21", "");
+        Player user1 = new User(logic, "user1", new ByteArrayInputStream(firstUsersStep.getBytes()), output);
+        String secondUsersStep = Joiner.on(LN).join("22", "12", "");
+        Player user2 = new User(logic, "user2", new ByteArrayInputStream(secondUsersStep.getBytes()), output);
+        Game game = new ConsoleGame(logic, user1, user2, 1, output);
+
+        while (!game.exitGame()) {
+            game.nextMove();
+        }
+
+        assertThat(baos.toString(), containsString("user1 сделал ход в клетку (1;1):"));
+        assertThat(baos.toString(), containsString("Игра закончена, победили крестики, счет (x 1:0 o)"));
+    }
+
+    @Test
+    public void whenUser1VsUser2ThenDrawGame() {
+        Logic logic = new Logic3T(3);
+        String firstUsersStep = Joiner.on(LN).join("11", "00", "12", "21", "02");
+        Player user1 = new User(logic, "user1", new ByteArrayInputStream(firstUsersStep.getBytes()), output);
+        String secondUsersStep = Joiner.on(LN).join("22", "20", "01", "10");
+        Player user2 = new User(logic, "user2", new ByteArrayInputStream(secondUsersStep.getBytes()), output);
+        Game game = new ConsoleGame(logic, user1, user2, 1, output);
+
+        for (int i = 1; i <= 9; i++) {
+            game.nextMove();
+        }
+
+        assertThat(baos.toString(), containsString("Ничья! Начните новую партию."));
+    }
+
+    @Test
+    public void whenBot1VsBot2ThenSomeWins() {
+        Logic logic = new Logic3T(3);
+        Player bot1 = new BotSimple(logic, "bot1");
+        Player bot2 = new BotSimple(logic, "bot2");
+        Game game = new ConsoleGame(logic, bot1, bot2, 5, output);
+
+        while (!game.exitGame()) {
+            game.nextMove();
+        }
+
+        assertThat(baos.toString(), containsString("Игра закончена, победили"));
     }
 
 }

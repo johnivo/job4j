@@ -11,7 +11,6 @@ import ru.job4j.tictactoe.logic.*;
 public class BotSimple implements Player {
 
     private final Logic logic;
-    private final Player user;
     private final int tableSize;
     private final String name;
     private String mark;
@@ -21,9 +20,8 @@ public class BotSimple implements Player {
      * @param logic игровая логика.
      * @param name имя игрока.
      */
-    public BotSimple(Logic logic, Player user, String name) {
+    public BotSimple(Logic logic, String name) {
         this.logic = logic;
-        this.user = user;
         this.tableSize = logic.getTableSize();
         this.name = name;
     }
@@ -32,12 +30,8 @@ public class BotSimple implements Player {
      * Устанавливает значение фигуры в соответствии с выбором пользователя
      */
     @Override
-    public void setMark() {
-        if ("x".equals(user.getMark())) {
-            this.mark = "o";
-        } else if ("o".equals(user.getMark())) {
-            this.mark = "x";
-        }
+    public void setMark(String mark) {
+        this.mark = mark;
     }
 
     @Override
