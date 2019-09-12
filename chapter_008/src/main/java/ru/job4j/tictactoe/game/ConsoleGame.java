@@ -45,6 +45,9 @@ public class ConsoleGame implements Game {
         this.winCounter = winCounter;
         this.output = output;
 
+        this.first.setMark("x");
+        this.second.setMark("o");
+
         this.gameCounter = 1;
         this.tableSize = logic.getTableSize();
         this.nextMovePlayer = first;
@@ -55,34 +58,18 @@ public class ConsoleGame implements Game {
     /**
      * Начинает новую игру.
      *
-     * выводит приветствие,
-     * осуществляет выбор фигуры,
      * выводит счет по партиям и условие победы,
      * инкрементирует счетчик партий, начинает новую партию, выводит игровое поле.
      */
     @Override
     public void newGame() {
 
-        if (gameCounter == 1) {
-            this.first.setMark();
-            this.second.setMark();
-        }
-
-        if ("x".equals(first.getMark())) {
-            output.accept(
-                    String.format(
-                            "Партия №%s, счет (%s %s:%s %s). Игра до %s побед.",
-                            gameCounter, first.getMark(), xWins, oWins, second.getMark(), winCounter
-                    )
-            );
-        } else {
-            output.accept(
-                    String.format(
-                            "Партия №%s, счет (%s %s:%s %s). Игра до %s побед.",
-                            gameCounter, first.getMark(), oWins, xWins, second.getMark(), winCounter
-                    )
-            );
-        }
+        output.accept(
+                String.format(
+                        "Партия №%s, счет (%s %s:%s %s). Игра до %s побед.",
+                        gameCounter, first.getMark(), xWins, oWins, second.getMark(), winCounter
+                )
+        );
 
         this.gameCounter++;
         this.logic.newGame();
@@ -152,11 +139,11 @@ public class ConsoleGame implements Game {
 
         boolean hasWinner = false;
         if ("o".equals(logic.checkWinner())) {
-            output.accept(String.format("Победили нолики! Начните новую партию.%n"));
+            output.accept(String.format("Победили нолики!%n"));
             this.oWins++;
             hasWinner = true;
         } else if ("x".equals(logic.checkWinner())) {
-            output.accept(String.format("Победили крестики! Начните новую партию.%n"));
+            output.accept(String.format("Победили крестики!%n"));
             this.xWins++;
             hasWinner = true;
         }
@@ -181,8 +168,8 @@ public class ConsoleGame implements Game {
 
         if (hasWinner && !exit) {
             newGame();
-        } else if (!logic.checkPossibleOfMove()) {
-            output.accept("Ничья! Начните новую партию.");
+        } else if (!logic.checkPossibleOfMove() && !exit) {
+            output.accept(String.format("Ничья! Начните новую партию.%n"));
             newGame();
         }
     }
