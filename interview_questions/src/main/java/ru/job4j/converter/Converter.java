@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class Converter {
 
-    private static final String NAME = "OOD";
+    private static final String NAME = "SQL";
 
     private Integer num = 1;
 
