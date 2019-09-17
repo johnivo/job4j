@@ -1,6 +1,6 @@
 ## Вопросы для интервью по темам [Job4j](https://job4j.ru/ "https://job4j.ru")
 
-+ [Java Core](BasicSyntax.md#basic-syntax)
++ [Java Core](Core.md#basic-syntax)
 + [OOP](OOP.md#oop)
 + [Collections. Lite](CollectionsLite.md#collections-lite)
 + [FP, Lambda, Stream API](FPLambdaStreamAPI.md#fp-labmda-stream-api)
