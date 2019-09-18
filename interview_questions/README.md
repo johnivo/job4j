@@ -1,6 +1,6 @@
 ## Вопросы для интервью по темам [Job4j](https://job4j.ru/ "https://job4j.ru")
 
-+ [Java Core](Core.md#basic-syntax)
++ [Java Core](Core.md#core)
 + [OOP](OOP.md#oop)
 + [Collections. Lite](CollectionsLite.md#collections-lite)
 + [FP, Lambda, Stream API](FPLambdaStreamAPI.md#fp-labmda-stream-api)
@@ -8,4 +8,4 @@
 + [IO](IO.md#io)
 + [SQL, JDBC](SQL.md#sql)
 + [OOD](OOD.md#ood)
-+ [Garbage Collection](GC.md#gc)
++ [Garbage Collection](GC.md#garbage-collection)
