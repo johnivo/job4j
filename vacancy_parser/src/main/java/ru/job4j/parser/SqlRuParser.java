@@ -30,16 +30,17 @@ public class SqlRuParser {
      * Возвращает список вакансий java.
      * Парсит постранично заданный топик с вакансиями java
      * Вакансии, содержащие в названии javascript и java script пропускаются
+     * @param url ссылка на ресурс
+     * @param start время запуска парсера
      * @return vacancies дата
      */
-    public List<Vacancy> parse(String url, Date start) {
+    public List<Vacancy> parse(String url, int pages, Date start) {
         List<Vacancy> vacancies = new ArrayList<>();
         Document doc;
-        int n = getPages(url);
-        System.out.println("страниц для парсинга " + n);
+        System.out.println("страниц для парсинга " + pages);
         Date date = null;
 
-        for (int i = 1; i <= n; i++) {
+        for (int i = 1; i <= pages; i++) {
             try {
                 doc = Jsoup.connect(url + i).get();
 
@@ -80,7 +81,7 @@ public class SqlRuParser {
                         vacancies.add(v);
                     }
                 }
-                //vacancies.stream().forEach(System.out::println);
+
             } catch (IOException e) {
                 LOG.error(e.getMessage(), e);
             }
@@ -95,9 +96,10 @@ public class SqlRuParser {
 
     /**
      * Возвращает число страниц в топике.
+     * @param url ссылка на ресурс
      * @return n число страниц
      */
-    private Integer getPages(String url) {
+    public Integer getPages(String url) {
         Integer n = 0;
         try {
             Document doc = Jsoup.connect(url).get();
@@ -115,9 +117,10 @@ public class SqlRuParser {
      * Проверяет содержит ли название вакансии слово "java"
      * и не содержит "javascript", "java script",
      * отстутствует ли метка "закрыт".
+     * @param name имя вакансии
      * @return true or false
      */
-    private boolean checkNameTopic(String name) {
+    public boolean checkNameTopic(String name) {
         boolean check = false;
         String temp = name.toLowerCase();
         if (temp.contains("java".toLowerCase())
@@ -134,7 +137,7 @@ public class SqlRuParser {
      * Возвращает всегодняшнюю дату в виде "d MM yy".
      * @return timeStamp дата в формате строки
      */
-    private String setToday() {
+    public String setToday() {
         Date time = Calendar.getInstance().getTime();
         String timeStamp = new SimpleDateFormat("d MM yy").format(time);
         return timeStamp;
@@ -144,7 +147,7 @@ public class SqlRuParser {
      * Возвращает вчерашнюю дату в виде "d MM yy".
      * @return timeStamp дата в формате строки
      */
-    private String setYesterday() {
+    public String setYesterday() {
         LocalDateTime in = LocalDateTime.now().minusDays(1);
         Date time = java.sql.Timestamp.valueOf(in);
         String timeStamp = new SimpleDateFormat("d MM yy").format(time);
@@ -156,7 +159,7 @@ public class SqlRuParser {
      * @param stringDate строка
      * @return date дата
      */
-    private Date convertOfDate(String stringDate) {
+    public Date convertOfDate(String stringDate) {
         Date date = null;
         String[] givenMonths = {"янв", "фев", "мар", "апр", "май", "июн",
                 "июл", "авг", "сен", "окт", "ноя", "дек"};

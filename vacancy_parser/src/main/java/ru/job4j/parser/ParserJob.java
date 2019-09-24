@@ -6,6 +6,7 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.Properties;
 
 /**
@@ -34,8 +35,14 @@ public class ParserJob implements Job {
 
         Properties config = (Properties) data.get("config");
 
-        DBService dbs = new DBService();
-        dbs.start(config);
+        try {
+            DBService dbs = new DBService(config);
+            Connection connection = dbs.getConnection();
+            dbs.start(connection);
+
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
 
         LOG.info("Parsing is completed");
 
@@ -115,12 +122,13 @@ public class ParserJob implements Job {
             throw new IllegalStateException(e);
         }
 
-
+        //https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
+        //Fire at 12:30 PM every day
         //0 30 12 ? * *
+
         //раз в 2 мин
-        //0 0/2 * 1/1 * ? *
-        //каждые 10сек
-        //0/10 0/1 * 1/1 * ? *
+        // Fire every 2 minutes every 5 days every month, starting on the first day of the month
+        //0 0/2 * 1/5 * ? *
 
 
     }

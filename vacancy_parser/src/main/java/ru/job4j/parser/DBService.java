@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -24,30 +25,45 @@ public class DBService implements AutoCloseable {
 
     private Connection connection;
 
+    private Properties config;
+
     private String url;
 
     /**
-     * размер пакета
+     * конструктор.
+     * @param properties - файл с настройками соединения.
      */
-    private final int batchSize = 50;
+    public DBService(Properties properties) {
+        this.config = properties;
+        if (init()) {
+            LOG.info("Database connection initialized");
+        }
+    }
 
-    public DBService() {
+    /**
+     * конструктор для тестов.
+     * @param connection - autocommit=false.
+     */
+    public DBService(Connection connection) {
+        this.connection = connection;
     }
 
     /**
      * Инициализирует соединение с базой данных.
-     * @param config файл с настройками
      * @return true or false
      */
-    private boolean init(Properties config) {
+    public boolean init() {
         try {
             Class.forName(config.getProperty("driver-class-name"));
-            this.connection = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("username"),
-                    config.getProperty("password")
+            Connection connection = DriverManager.getConnection(
+                    this.config.getProperty("url"),
+                    this.config.getProperty("username"),
+                    this.config.getProperty("password")
             );
-            url = config.getProperty("json.url");
+            url = this.config.getProperty("json.url");
+
+            this.connection = connection;
+
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -56,16 +72,17 @@ public class DBService implements AutoCloseable {
 
     /**
      * Возвращает последнее время запуска, если первый запуск, то дату начала года.
+     * @param connection соединение с бд
      * @return lastRunTime время запуска
      */
-    private Date getLastRunTime() {
+    public Date getLastRunTime(Connection connection) {
 
         LocalDateTime beginning = LocalDateTime.now().with(firstDayOfYear());
         Date lastRunTime = java.sql.Timestamp.valueOf(beginning);
         int count = 0;
 
         String selectLastTime = "SELECT created FROM Vacancy ORDER BY created DESC LIMIT 1";
-        try (PreparedStatement ps = this.connection.prepareStatement(selectLastTime)) {
+        try (PreparedStatement ps = connection.prepareStatement(selectLastTime)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 lastRunTime = new Date(rs.getTimestamp("created").getTime());
@@ -86,15 +103,12 @@ public class DBService implements AutoCloseable {
      * Добавляет вакансии из списка в базу данных.
      * @param input список вакансий
      * @param start время начала парсинга
-     * @param config файл с настройками
+     * @param connection соединение с бд
      */
-    private void writeToDB(List<Vacancy> input, Date start, Properties config) {
-        this.init(config);
-        int count = 0;
+    public void writeToDB(List<Vacancy> input, Date start, Connection connection) {
+
         String insertEntry = "INSERT INTO Vacancy (name, description, link, created) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = this.connection.prepareStatement(insertEntry)) {
-            this.connection.setAutoCommit(false);
-            //for (int i = 1; i <= vacancies.size(); i++) {
+        try (PreparedStatement ps = connection.prepareStatement(insertEntry)) {
             for (Vacancy vac : input) {
                 if (vac.getCreated().before(start)) {
                     continue;
@@ -104,39 +118,26 @@ public class DBService implements AutoCloseable {
                 ps.setString(3, vac.getLink());
                 ps.setTimestamp(4, new Timestamp(vac.getCreated().getTime()));
                 ps.addBatch();
-
-                if (++count % batchSize == 0) {
-                    ps.executeBatch();
-                    this.connection.commit();
-                }
-
             }
             ps.executeBatch();
-            this.connection.commit();
-            this.connection.setAutoCommit(true);
             LOG.info("Database entry done");
-        } catch (SQLException e) {
-            try {
-                if (this.connection != null) {
-                    this.connection.rollback();
-                }
-            } catch (SQLException ex) {
-                LOG.error(ex.getMessage(), ex);
-            }
+        } catch (SQLException ex) {
+            LOG.error(ex.getMessage(), ex);
         }
     }
 
     /**
      * Удаляет дабликаты записей в базе данных.
      * Сравниваются имя и описание вакансии, остается последняя по дате публикации вакансия.
+     * @param connection соединение с бд
      * @return true or false
      */
-    private boolean removeDuplicates() {
+    public boolean removeDuplicates(Connection connection) {
         boolean deleted = false;
         String removeDuplicates = "DELETE FROM Vacancy as v USING Vacancy dup WHERE v.id < dup.id "
-                //String removeDuplicates = "DELETE FROM Vacancy as v USING Vacancy dup WHERE v.created < dup.created "
+        //String removeDuplicates = "DELETE FROM Vacancy as v USING Vacancy dup WHERE v.created < dup.created "
                 + "AND v.name = dup.name AND v.description = dup.description";
-        try (PreparedStatement ps = this.connection.prepareStatement(removeDuplicates)) {
+        try (PreparedStatement ps = connection.prepareStatement(removeDuplicates)) {
             int rows = ps.executeUpdate();
             if (rows > 0) {
                 LOG.info(rows + " duplicates removed");
@@ -156,6 +157,13 @@ public class DBService implements AutoCloseable {
     }
 
     /**
+     * @return connection текущее соединение с бд
+     */
+    public Connection getConnection() {
+        return this.connection;
+    }
+
+    /**
      * Запускает парсер на выполнение.
      * Параметры заданы в файле с настройками.
      *
@@ -166,18 +174,55 @@ public class DBService implements AutoCloseable {
      * Записывает в базу вакансии из списка.
      * Удаляет дубликаты из базы.
      *
-     * @param config файл с настройками
+     * @param connection соединение с бд
      */
-    public void start(Properties config) {
-        if (init(config)) {
-            LOG.info("Database connection initialized");
-        }
-        Date start = getLastRunTime();
+    public void start(Connection connection) {
 
-        List list = new SqlRuParser().parse(url, start);
+        Date start = getLastRunTime(connection);
 
-        writeToDB(list, start, config);
-        removeDuplicates();
+        SqlRuParser parser = new SqlRuParser();
+        int pages = parser.getPages(url);
+        List list = parser.parse(url, pages, start);
+
+        writeToDB(list, start, connection);
+        removeDuplicates(connection);
     }
 
+    /**
+     * Находит вакансии в базе данных по имени и возвращает их список.
+     * @param name имя вакансии
+     * @param connection соединение с бд
+     * @return vacancies список вакансий
+     */
+    public List<Vacancy> findByName(String name, Connection connection) {
+        List<Vacancy> vacancies = new ArrayList<>();
+        String selectByName = "SELECT * FROM Vacancy where name = ?";
+        try (PreparedStatement ps = connection.prepareStatement(selectByName)) {
+            ps.setString(1, name);
+            LOG.info(ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                vacancies.add(
+                        new Vacancy(
+                                rs.getString(2), //первый id serial primary key
+                                rs.getString(3),
+                                rs.getString(4),
+                                rs.getTimestamp(5)
+                        )
+                );
+                System.out.println(
+                        String.format(
+                                "%s %s %s %s",
+                                rs.getString("name"), //можно по названиям
+                                rs.getString("description"),
+                                rs.getString("link"),
+                                rs.getTimestamp("created")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return vacancies;
+    }
 }
