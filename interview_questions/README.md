@@ -3,7 +3,7 @@
 + [Java Core](Core.md#core)
 + [OOP](OOP.md#oop)
 + [Collections. Lite](CollectionsLite.md#collections-lite)
-+ [FP, Lambda, Stream API](FPLambdaStreamAPI.md#fp-labmda-stream-api)
++ [FP, Lambda, Stream API](FPLambdaStreamAPI.md#fp-lambda-stream-api)
 + [Collections. Pro](CollectionsPro.md#collections-pro)
 + [IO](IO.md#io)
 + [SQL, JDBC](SQL.md#sql)

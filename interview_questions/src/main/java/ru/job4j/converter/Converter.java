@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class Converter {
 
-    private static final String NAME = "Collections Pro";
+    private static final String NAME = "FP Lambda Stream API";
 
     private Integer num = 1;
 
