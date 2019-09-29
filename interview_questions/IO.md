@@ -122,7 +122,7 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 + `CharArrayReader` / `CharArrayWriter` - читает/пишет из символьного массива.
 
 **Files**
-+ `FileInputStream` / `FileOutputStream` - Чтение/Отправка данных в файл на диске. Реализация класса OutputStream                                       
++ `FileInputStream` / `FileOutputStream` - Чтение/Отправка данных в файл на диске. Реализация класса `OutputStream`                                       
 + `RandomAccessFile` / `RandomAccessFile` - Чтение/запись файлов с произвольным доступом. метод `seek()` позволяет 
 переместиться к определенной позиции и изменить хранящееся там значение. 
 При использовании RandomAccessFile необходимо знать структуру файла. Класс `RandomAccessFile` содержит методы для чтения 
@@ -151,22 +151,22 @@ IO API – (Input & Output) в первую очередь это Java API, ко
 
 Недостатки IO:
 
-+ The File class lacked some important functionality, such as a copy method.
-+ It also defined many methods that returned boolean. As one can imagine, in case of an error, false was returned, 
++ The `File` class lacked some important functionality, such as a copy method.
++ It also defined many methods that returned boolean. As one can imagine, in case of an error, `false` was returned, 
 rather than throwing an exception. The developer had, indeed, no way of knowing why it failed.
 + Did not provide good handling on support of symbolic links.
 + A limited set of file attributes was provided.
+
 To overcome these problems, java.nio package was introduced in java 4. The key features were:
 + Channels and Selectors: A channel is an abstraction on lower-level file system features, e.g. memory-mapped files.
 + Buffers: Buffering for all primitive classes (except for Boolean).
-+ Charset: Charset (java.nio.charset), encoders, and decoders to map bytes and Unicode symbols
++ Charset: Charset (`java.nio.charset`), encoders, and decoders to map bytes and Unicode symbols
+
 With java 7 the `java.nio.file` package is introduced providing a better support for handling symbolic links, 
 file attributes access and specially to support extended the file system through classes such 
-as 
+as **Path, Paths and Files**.
 
-**Path, Paths and Files**.
-
-Состоит из 3 основных компонентов
+Состоит из 3 основных компонентов:
 + `Channels`
 + `Buffers`
 + `Selectors`
@@ -183,7 +183,7 @@ This is handy if your application has many connections (Channels) open, but only
 For instance, in a chat server.
 
 Example.
-```
+```java
 RandomAccessFile aFile = new RandomAccessFile("data/nio-data.txt", "rw");
     FileChannel inChannel = aFile.getChannel();
     ByteBuffer buf = ByteBuffer.allocate(48);
@@ -224,14 +224,14 @@ Scanner sc = new Scanner(System.in);
 ## 5. Как работает Scanner внутри?
 
 использует регулярные выражения
-```
+```java
 private static final String LINE_SEPARATOR_PATTERN =
                                            "\r\n|[\n\r\u2028\u2029\u0085]";
 private static Pattern NON_ASCII_DIGIT = Pattern.compile(
         "[\\p{javaDigit}&&[^0-9]]");
 ```                                           
 кеширует значения
-```
+```java
 public String nextLine() {
        modCount++;
         if (hasNextPattern == linePattern())
@@ -269,7 +269,7 @@ Java `Scanner` class extends `Object` class and implements `Iterator` and `Close
 Byte streams работает с данными побайтово (8 bits). Например, `FileInputStream` используется для чтения 
 и `FileOutputStream` для записи. Byte streams интерфейс, который внутри основан на байтовом массиве. 
 В основе находится некий буфер который заполняется, вычитывается и заново заполняется. Методы внутри native.
-```
+```java
 private native int read0() throws IOException;
 ``` 
 
@@ -278,9 +278,9 @@ private native int read0() throws IOException;
 ## 8. Что такое символьный поток Как он реализован внутри?
 
 В Java, символы хранятся в кодировке `Unicode` (16 bit). Символный поток позволяет читать данные символ за символом. 
-Для пример `FileReader` и `FileWriter` символьные потоки.
-Можно задать свою кодировку
-``` 
+Например `FileReader` и `FileWriter` символьные потоки.
+Для них можно задать кодировку:
+```java 
 Reader reader = new InputStreamReader(in, "UTF-8");
 ``` 
 
@@ -291,7 +291,7 @@ Reader reader = new InputStreamReader(in, "UTF-8");
 Для оптимизации операций ввода-вывода используются буферизуемые потоки. Эти потоки добавляют к стандартным специальный 
 буфер в памяти, с помощью которого повышается производительность при чтении и записи потоков.
 `BufferedInputStream` и `BufferedOutputStream`. 
-Это может сделать программу намного эффективней, так как каждый такой запрос часто инициировал доступ к диску, сетевое 
+Это может сделать программу намного эффективней, т.к. каждый такой запрос часто инициировал доступ к диску, сетевое 
 действие, или некоторую другую работу, которая относительно дорога.
 
 [к оглавлению](#IO)
@@ -310,21 +310,21 @@ Reader reader = new InputStreamReader(in, "UTF-8");
 + %t	Время
 + %x	Шестнадцатеричное целое
 
-```
+```java
 String output = String.format("%s = %d", "joe", 35);
 String.format(); Formatter
 ```
 
-Можно создать Formatter и привязать его к StrungBuilder
-```
+Можно создать `Formatter` и привязать его к `StrungBuilder`:
+```java
 StringBuilder sbuf = new StringBuilder();
 Formatter fmt = new Formatter(sbuf);
 fmt.format("PI = %f%n", Math.PI);
 System.out.print(sbuf.toString());
 ```
 Также есть свое форматирование для вывода дат.
-Можно задавать выравнивание, количество отступов.
-```
+Можно задавать выравнивание, количество отступов:
+```java
 String.format("|%-20d|", 93); // prints: |93                  |
 String.format("|%020d|", 93); // prints: |00000000000000000093|
 ```
@@ -346,15 +346,15 @@ String.format("|%020d|", 93); // prints: |00000000000000000093|
 
 Альтернатива стандратным потокам ввода / вывода класс `Console`.
 
-Для создание экземпляра используется `System.console()`. Метод может вернуть `null` если консоль недоступна. 
+Для создание экземпляра используется `System.console()`. Метод может вернуть `null`, если консоль недоступна. 
 Консоль позволяет вводить пароль используя метод `readPassword` (не видны символы при вводе, не сохраняется в памяти). 
    
-+ `flush()` выводит на консоль все данные из буфера
-+ `format()` выводит на консоль строку с использованием форматирования
++ `flush()` выводит на консоль все данные из буфера.
++ `format()` выводит на консоль строку с использованием форматирования.
 + `printf()` выводит на консоль строку с использованием форматирования (фактически то же самое, что и предыдущий метод)
-+ `String readLine()` считывает с консоли введенную пользователем строку
++ `String readLine()` считывает с консоли введенную пользователем строку.
 + `char[] readPassword()` считывает с консоли введенную пользователем строку, 
-при этом символы строки не отображаются на консоли
+при этом символы строки не отображаются на консоли.
 
 [к оглавлению](#IO)
 
@@ -373,7 +373,7 @@ String.format("|%020d|", 93); // prints: |00000000000000000093|
 Объект преобразоыванный таким образом может быть сохранен в базу данных, передан по сети и т.п. 
 Для записи в файл можно использовать `FileOutputStream`.
 Объект который передается в потоке должен реализовывать интерфейс `java.io.Serializable`.
-```
+```java
 FileOutputStream fos = new FileOutputStream("EmployeeObject.ser");
 ObjectOutputStream oos = new ObjectOutputStream(fos);
 // write object to file
@@ -403,7 +403,7 @@ Java 7 представляет новую абстракцию для пути,
 
 Путь к файлу, в разных системх может записываться по разному, `\` или `/`, поэтому лучше
 использовать `File.separator` для построения пути
-```
+```java
 // Cоздание объекта Path через вызов статического метода get() класса Paths 
 Path testFilePath = Paths.get("/home/heorhi/testfile.txt"); 
          
@@ -416,13 +416,13 @@ Path testFilePath = Paths.get("D:\\test\\testfile.txt");
 ## 16. Как получить список файлов?
 
 + Без учета подпапок
-```
+```java
 File file = new File("dir");
 File[] filesArr = file.listFiles();
 String[] filesNames = file.list();
 ```
 + С учетом подпапок
-```
+```java
 public void listFilesForFolder(final File folder) {
     for (final File fileEntry : folder.listFiles()) {
         if (fileEntry.isDirectory()) {
@@ -438,11 +438,11 @@ listFilesForFolder(folder);
  
 **Java 8**
 + Java NIO без учета подпапок
-```
+```java
 Stream<Path> stramFiles = Files.list(Paths.get("dir"));
 ```
 + С учетом подпапок. Files.walk API is available from Java 8.
-```
+```java
 try (Stream<Path> paths = Files.walk(Paths.get("/home/you/Desktop"))) {
     paths
         .filter(Files::isRegularFile)
@@ -452,7 +452,7 @@ try (Stream<Path> paths = Files.walk(Paths.get("/home/you/Desktop"))) {
 + Через `walkFileTree` 
 (The difference between `walk` and `walkFileTree` is that they supply different interfaces for walking the tree: 
 `walkFileTree` takes `FileVisitor`, walk gives `Stream<Path>`)
-```
+```java
 Files.walkFileTree(directory, Collections.emptySet(), 1, new SimpleFileVisitor<Path>() {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -472,22 +472,22 @@ Files.walkFileTree(directory, Collections.emptySet(), 1, new SimpleFileVisitor<P
  
 ## 17. Как проверить что файловая сущность является файлом или папкой?
 
-```
+```java
 File file = new File("/Users/pankaj/source.txt");
 File dir = new File("/Users/pankaj");
 File notExists = new File("/Users/pankaj/notafile");
         
-System.out.println("/Users/pankaj/source.txt is file?"+file.isFile());
-System.out.println("/Users/pankaj/source.txt is directory?"+file.isDirectory());
+System.out.println("/Users/pankaj/source.txt is file?" + file.isFile());
+System.out.println("/Users/pankaj/source.txt is directory?" + file.isDirectory());
         
-System.out.println("/Users/pankaj is file?"+dir.isFile());
-System.out.println("/Users/pankaj is directory?"+dir.isDirectory());
+System.out.println("/Users/pankaj is file?" + dir.isFile());
+System.out.println("/Users/pankaj is directory?" + dir.isDirectory());
         
-System.out.println("/Users/pankaj/notafile is file?"+notExists.isFile());
-System.out.println("/Users/pankaj/notafile is directory?"+notExists.isDirectory());
+System.out.println("/Users/pankaj/notafile is file?" + notExists.isFile());
+System.out.println("/Users/pankaj/notafile is directory?" + notExists.isDirectory());
 ```
 С использованием `path`
-```
+```java
 Path file = new File(path).toPath();
 boolean exists =      Files.exists(file);        // Check if the file exists
 boolean isDirectory = Files.isDirectory(file);   // Check if it's a directory
@@ -499,7 +499,7 @@ boolean isFile =      Files.isRegularFile(file); // Check if it's a regular file
 ## 18. Как удалить файл?
 
 **Using `java.io.File.delete()` function:**
-```
+```java
 File file = new File("/Users/pankaj/file.txt");
 
 if(file.delete()) {
@@ -508,8 +508,8 @@ if(file.delete()) {
     System.out.println("File /Users/pankaj/file.txt doesn't exist");
 }    
 ```
-**Using `java.nio.file.files.deleteifexists(Path p)`**
-```
+**Using `java.nio.file.files.deleteIfExists(Path p)`**
+```java
 Files.deleteIfExists(Paths.get("C:\\Users\\Mayank\\Desktop\\445.txt")); 
 ```
 
@@ -525,13 +525,13 @@ but you can workaround with the following two alternatives :
 
 Для Java 7:
 
-+ `Files.move(Paths.get("/foo.txt"), `Paths.get("bar.txt"), `StandardCopyOption.REPLACE_EXISTING);`
++ `Files.move(Paths.get("/foo.txt")`, `Paths.get("bar.txt")`, `StandardCopyOption.REPLACE_EXISTING);`
 
 [к оглавлению](#IO)
 
 ## 20. Как управлять атрибутами файла?
 
-Базовые атрибуты (доступны во всех ОС):
+**Базовые атрибуты** (доступны во всех ОС):
 
 + File type
 + File size
@@ -544,16 +544,16 @@ but you can workaround with the following two alternatives :
 + Regular file
 + isDirectory
 
-`FileAttributeView` - базовый интерфейс с подинтерфейсами
+**`FileAttributeView`** - базовый интерфейс с подинтерфейсами
 
-+ BasicFileAttributeView
-+ DosFileAttributeView
-+ PosixFileAttributeView
-+ UserDefinedFileAttributeView
-+ AclFileAttributeView
-+ FileOwnerAttributeView
++ `BasicFileAttributeView`
++ `DosFileAttributeView`
++ `PosixFileAttributeView`
++ `UserDefinedFileAttributeView`
++ `AclFileAttributeView`
++ `FileOwnerAttributeView`
 
-```
+```java
 Path path = FileSystems.getDefault().getPath("c:/test", "somefile.txt");
 BasicFileAttributeView basicView = Files.getFileAttributeView(path, BasicFileAttributeView.class);
 basicView.readAttributes().lastAccessTime().toMillis();;  // will return the last time the file was read.
@@ -561,7 +561,7 @@ basicView.readAttributes().lastModifiedTime().toMillis();  // will return the la
 basicView.readAttributes().creationTime().toMillis();  // will return the creation time.
 ```
 
-```
+```java
 DosFileAttributeView dosView = Files.getFileAttributeView(path,DosFileAttributeView.class);
 dosView.setHidden(true);
 dosView.setReadOnly(true);
@@ -587,9 +587,11 @@ dosView.setArchive(true);
    `fos.close();`
   
 3. `String fileData = "Pankaj Kumar";`
+
    `Files.write(Paths.get("name.txt"), fileData.getBytes());`
   
 4. `Path path = Paths.get("name.txt");`
+
    `Files.createFile(path);`
 
 [к оглавлению](#IO)
@@ -606,39 +608,39 @@ dosView.setArchive(true);
 ## 23. Как записать в файл?
 
 + **BufferedWritter**
-```
+```java
     BufferedWriter writer = new BufferedWriter(new FileWriter("c:/temp/samplefile1.txt"));
     writer.write(fileContent);
     writer.close();
 ```
         
 + **FileWriter/PrintWriter**
-```
+```java
     FileWriter fileWriter = new FileWriter("c:/temp/samplefile2.txt");
     fileWriter.write(fileContent);
     fileWriter.close();
 ```
 
 + **FileOutputStream**
-```
-    FileOutputStream outputStream = new FileOutputStream("c:/temp/samplefile4.txt");
+```java
+    FileOutputStream fos = new FileOutputStream("c:/temp/samplefile4.txt");
     byte[] strToBytes = fileContent.getBytes();
-    outputStream.write(strToBytes);
+    fos.write(strToBytes);
     
-    outputStream.close();
+    fos.close();
 ```
 
 + **DataOutputStream**
-```
-    FileOutputStream outputStream = new FileOutputStream("c:/temp/samplefile5.txt");
-    DataOutputStream dataOutStream = new DataOutputStream(new BufferedOutputStream(outputStream));
+```java
+    FileOutputStream fos = new FileOutputStream("c:/temp/samplefile5.txt");
+    DataOutputStream dataOutStream = new DataOutputStream(new BufferedOutputStream(fos));
     dataOutStream.writeUTF(fileContent);
      
     dataOutStream.close();
 ```
 
 + **FileChannel**
-```
+```java
     RandomAccessFile stream = new RandomAccessFile("c:/temp/samplefile6.txt", "rw");
     FileChannel channel = stream.getChannel();
     byte[] strBytes = fileContent.getBytes();
@@ -650,7 +652,7 @@ dosView.setArchive(true);
     channel.close();
 ```
 + **Java 7 Path**
-```
+```java
     Path path = Paths.get("c:/temp/samplefile7.txt");     
     Files.write(path, fileContent.getBytes());
 ```
@@ -668,7 +670,7 @@ dosView.setArchive(true);
 ## 24. Как прочитать данные из файла?
 
 + **BufferedReader**
-```
+```java
     BufferedReader br = new BufferedReader(new FileReader(file)); 
           
     String st; 
@@ -678,7 +680,7 @@ dosView.setArchive(true);
 ```
     
 + **FileReader**
-```
+```java
     FileReader fr = 
         new FileReader("C:\\Users\\pankaj\\Desktop\\test.txt"); 
       
@@ -687,7 +689,7 @@ dosView.setArchive(true);
     System.out.print((char) i);      
 ```
 + **Scanner**
-```
+```java
     Scanner sc = new Scanner(file); 
       
     // we just need to use \\Z as delimiter 
@@ -696,7 +698,7 @@ dosView.setArchive(true);
     System.out.println(sc.next());
 ```
 + **Reading the whole file in a List**
-```
+```java
     data = new String(Files.readAllBytes(Paths.get(fileName)));
 ```
 
@@ -706,7 +708,7 @@ dosView.setArchive(true);
 
 Создание сервера:
 
-```
+```java
 server = new ServerSocket(4004); // серверсокет прослушивает порт 4004
 System.out.println("Сервер запущен!"); 
 clientSocket = server.accept(); // accept() будет ждать пока
@@ -732,7 +734,7 @@ try { // установив связь и воссоздав сокет для �
 
 Создание клиента:
 
-```
+```java
 // адрес - локальный хост, порт - 4004, такой же как у сервера
 clientSocket = new Socket("localhost", 4004); // этой строкой мы запрашиваем у сервера доступ на соединение
 reader = new BufferedReader(new InputStreamReader(System.in));
@@ -769,16 +771,19 @@ System.out.println(serverWord); // получив - выводим на экра
 ## 28. Что общего и чем отличаются следующие потоки: InputStream, OutputStream, Reader, Writer?
 
 Базовый класс `InputStream` представляет классы, которые получают данные из различных источников:
-+ массив байтов
-+ строка (`String`)
-+ файл
-+ канал (`pipe`): данные помещаются с одного конца и извлекаются с другого
-+ последовательность различных потоков, которые можно объединить в одном потоке
-+ другие источники (например, подключение к интернету)
++ массив байтов;
++ строка (`String`);
++ файл;
++ канал (`pipe`) - данные помещаются с одного конца и извлекаются с другого;
++ последовательность различных потоков, которые можно объединить в одном потоке;
++ другие источники (например, подключение к интернету).
 
 Класс `OutputStream` — это абстрактный класс, определяющий потоковый байтовый вывод. В этой категории находятся классы, 
-определяющие, куда направляются ваши данные: в массив байтов (но не напрямую в `String`; предполагается, что вы сможете 
-создать их из массива байтов), в файл или канал.
+определяющие, куда направляются ваши данные: 
++ в массив байтов (но не напрямую в `String` - предполагается, что вы сможете 
+создать их из массива байтов); 
++ в файл; 
++ или в канал.
 
 Символьные потоки имеют два основных абстрактных класса `Reader` и `Writer`, управляющие потоками символов `Unicode`. 
 Класс `Reader` — абстрактный класс, определяющий символьный потоковый ввод. Класс `Writer` — абстрактный класс, 
@@ -817,9 +822,9 @@ System.out.println(serverWord); // получив - выводим на экра
 методы, преобразующие элементарные значения в форму последовательности байтов. Такие потоки облегчают сохранение в 
 файле двоичных данных.
 
-Конструктор: `DataInputStream(InputStream stream)`
+Конструктор: `DataInputStream(InputStream stream);`
 
-Методы: `readDouble()`, `readBoolean()`, `readInt()`
+Методы: `readDouble()`, `readBoolean()`, `readInt()`.
 
 [к оглавлению](#IO)
 
@@ -838,7 +843,7 @@ System.out.println(serverWord); // получив - выводим на экра
 `OutputStreamWriter` — мост между классом `OutputStream` и классом `Writer`. 
 Символы, записанные в поток, преобразовываются в байты.
 
-```
+```java
 OutputStream outputStream = new FileOutputStream("c:\\data\\output.txt");
 Writer  outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
 outputStreamWriter.write("Hello World");
@@ -848,7 +853,7 @@ outputStreamWriter.close();
 `InputStreamReader` — аналог для чтения. 
 При помощи методов класса `Reader` читаются байты из потока `InputStream` и далее преобразуются в символы.
 
-```
+```java
 InputStream inputStream  = new FileInputStream("c:\\data\\input.txt");
 Reader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
 int data = inputStreamReader.read();
@@ -878,9 +883,9 @@ inputStreamReader.close();
 
 ## 35. Что такое сериализация?
 
-Сериализация это процесс сохранения состояния объекта в последовательность байт. 
+**Сериализация** - это процесс сохранения состояния объекта в последовательность байт. 
 
-Десериализация это процесс восстановления объекта, из этих байт. 
+**Десериализация** - это процесс восстановления объекта, из этих байт. 
 
 Java Serialization API предоставляет стандартный механизм для создания сериализуемых объектов.
 
