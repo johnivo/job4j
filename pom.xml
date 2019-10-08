@@ -73,6 +73,7 @@
         <module>chapter_008</module>
         <module>interview_questions</module>
         <module>chapter_009</module>
+        <module>chapter_010</module>
     </modules>
 	
 	<dependencies>
