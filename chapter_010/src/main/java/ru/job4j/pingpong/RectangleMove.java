@@ -54,7 +54,9 @@ public class RectangleMove implements Runnable {
     public void run() {
         this.xDirection = randomDirection();
         this.yDirection = randomDirection();
-        while (true) {
+        //while (true) {
+        //while (!Thread.interrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
             this.checkLimit();
 
             this.rect.setX(this.rect.getX() + this.xDirection);
@@ -63,7 +65,8 @@ public class RectangleMove implements Runnable {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
