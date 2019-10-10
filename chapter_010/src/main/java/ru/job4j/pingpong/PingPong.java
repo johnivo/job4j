@@ -32,7 +32,8 @@ public class PingPong extends Application {
         Rectangle rect = new Rectangle(50, 100, 10, 10);
         group.getChildren().add(rect);
 
-        new Thread(new RectangleMove(rect, limitX, limitY)).start();
+        Thread thread = new Thread(new RectangleMove(rect, limitX, limitY));
+        thread.start();
 
         stage.setScene(new Scene(group, limitX, limitY));
         stage.setTitle(JOB4J);
@@ -40,7 +41,7 @@ public class PingPong extends Application {
         stage.show();
 
         stage.setOnCloseRequest(
-                event -> System.exit(0)
+                event -> thread.interrupt()
         );
     }
 
