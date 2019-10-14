@@ -11,5 +11,15 @@
 
     <artifactId>chapter_010</artifactId>
 
+    <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/net.jcip/jcip-annotations -->
+        <dependency>
+            <groupId>net.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+    </dependencies>
 
 </project>
