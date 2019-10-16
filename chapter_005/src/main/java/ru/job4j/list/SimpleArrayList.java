@@ -11,7 +11,7 @@ import java.util.ConcurrentModificationException;
  * @author John Ivanov (johnivo@mail.ru)
  * @since 11.04.2019
  */
-public class SimpleArrayList<E> implements Iterable<E> {
+public class SimpleArrayList<E> implements BaseList<E> {
 
     /**
      * Буфер-массив, хранилище элементов списка.
@@ -61,6 +61,7 @@ public class SimpleArrayList<E> implements Iterable<E> {
      * @param value
      * @return true.
      */
+    @Override
     public boolean add(E value) {
         if (size < container.length) {
             container[size++] = value;
@@ -78,6 +79,7 @@ public class SimpleArrayList<E> implements Iterable<E> {
      * @param index
      * @return элемент.
      */
+    @Override
     public E get(int index) {
         if (size <= index || index < 0) {
             throw new IndexOutOfBoundsException("Позиция вне диапазона значений");
@@ -90,7 +92,8 @@ public class SimpleArrayList<E> implements Iterable<E> {
      *
      * @return увеличенный лист.
      */
-    private E[] grow() {
+    @Override
+    public E[] grow() {
         int oldCapacity = container.length;
         int newCapacity = oldCapacity * 2;
         return Arrays.copyOf(container, newCapacity);
