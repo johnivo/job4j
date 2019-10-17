@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class Converter {
 
-    private static final String NAME = "FP Lambda Stream API";
+    private static final String NAME = "Multithreading";
 
     private Integer num = 1;
 
