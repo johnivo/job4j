@@ -11,7 +11,7 @@ public class ParallelSearch {
 
         final Thread consumer = new Thread(
                 () -> {
-                    while (!Thread.currentThread().isInterrupted()) {
+                    while (!Thread.currentThread().isInterrupted() || !queue.isEmpty()) {
                         try {
                             queue.poll();
                         } catch (InterruptedException e) {
@@ -28,7 +28,7 @@ public class ParallelSearch {
                     for (int index = 0; index != 3; index++) {
                         try {
                             queue.offer(index);
-                            Thread.sleep(500);
+                            //Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
