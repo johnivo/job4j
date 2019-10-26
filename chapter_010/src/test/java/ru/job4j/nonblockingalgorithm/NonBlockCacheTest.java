@@ -19,8 +19,8 @@ public class NonBlockCacheTest {
     public void whenAdd2BaseThenCacheSizeIs2() {
         NonBlockCache cache = new NonBlockCache();
 
-        assertTrue(cache.add(new Base(1, 0)));
-        assertTrue(cache.add(new Base(2, 0)));
+        cache.add(new Base(1, 0));
+        cache.add(new Base(2, 0));
 
         assertThat(cache.size(), is(2));
     }
@@ -33,7 +33,8 @@ public class NonBlockCacheTest {
         cache.add(model1);
         cache.add(model2);
 
-        assertTrue(cache.delete(model2));
+        cache.delete(model2);
+
         assertThat(cache.size(), is(1));
     }
 

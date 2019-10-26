@@ -8,21 +8,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class NonBlockCache {
 
-    private final ConcurrentHashMap<Integer, Base> cache;
+    private final ConcurrentHashMap<Integer, Base> cache = new ConcurrentHashMap<>();
 
-    public NonBlockCache() {
-        this.cache = new ConcurrentHashMap<>();
-    }
-
-    public boolean add(Base model) {
-        boolean rst = false;
-
-        if (!cache.containsKey(model.getId())) {
-            cache.put(model.getId(), model);
-            rst = true;
-        }
-
-        return rst;
+    public void add(Base model) {
+        cache.put(model.getId(), model);
     }
 
     public boolean update(Base model) {
@@ -31,10 +20,9 @@ public class NonBlockCache {
         if (cache.computeIfPresent(model.getId(), (key, value) -> {
                     if (model.getVersion() != value.getVersion()) {
                         throw new OptimisticException("versions do not match");
-                    } else {
-                        model.setVersion(model.getVersion() + 1);
-                        return model;
                     }
+                    model.setVersion(model.getVersion() + 1);
+                    return model;
                 }
         ) != null) {
             rst = true;
@@ -43,15 +31,8 @@ public class NonBlockCache {
         return rst;
     }
 
-    public boolean delete(Base model) {
-        boolean rst = false;
-
-        if (cache.containsKey(model.getId())) {
-            cache.remove(model.getId());
-            rst = true;
-        }
-
-        return rst;
+    public void delete(Base model) {
+        cache.remove(model.getId());
     }
 
     public Integer size() {
