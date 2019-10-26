@@ -14,7 +14,7 @@ public class ThreadPool {
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> taskQueue;
 
-    private boolean isStopped = false;
+    private volatile boolean isStopped = false;
 
     public ThreadPool(SimpleBlockingQueue<Runnable> taskQueue) {
 
@@ -32,11 +32,10 @@ public class ThreadPool {
     }
 
     public void work(Runnable task) throws InterruptedException {
-        if (!isStopped) {
-            this.taskQueue.offer(task);
-        } else {
+        if (isStopped) {
             throw new IllegalStateException("ThreadPool is stopped");
         }
+        this.taskQueue.offer(task);
     }
 
     public void shutdown() {

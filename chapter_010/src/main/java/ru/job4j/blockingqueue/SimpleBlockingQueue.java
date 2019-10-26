@@ -17,7 +17,7 @@ public class SimpleBlockingQueue<T> {
      * Очередь - общий ресурс.
      */
     @GuardedBy("this")
-    private final Queue<T> queue;
+    private final Queue<T> queue = new LinkedList<>();
 
     /**
      * Размер очереди.
@@ -26,7 +26,6 @@ public class SimpleBlockingQueue<T> {
 
     public SimpleBlockingQueue(int size) {
         this.size = size;
-        this.queue = new LinkedList<>();
     }
 
     /**
