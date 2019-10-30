@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class Converter {
 
-    private static final String NAME = "Multithreading";
+    private static final String NAME = "Servlet";
 
     private Integer num = 1;
 
