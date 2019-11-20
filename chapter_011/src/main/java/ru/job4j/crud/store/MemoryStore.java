@@ -47,7 +47,13 @@ public class MemoryStore implements Store<User> {
     @Override
     public void update(User user) {
         synchronized (this) {
-            this.users.put(user.getId(), user);
+            //this.users.put(user.getId(), user);
+            this.users.computeIfPresent(user.getId(), (key, value) -> {
+                value.setName(user.getName());
+                value.setLogin(user.getLogin());
+                value.setEmail(user.getEmail());
+                return value;
+            });
         }
     }
 
