@@ -39,4 +39,6 @@ John Ivanov. Java internship repository. Mentor Petr Arsentev and team [Job4j](h
 
 **chapter_010.** Multithreading: threads, concurrency, synchronize, monitor, deadlock, non blocking algorithm, producer-consumer pattern, locks, thread pools.
 
+**chapter_011.** Servlet, JSP: servlets, jsp, web app, crud, filters, security, mockito, _html, ajax, css_.
+
 [**interview questions.** Questions and answers for interviews on Job4j topics.](https://github.com/johnivo/job4j/tree/master/interview_questions)
