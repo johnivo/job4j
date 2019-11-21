@@ -44,7 +44,7 @@ public class UserCreateServlet extends HttpServlet {
                 + "<body>"
                 + "<form action = '" + request.getContextPath() + "/list/create' method='post'>"
 
-                + "id: <input type=\"number\" name=\"id\"/><br/>"
+                //+ "id: <input type=\"number\" name=\"id\"/><br/>"
                 + "name: <input type=\"text\" name=\"name\"/><br/>"
                 + "login: <input type=\"text\" name=\"login\"/><br/>"
                 + "email: <input type=\"text\" name=\"email\"/><br/>"
@@ -71,7 +71,8 @@ public class UserCreateServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
 
-        int id = Integer.parseInt(request.getParameter("id"));
+        Integer id = 0;
+        //int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String login = request.getParameter("login");
         String email = request.getParameter("email");
