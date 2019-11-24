@@ -31,31 +31,7 @@ public class UserCreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
-
-        writer.append("<!DOCTYPE html>"
-                + "<html lang=\"en\">"
-
-                + "<head>"
-                + "    <meta charset=\"UTF-8\">"
-                + "    <title>Create user</title>"
-                + "</head>"
-
-                + "<body>"
-                + "<form action = '" + request.getContextPath() + "/list/create' method='post'>"
-
-                //+ "id: <input type=\"number\" name=\"id\"/><br/>"
-                + "name: <input type=\"text\" name=\"name\"/><br/>"
-                + "login: <input type=\"text\" name=\"login\"/><br/>"
-                + "email: <input type=\"text\" name=\"email\"/><br/>"
-
-                + "<input type='submit' value='Create new user' />"
-                + "</form>"
-                + "</body>"
-
-                + "</html>");
-
-        writer.flush();
+        response.sendRedirect(request.getContextPath() + "/create.jsp");
     }
 
     /**
@@ -80,7 +56,8 @@ public class UserCreateServlet extends HttpServlet {
         User user = new User(id, name, login, email);
 
         if (service.add(user)) {
-            response.sendRedirect(request.getContextPath() + "/list");
+            //response.sendRedirect(request.getContextPath() + "/list");
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
         } else {
             writer.append("error create");
         }
