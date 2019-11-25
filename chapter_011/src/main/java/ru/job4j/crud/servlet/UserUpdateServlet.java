@@ -3,6 +3,7 @@ package ru.job4j.crud.servlet;
 import ru.job4j.crud.datamodel.User;
 import ru.job4j.crud.logic.ValidateService;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,37 +29,18 @@ public class UserUpdateServlet extends HttpServlet {
      * @throws IOException
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
 
         int id = Integer.parseInt(request.getParameter("id"));
         User user = service.findById(id);
 
-        writer.append("<!DOCTYPE html>"
-                + "<html lang=\"en\">"
+        request.setAttribute("id", user.getId());
+        request.setAttribute("name", user.getName());
+        request.setAttribute("login", user.getLogin());
+        request.setAttribute("email", user.getEmail());
 
-                + "<head>"
-                + "    <meta charset=\"UTF-8\">"
-                + "    <title>Update user</title>"
-                + "</head>"
-
-                + "<body>"
-                + "<form action = '" + request.getContextPath() + "/list/update' method='post'>"
-
-                //+ "id: <input type=\"number\" name=\"id\"/><br/>"
-                + "<input type='hidden' name='id' value='" + id + "'/>"
-                + "name: <input type=\"text\" name=\"name\" value='" + user.getName() + "' /><br/>"
-                + "login: <input type=\"text\" name=\"login\" value='" + user.getLogin() + "' /><br/>"
-                + "email: <input type=\"text\" name=\"email\" value='" + user.getEmail() + "' /><br/>"
-
-                + "<input type='submit' value='Update this user' />"
-                + "</form>"
-                + "</body>"
-
-                + "</html>");
-
-        writer.flush();
+        request.getRequestDispatcher("/update.jsp").forward(request, response);
     }
 
     /**
@@ -82,7 +64,7 @@ public class UserUpdateServlet extends HttpServlet {
         User user = new User(id, name, login, email);
 
         if (service.update(user)) {
-            response.sendRedirect(request.getContextPath() + "/list");
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
         } else {
             writer.append(String.format("error updated for id=%d", id));
         }
