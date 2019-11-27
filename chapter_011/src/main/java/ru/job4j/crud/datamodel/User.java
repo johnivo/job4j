@@ -28,6 +28,14 @@ public class User {
         this.createDate = LocalDateTime.now();
     }
 
+    public User(Integer id, String name, String login, String email, LocalDateTime createDate) {
+        this.id = id;
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = createDate;
+    }
+
     public Integer getId() {
         return id;
     }

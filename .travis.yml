@@ -10,6 +10,7 @@ services:
 before_install:
   - psql -c 'create database tracker;' -U postgres
   - psql -c 'create database vacancy_parser1;' -U postgres
+  - psql -c 'create database users1;' -U postgres
 
 # используем режим обычного пользователя для сборки проекта.
 sudo: false
