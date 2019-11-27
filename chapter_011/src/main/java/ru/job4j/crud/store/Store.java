@@ -15,9 +15,9 @@ public interface Store<T extends User> {
 
     void add(T user);
 
-    void update(T user);
+    void update(T user, Integer id);
 
-    void delete(T user);
+    void delete(Integer id);
 
     List<T> findAll();
 

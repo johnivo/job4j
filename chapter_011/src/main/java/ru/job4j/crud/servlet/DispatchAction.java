@@ -42,7 +42,7 @@ public class DispatchAction {
      * @return handler.
      */
     public Function<User, Boolean> update() {
-        return user -> service.update(user);
+        return user -> service.update(user, user.getId());
     }
 
     /**
@@ -50,7 +50,7 @@ public class DispatchAction {
      * @return handler.
      */
     public Function<User, Boolean> delete() {
-        return user -> service.delete(user);
+        return user -> service.delete(user.getId());
     }
 
     /**

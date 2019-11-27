@@ -63,7 +63,7 @@ public class UserUpdateServlet extends HttpServlet {
 
         User user = new User(id, name, login, email);
 
-        if (service.update(user)) {
+        if (service.update(user, id)) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
         } else {
             writer.append(String.format("error updated for id=%d", id));

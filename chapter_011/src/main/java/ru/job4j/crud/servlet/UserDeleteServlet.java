@@ -34,9 +34,9 @@ public class UserDeleteServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
 
         int id = Integer.parseInt(request.getParameter("id"));
-        User user = service.findById(id);
+        //User user = service.findById(id);
 
-        if (service.delete(user)) {
+        if (service.delete(id)) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
         } else {
             writer.append(String.format("error delete for id=%d", id));
