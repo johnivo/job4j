@@ -7,6 +7,7 @@
     <servlet>
         <servlet-name>EchoServlet</servlet-name>
         <servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
@@ -16,7 +17,7 @@
     <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>ru.job4j.crud.servlet.UserServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
@@ -26,11 +27,21 @@
     <servlet>
         <servlet-name>UsersServlet</servlet-name>
         <servlet-class>ru.job4j.crud.servlet.UsersServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>UsersServlet</servlet-name>
         <url-pattern>/list</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UsersController</servlet-name>
+        <servlet-class>ru.job4j.crud.servlet.UsersController</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UsersController</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -40,7 +51,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UserCreateServlet</servlet-name>
-        <url-pattern>/list/create</url-pattern>
+        <url-pattern>/create</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -50,7 +61,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UserUpdateServlet</servlet-name>
-        <url-pattern>/list/update</url-pattern>
+        <url-pattern>/update</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -60,7 +71,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UserDeleteServlet</servlet-name>
-        <url-pattern>/list/delete</url-pattern>
+        <url-pattern>/delete</url-pattern>
     </servlet-mapping>
 
 </web-app>

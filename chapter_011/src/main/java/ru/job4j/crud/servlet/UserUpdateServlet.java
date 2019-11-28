@@ -30,7 +30,6 @@ public class UserUpdateServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html");
 
         int id = Integer.parseInt(request.getParameter("id"));
         User user = service.findById(id);
@@ -40,7 +39,7 @@ public class UserUpdateServlet extends HttpServlet {
         request.setAttribute("login", user.getLogin());
         request.setAttribute("email", user.getEmail());
 
-        request.getRequestDispatcher("/update.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/update.jsp").forward(request, response);
     }
 
     /**
@@ -53,7 +52,6 @@ public class UserUpdateServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
 
         int id = Integer.parseInt(request.getParameter("id"));
@@ -64,7 +62,7 @@ public class UserUpdateServlet extends HttpServlet {
         User user = new User(id, name, login, email);
 
         if (service.update(user, id)) {
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            response.sendRedirect(String.format("%s/", request.getContextPath()));
         } else {
             writer.append(String.format("error updated for id=%d", id));
         }
