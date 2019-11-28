@@ -30,14 +30,12 @@ public class UserDeleteServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
 
         int id = Integer.parseInt(request.getParameter("id"));
-        //User user = service.findById(id);
 
         if (service.delete(id)) {
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            response.sendRedirect(String.format("%s/", request.getContextPath()));
         } else {
             writer.append(String.format("error delete for id=%d", id));
         }
