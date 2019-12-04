@@ -60,6 +60,14 @@ public class MemoryStore implements Store<User> {
     }
 
     @Override
+    public void uploadImage(User user) {
+        this.users.computeIfPresent(user.getId(), (key, value) -> {
+            value.setPhotoId(user.getPhotoId());
+            return value;
+        });
+    }
+
+    @Override
     public void delete(Integer id) {
         this.users.remove(id);
     }

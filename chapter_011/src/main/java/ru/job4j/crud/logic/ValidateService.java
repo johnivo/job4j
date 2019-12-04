@@ -44,6 +44,12 @@ public class ValidateService {
         return true;
     }
 
+    public Boolean uploadImage(User user) {
+        checkUser(user);
+        storage.uploadImage(user);
+        return true;
+    }
+
     public Boolean delete(Integer id) {
         checkId(id);
         storage.delete(id);
