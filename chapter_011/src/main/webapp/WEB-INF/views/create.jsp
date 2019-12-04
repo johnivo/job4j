@@ -7,10 +7,18 @@
 </head>
 <body>
 
-<form action="${pageContext.servletContext.contextPath}/create" method="post">
-    Name: <input type="text" name="name" title="Name"/><br/>
-    Login: <input type="text" name="login" title="Login"/><br/>
-    Email: <input type="text" name="email" title="Email"/><br/>
+<strong>Please, enter your details!</strong><br>
+<br>
+<form action="${pageContext.servletContext.contextPath}/create" method="post" enctype="multipart/form-data">
+    Name:<br>
+    <input type="text" name="name" title="Name"/><br>
+    Login:<br>
+    <input type="text" name="login" title="Login"/><br>
+    Email:<br>
+    <input type="text" name="email" title="Email"/><br>
+    Photo:<br>
+    <input type="file" name="file"/><br>
+    <%--<input type="file" name="file" required><br>--%>
     <br>
     <input type="submit" value="Create new user"/>
 </form>
