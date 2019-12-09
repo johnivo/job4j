@@ -1,10 +1,12 @@
 package ru.job4j.crud.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import ru.job4j.crud.datamodel.Role;
 import ru.job4j.crud.datamodel.User;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -59,7 +61,7 @@ public class DBStore implements Store<User> {
 
     @Override
     public void add(User user) {
-        String insert = "INSERT INTO users (name, login, email, createDate, photoId) VALUES (?, ?, ?, ?, ?)";
+        String insert = "INSERT INTO users (name, login, email, createDate, photoId, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert)
         ) {
@@ -68,6 +70,8 @@ public class DBStore implements Store<User> {
             ps.setString(3, user.getEmail());
             ps.setTimestamp(4, Timestamp.valueOf(user.getCreateDate()));
             ps.setString(5, user.getPhotoId());
+            ps.setString(6, user.getPassword());
+            ps.setString(7, user.getRole().getRole());
 
             ps.executeUpdate();
         } catch (Exception e) {
@@ -77,16 +81,16 @@ public class DBStore implements Store<User> {
 
     @Override
     public void update(User user, Integer id) {
-        String update = "UPDATE users SET name = ?, login = ?, email = ? WHERE id = ?";
+        String update = "UPDATE users SET name = ?, login = ?, email = ?, password = ?, role = ? WHERE id = ?";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(update)
         ) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getLogin());
             ps.setString(3, user.getEmail());
-            //ps.setTimestamp(4, Timestamp.valueOf(user.getCreateDate()));
-            //ps.setInt(5, id);
-            ps.setInt(4, id);
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getRole().getRole());
+            ps.setInt(6, id);
 
             ps.executeUpdate();
         } catch (Exception e) {
@@ -126,25 +130,13 @@ public class DBStore implements Store<User> {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        String selectAll = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId FROM users AS u";
+        String selectAll = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role FROM users AS u";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectAll)
         ) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                User user = new User(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getTimestamp(5).toLocalDateTime(),
-                        rs.getString(6)
-//                        rs.getInt("id"),
-//                        rs.getString("name"),
-//                        rs.getString("login"),
-//                        rs.getString("email"),
-//                        rs.getTimestamp(5).toLocalDateTime()
-                );
+                User user = getUser(rs);
                 users.add(user);
             }
         } catch (Exception e) {
@@ -156,23 +148,70 @@ public class DBStore implements Store<User> {
     @Override
     public User findById(int id) {
         User user = new User();
-        String selectById = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId FROM users AS u WHERE id = ?";
+        String selectById = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role FROM users AS u WHERE id = ?";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectById)
         ) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                user.setId(rs.getInt(1));
-                user.setName(rs.getString(2));
-                user.setLogin(rs.getString(3));
-                user.setEmail(rs.getString(4));
-                user.setCreateDate(rs.getTimestamp(5).toLocalDateTime());
-                user.setPhotoId(rs.getString(6));
+                user = getUser(rs);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return user;
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        User user = new User();
+        String selectByLogin = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role FROM users AS u WHERE login = ?";
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement(selectByLogin)
+        ) {
+            ps.setString(1, login);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                user = getUser(rs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public User isCredential(String login, String password) {
+        User user = new User();
+        String credential = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role "
+                + "FROM users AS u WHERE login = ? AND password = ?";
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement(credential)
+        ) {
+            ps.setString(1, login);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                user = getUser(rs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private User getUser(ResultSet rs) throws SQLException {
+        int id = rs.getInt(1);
+        String name = rs.getString(2); //или rs.getString("name")
+        String login = rs.getString(3);
+        String email = rs.getString(4);
+        LocalDateTime createDate = rs.getTimestamp(5).toLocalDateTime();
+        String photoId = rs.getString(6);
+        String password = rs.getString(7);
+        String role = rs.getString(8);
+        User user = new User(id, name, login, email, createDate, photoId, password);
+        user.setRole(new Role(role));
         return user;
     }
 }

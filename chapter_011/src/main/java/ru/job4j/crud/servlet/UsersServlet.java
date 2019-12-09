@@ -1,6 +1,7 @@
 package ru.job4j.crud.servlet;
 
 import ru.job4j.crud.datamodel.User;
+import ru.job4j.crud.logic.Validate;
 import ru.job4j.crud.logic.ValidateService;
 
 import javax.servlet.http.HttpServlet;
@@ -22,7 +23,7 @@ public class UsersServlet extends HttpServlet {
      * Ссылка на объект ValidateService.
      * Logic layout - слой содержит выполнение бизнес логики.
      */
-    private final ValidateService service = ValidateService.getInstance();
+    private final Validate service = ValidateService.getInstance();
 
 
     /**

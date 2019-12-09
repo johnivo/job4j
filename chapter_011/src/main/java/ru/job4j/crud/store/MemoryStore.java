@@ -83,4 +83,28 @@ public class MemoryStore implements Store<User> {
         return this.users.get(id);
     }
 
+    @Override
+    public User findByLogin(String login) {
+        User user = null;
+        for (User value : this.users.values()) {
+            if (login.equals(value.getLogin())) {
+                user = value;
+                break;
+            }
+        }
+        return user;
+    }
+
+    @Override
+    public User isCredential(String login, String password) {
+        User user = null;
+        for (User value : this.users.values()) {
+            if (login.equals(value.getLogin()) && password.equals(value.getPassword())) {
+                user = value;
+                break;
+            }
+        }
+        return user;
+    }
+
 }

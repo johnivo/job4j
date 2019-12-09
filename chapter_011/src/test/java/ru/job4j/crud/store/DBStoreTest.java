@@ -2,11 +2,10 @@ package ru.job4j.crud.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.Test;
+import ru.job4j.crud.datamodel.Role;
 import ru.job4j.crud.datamodel.User;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -84,8 +83,12 @@ public class DBStoreTest {
     @Test
     public void whenAdd2UsersThenGet2NewEntriesInDB() throws SQLException {
         DBStore dbs = new DBStore(ConnectionRollback.create(this.init().getConnection()));
-        User user1 = new User(null, "user1", "user1", "user1@mail.ru", LocalDateTime.now());
-        User user2  = new User(null, "user2", "user2", "user2@mail.ru", LocalDateTime.now());
+        User user1 = new User(null, "user1", "user1", "user1@mail.ru",
+                LocalDateTime.now(), null, "user1");
+        user1.setRole(new Role("admin"));
+        User user2  = new User(null, "user2", "user2", "user2@mail.ru",
+                LocalDateTime.now(), null, "user2");
+        user2.setRole(new Role("user"));
         int firstSize = dbs.findAll().size();
 
         dbs.add(user1);
@@ -98,21 +101,29 @@ public class DBStoreTest {
     @Test
     public void whenUpdateUsernameThenGetNewUsername() throws SQLException {
         DBStore dbs = new DBStore(ConnectionRollback.create(this.init().getConnection()));
-        User user1 = new User(null, "user1", "user1", "user1@mail.ru", LocalDateTime.now());
+        User user1 = new User(null, "user1", "user1", "user1@mail.ru",
+                LocalDateTime.now(), null, "user1");
+        user1.setRole(new Role("admin"));
         dbs.add(user1);
         List<User> result = dbs.findAll();
         int id = result.get(result.size() - 1).getId();
+        String login = result.get(result.size() - 1).getLogin();
+        String password = result.get(result.size() - 1).getPassword();
         user1.setName("replaced");
 
         dbs.update(user1, id);
 
         assertThat(dbs.findById(id).getName(), is("replaced"));
+        assertThat(dbs.findByLogin(login).getName(), is("replaced"));
+        assertThat(dbs.isCredential(login, password).getName(), is("replaced"));
     }
 
     @Test
     public void whenDeleteUserThenDontGetNewEntryInDB() throws SQLException {
         DBStore dbs = new DBStore(ConnectionRollback.create(this.init().getConnection()));
-        User user1 = new User(null, "user1", "user1", "user1@mail.ru", LocalDateTime.now());
+        User user1 = new User(null, "user1", "user1", "user1@mail.ru",
+                LocalDateTime.now(), null, "user1");
+        user1.setRole(new Role("admin"));
         int firstSize = dbs.findAll().size();
         dbs.add(user1);
         List<User> result = dbs.findAll();

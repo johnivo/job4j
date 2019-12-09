@@ -5,6 +5,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.job4j.crud.datamodel.User;
+import ru.job4j.crud.logic.Validate;
 import ru.job4j.crud.logic.ValidateService;
 
 import javax.servlet.ServletContext;
@@ -26,7 +27,7 @@ public class UploadServlet extends HttpServlet {
 
     private static final String FN = File.separator;
 
-    private final ValidateService service = ValidateService.getInstance();
+    private final Validate service = ValidateService.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

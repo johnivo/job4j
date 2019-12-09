@@ -30,25 +30,43 @@
 <form action="${pageContext.servletContext.contextPath}/update" method="post">
     <input type="hidden" name="id" value="${user.id}"/>
     Name:<br>
-    <input type="text" name="name" value="${user.name}"/><br>
+    <%--<input type="text" name="name" value="${param.name}"/><br>--%>
+    <input type="text" name="name" value="${user.name}" required/><br>
     Login:<br>
-    <input type="text" name="login" value="${user.login}"/><br>
+    <input type="text" name="login" value="${user.login}" required/><br>
+    Password:<br>
+    <input type="text" maxlength="16" name="password" value="${user.password}" required/><br>
+
+    <%--<c:if test="${user.role  == 'admin'}">--%>
+    <c:if test="${sessionScope.role == 'admin'}">
+        Role:<br>
+        <select name="role" required>
+            <option value="user">user</option>
+            <option value="admin">admin</option>
+        </select></br>
+    </c:if>
+    <c:if test="${sessionScope.role != 'admin'}">
+        <input type="hidden" name="role" value="user"/>
+    </c:if>
+
     Email:<br>
-    <input type="text" name="email" value="${user.email}"/><br>
+    <input type="text" name="email" value="${user.email}" required/><br>
     <br>
     <input type="submit" value="Update this user"/>
 </form>
-<%--<form action="${pageContext.servletContext.contextPath}/update" method="post">--%>
-<%--<input type="hidden" name="id" value="${param.id}"/>--%>
-<%--Name:<br>--%>
-<%--<input type="text" name="name" value="${param.name}"/><br>--%>
-<%--Login:<br>--%>
-<%--<input type="text" name="login" value="${param.login}"/><br>--%>
-<%--Email:<br>--%>
-<%--<input type="text" name="email" value="${param.email}"/><br>--%>
-<%--<br>--%>
-<%--<input type="submit" value="Update this user"/>--%>
-<%--</form>--%>
+
+<c:choose>
+    <c:when test="${sessionScope.role == 'admin'}">
+        <form action="${pageContext.servletContext.contextPath}/UsersView" method="get">
+            <input type="submit" value="Back to list" style="background-color: darkgrey"/>
+        </form>
+    </c:when>
+    <c:otherwise>
+        <form action="${pageContext.servletContext.contextPath}/UserView" method="get">
+            <input type="submit" value="back to user page" style="background-color: darkgrey"/>
+        </form>
+    </c:otherwise>
+</c:choose>
 
 </body>
 </html>
