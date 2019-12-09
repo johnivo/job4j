@@ -1,6 +1,7 @@
 package ru.job4j.crud.servlet;
 
 import ru.job4j.crud.datamodel.User;
+import ru.job4j.crud.logic.Validate;
 import ru.job4j.crud.logic.ValidateService;
 
 import javax.servlet.ServletException;
@@ -30,7 +31,7 @@ public class UserServlet extends HttpServlet {
     /**
      * Ссылка на объект ValidateService.
      */
-    private final ValidateService service = ValidateService.getInstance();
+    private final Validate service = ValidateService.getInstance();
 
     /**
      * Ссылка на объект DispatchAction, с загруженным списком операций.
@@ -51,7 +52,7 @@ public class UserServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
         if (request.getParameter("id") == null) {
             if (!service.findAll().isEmpty()) {
-                for (User user : service.findAll()) {
+                for (Object user : service.findAll()) {
                     writer.append(user.toString());
                     writer.append(System.lineSeparator());
                 }

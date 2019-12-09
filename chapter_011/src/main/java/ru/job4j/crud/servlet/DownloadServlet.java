@@ -1,6 +1,7 @@
 package ru.job4j.crud.servlet;
 
 import ru.job4j.crud.datamodel.User;
+import ru.job4j.crud.logic.Validate;
 import ru.job4j.crud.logic.ValidateService;
 
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ public class DownloadServlet extends HttpServlet {
 
     private static final String FN = File.separator;
 
-    private final ValidateService service = ValidateService.getInstance();
+    private final Validate service = ValidateService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

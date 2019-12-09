@@ -1,7 +1,9 @@
 package ru.job4j.crud.servlet;
 
 import ru.job4j.crud.datamodel.User;
+import ru.job4j.crud.logic.Validate;
 import ru.job4j.crud.logic.ValidateService;
+import ru.job4j.crud.datamodel.Role;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +21,7 @@ public class UserUpdateServlet extends HttpServlet {
     /**
      * Logic layout - слой содержит выполнение бизнес логики.
      */
-    private final ValidateService service = ValidateService.getInstance();
+    private final Validate service = ValidateService.getInstance();
 
     /**
      * Открывает форму для редактирования с заполенными полями.
@@ -32,7 +34,6 @@ public class UserUpdateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         int id = Integer.parseInt(request.getParameter("id"));
-//        User user = service.findById(id);
         request.setAttribute("user", service.findById(id));
         request.getRequestDispatcher("/WEB-INF/views/update.jsp").forward(request, response);
     }
@@ -54,8 +55,10 @@ public class UserUpdateServlet extends HttpServlet {
         String name = request.getParameter("name");
         String login = request.getParameter("login");
         String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
 
-        User user = new User(id, name, login, email);
+        User user = new User(id, name, login, email, password, new Role(role));
 
         if (service.update(user, id)) {
             response.sendRedirect(String.format("%s/", request.getContextPath()));

@@ -1,5 +1,6 @@
 package ru.job4j.crud.servlet;
 
+import ru.job4j.crud.logic.Validate;
 import ru.job4j.crud.logic.ValidateService;
 
 import javax.servlet.ServletContext;
@@ -22,7 +23,7 @@ public class UserDeleteServlet extends HttpServlet {
     /**
      * Logic layout - слой содержит выполнение бизнес логики.
      */
-    private final ValidateService service = ValidateService.getInstance();
+    private final Validate service = ValidateService.getInstance();
 
     private static final String FN = File.separator;
 
