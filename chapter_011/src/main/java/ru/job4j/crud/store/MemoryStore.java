@@ -55,6 +55,8 @@ public class MemoryStore implements Store<User> {
             value.setName(user.getName());
             value.setLogin(user.getLogin());
             value.setEmail(user.getEmail());
+            value.setPassword(user.getPassword());
+            value.setRole(user.getRole());
             return value;
         });
     }
@@ -106,5 +108,4 @@ public class MemoryStore implements Store<User> {
         }
         return user;
     }
-
 }

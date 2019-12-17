@@ -65,54 +65,58 @@ public class UserCreateServlet extends HttpServlet {
         String photoId = "";
         String password = "";
         String role = "";
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        ServletContext servletContext = this.getServletConfig().getServletContext();
-        File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-        factory.setRepository(repository);
-        ServletFileUpload upload = new ServletFileUpload(factory);
-        try {
-            List<FileItem> items = upload.parseRequest(request);
-            File folder = new File("images");
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
-            for (FileItem item : items) {
-                if (!item.isFormField()) {
-                    photoId = item.getName();
-                    if (!photoId.equals("")) {
-                        File file = new File(folder + FN + photoId);
-                        try (FileOutputStream out = new FileOutputStream(file)) {
-                            out.write(item.getInputStream().readAllBytes());
+        //Проверяем, что у нас есть запрос на загрузку файла
+        //boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        //if (isMultipart) {
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletContext servletContext = this.getServletConfig().getServletContext();
+            File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            factory.setRepository(repository);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            try {
+                List<FileItem> items = upload.parseRequest(request);
+                File folder = new File("images");
+                if (!folder.exists()) {
+                    folder.mkdir();
+                }
+                for (FileItem item : items) {
+                    if (!item.isFormField()) {
+                        photoId = item.getName();
+                        if (!photoId.equals("")) {
+                            File file = new File(folder + FN + photoId);
+                            try (FileOutputStream out = new FileOutputStream(file)) {
+                                out.write(item.getInputStream().readAllBytes());
+                            }
+                        }
+                    } else {
+                        if (item.getFieldName().equals("id")) {
+                            id = Integer.parseInt(item.getString());
+                        } else if (item.getFieldName().equals("name")) {
+                            name = item.getString();
+                        } else if (item.getFieldName().equals("login")) {
+                            login = item.getString();
+                        } else if (item.getFieldName().equals("email")) {
+                            email = item.getString();
+                        } else if (item.getFieldName().equals("photoId")) {
+                            photoId = item.getString();
+                        } else if (item.getFieldName().equals("password")) {
+                            password = item.getString();
+                        } else if (item.getFieldName().equals("role")) {
+                            role = item.getString();
                         }
                     }
-                } else {
-                    if (item.getFieldName().equals("id")) {
-                        id = Integer.parseInt(item.getString());
-                    } else if (item.getFieldName().equals("name")) {
-                        name = item.getString();
-                    } else if (item.getFieldName().equals("login")) {
-                        login = item.getString();
-                    } else if (item.getFieldName().equals("email")) {
-                        email = item.getString();
-                    } else if (item.getFieldName().equals("photoId")) {
-                        photoId = item.getString();
-                    } else if (item.getFieldName().equals("password")) {
-                        password = item.getString();
-                    } else if (item.getFieldName().equals("role")) {
-                        role = item.getString();
-                    }
                 }
+                User user = new User(id, name, login, email, LocalDateTime.now(), photoId, password);
+                user.setRole(new Role(role));
+                if (service.add(user)) {
+                    response.sendRedirect(String.format("%s/", request.getContextPath()));
+                } else {
+                    writer.append("error create");
+                }
+            } catch (FileUploadException e) {
+                e.printStackTrace();
             }
-            User user = new User(id, name, login, email, LocalDateTime.now(), photoId, password);
-            user.setRole(new Role(role));
-            if (service.add(user)) {
-                response.sendRedirect(String.format("%s/", request.getContextPath()));
-            } else {
-                writer.append("error create");
-            }
-        } catch (FileUploadException e) {
-            e.printStackTrace();
-        }
+        //}
     }
 
 }

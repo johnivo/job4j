@@ -43,6 +43,19 @@ public class User {
         this.createDate = createDate;
     }
 
+    public User(String name, String login, String email, String password, Role role) {
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = LocalDateTime.now();
+        this.password = password;
+        this.role = role;
+    }
+
+    public User(String name) {
+        this.name = name;
+    }
+
     public User(Integer id, String name, String login, String email, String password, Role role) {
         this.id = id;
         this.name = name;
@@ -164,13 +177,14 @@ public class User {
                 && login.equals(user.login)
                 && email.equals(user.email)
                 && createDate.equals(user.createDate)
+                && photoId.equals(user.photoId)
                 && password.equals(user.password)
                 && role.equals(user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, login, email, createDate, password, role);
+        return Objects.hash(id, name, login, email, createDate, photoId, password, role);
     }
 
 //    @Override
@@ -186,7 +200,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User{ id=%d, name=%s, login=%s, email=%s, createDate=%s }",
-                id, name, login, email, createDate);
+        return String.format("User{ id=%d, name=%s, login=%s, email=%s, createDate=%s, role=%s }",
+                id, name, login, email, createDate, role);
     }
 }
