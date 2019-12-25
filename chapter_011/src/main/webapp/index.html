@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #F8F8FF;
+        }
+
+        h2 {
+            color: #008080;
+            text-align: left;
+        }
+
+        p {
+            font-family: Verdana;
+            color: #008B8B;
+            font-size: 15px;
+        }
+        label {
+            color: #008B8B;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <h2>My First Bootstrap Page</h2>
+    <p>This is some profile.</p>
+
+    <form class="form-horizontal" action="/action_page.php">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="name" placeholder="Enter name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="surname">Surname:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="surname" placeholder="Enter surname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="city">City:</label>
+            <div class="col-sm-4">
+                <select id="city" class="form-control">
+                    <option>Msk</option>
+                    <option>Spb</option>
+                    <option>Vol</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Sex:</label>
+            <div class="form-check form-check-inline col-sm-4 col align-self-end">
+                <input class="form-check-input" type="radio" name="sex" id="sex1" value="male" checked>
+                <label class="form-check-label" for="sex1">Male</label>
+                <input class="form-check-input" type="radio" name="sex" id="sex2" value="female">
+                <label class="form-check-label" for="sex2">Female</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="desc">Description:</label>
+            <div class="col-sm-4">
+                <textarea class="form-control" id="desc" rows="4"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="remember"> Remember me</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+    </form>
+    <br>
+
+    <!--<div class="container">-->
+    <div class="col-sm-offset-2 col-sm-10">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>City</th>
+                <th>Sex</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>John</td>
+                <td>Doe</td>
+                <td>Msk</td>
+                <td>male</td>
+                <td>desc</td>
+            </tr>
+            <tr>
+                <td>Mary</td>
+                <td>Moe</td>
+                <td>Spb</td>
+                <td>female</td>
+                <td>desc</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--</div>-->
+
+</div>
+
+</body>
+</html>
