@@ -265,6 +265,31 @@ switch(i) {
         break;
     }
 ``` 
+
+пример из теста:
+```java
+public class ExampleSwitch {
+    public static void main(String args[]) {
+        for(int i = 0; i < 3; i++) {
+            switch(i) {
+                case 0: break;
+                case 1: System.out.print("one ");
+                //break;
+                case 2: System.out.print("two ");
+                //break;
+                case 3: System.out.print("three ");
+                //break;
+            }
+            //System.out.println("End of step.");
+        }
+        System.out.println("done");
+    }
+    //вывод: one two three two three done
+}
+``` 
+
+http://proglang.su/java/operator-switch-case
+
 + Тернарный оператор `Логическое_выражение ? Выражение1 : Выражение2`
 ```java
 int largerNum = lowNum < highNum ? highNum : lowNum; 
@@ -460,11 +485,11 @@ array[0] = 20;
 Integer i; 
 i = i % 2;
 ``` 
-Т.к. % применима только к примитивам, то происходит `i.intValue() % 2`
- Преобразование происходит в случаях:
+Т.к. операция % применима только к примитивам, то происходит `i.intValue() % 2`
 
-+ когда параметр передается в метод в котором ожидается класс обертками;
-+ когда идет присвоение классу обертке.
+Преобразование происходит в случаях:
++ когда параметр передается в метод в котором ожидается класс-обертка;
++ когда идет присвоение классу-обертке.
 
 [к оглавлению](#Core)
 
