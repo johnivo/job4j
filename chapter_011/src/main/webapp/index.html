@@ -20,6 +20,24 @@
                 alert("desc " + $('desc').attr('title'));
             }
         }
+        function addRow() {
+            //получаем значения полей
+            var name = $('#name').val();
+            var surname = $('#surname').val();
+            var city = $('#city').val();
+            var desc = $('#desc').val();
+            //получаем значение элемента с состоянием checked
+            var sex = $('[name="sex"]:checked').val();
+            //получаем ссылку на последний элемент в таблице.
+            //и после него добавляем html
+            $('#table tr:last').after('<tr>' +
+                '<td>' + name +'</td>' +
+                '<td>' + surname +'</td>' +
+                '<td>' + city +'</td>' +
+                '<td>' + sex +'</td>' +
+                '<td>' + desc +'</td>' +
+                '</tr>');
+        }
     </script>
     <style>
         body {
@@ -82,7 +100,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="desc">Description:</label>
             <div class="col-sm-4">
-                <textarea class="form-control" id="desc" rows="4"></textarea>
+                <textarea class="form-control" id="desc" rows="4" placeholder="Enter desc"></textarea>
             </div>
         </div>
 
@@ -97,13 +115,15 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" onclick="return validate();">Submit</button>
             </div>
+            <div class="col-sm-offset-2 col-sm-10">
+                <br><button type="button" class="btn btn-default" onclick="addRow();">Add row</button>
+            </div>
         </div>
     </form>
-    <br>
 
     <!--<div class="container">-->
     <div class="col-sm-offset-2 col-sm-10">
-        <table class="table table-hover">
+        <table class="table table-hover" id="table">
             <thead>
             <tr>
                 <th>Name</th>
