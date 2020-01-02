@@ -8,17 +8,52 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script>
+
         function validate() {
-            //console.log($('name').attr('title'));
-            if ($('#name').val() == "") {
-                alert("name " + $('name').attr('title'));
+            var result = true;
+            var name = $('#name');
+            var surname = $('#surname');
+            var desc = $('#desc');
+            var city = $('#city');
+            //var city = $('select[name="city"]option');
+            //var city = document.querySelectorAll('[name="city"]');
+            var sex = document.querySelectorAll('[name="sex"]');
+            var message = '';
+
+            if (name.val() === '') {
+                message += name.attr('placeholder') + '\n';
+                result = false;
             }
-            if ($('#surname').val() == "") {
-                alert("surname " + $('surname').attr('title'));
+            if (surname.val() === '') {
+                message += surname.attr('placeholder') + '\n';
+                result = false;
             }
-            if ($('#desc').val() == "") {
-                alert("desc " + $('desc').attr('title'));
+            if (desc.val() === '') {
+                message += desc.attr('placeholder') + '\n';
+                result = false;
             }
+            if (city.val() === '') {
+                message += 'Choose city' + '\n';
+                result = false;
+            }
+
+            var count = 0;
+            for (var i = 0; i < sex.length; i++) {
+                if (sex[i].checked) {
+                    break;
+                } else {
+                    count++;
+                }
+            }
+            if (count === sex.length) {
+                message += 'Choose sex';
+                result = false;
+            }
+
+            if (!result) {
+                alert(message);
+            }
+            return result;
         }
         function addRow() {
             //получаем значения полей
@@ -27,17 +62,81 @@
             var city = $('#city').val();
             var desc = $('#desc').val();
             //получаем значение элемента с состоянием checked
-            var sex = $('[name="sex"]:checked').val();
+            var sex = $('input[type=radio][name=sex]:checked').val();
             //получаем ссылку на последний элемент в таблице.
             //и после него добавляем html
             $('#table tr:last').after('<tr>' +
-                '<td>' + name +'</td>' +
-                '<td>' + surname +'</td>' +
-                '<td>' + city +'</td>' +
-                '<td>' + sex +'</td>' +
-                '<td>' + desc +'</td>' +
-                '</tr>');
+                '<td>' + name + '</td>' +
+                '<td>' + surname + '</td>' +
+                '<td>' + city + '</td>' +
+                '<td>' + sex + '</td>' +
+                '<td>' + desc + '</td>' +
+                '</tr>'
+            );
         }
+
+        function getPersons() {
+            $.ajax({
+                url: "./json",
+                method: "get",
+                contentType: "text/json",
+                complete: function (data) {
+                    var result = "";
+                    var persons = JSON.parse(data.responseText);
+                    if (data.responseText !== undefined) {
+                        for (var i = 0; i < persons.length; i++) {
+                            result += "<tr>"
+                                + "<td>" + persons[i].name + "</td>"
+                                + "<td>" + persons[i].surname + "</td>"
+                                + "<td>" + persons[i].city + "</td>"
+                                + "<td>" + persons[i].sex + "</td>"
+                                + "<td>" + persons[i].desc + "</td>"
+                                + "</tr>";
+                            console.log(persons[i].name);
+                        }
+                        var table = document.getElementById("datatable");
+                        table.innerHTML = result;
+                    }
+                }
+            });
+        }
+
+        function sendPerson() {
+            if (validate()) {
+                var person = {
+                    "name": $('#name').val(),
+                    "surname": $('#surname').val(),
+                    "city": $('#city').val(),
+                    "sex": $('input[name="sex"]:checked').val(),
+                    "desc": $('#desc').val()
+                };
+
+                $.ajax({
+                    url: "./json",
+                    method: "post",
+                    data: JSON.stringify(person),
+                    //contentType: 'text/json',
+                    dataType: 'json',
+                    error: function (message) {
+                        console.log(message);
+                    },
+                    complete: function () {
+                        getPersons()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+        }
+
+        //для обработки события onload, которое выстреливает после готовности страницы,
+        //используем ready(), кот. м.б. вызван только от объекта текущего документа
+        //и выполняет функцию, как только DOM полностью загрузился.
+        $(document).ready(function () {
+            getPersons();
+        })
+
     </script>
     <style>
         body {
@@ -50,7 +149,7 @@
         }
 
         p {
-            font-family: Verdana;
+            font-family: Verdana,serif;
             color: #008B8B;
             font-size: 15px;
         }
@@ -59,6 +158,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <div class="container-fluid">
@@ -81,17 +181,20 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="city">City:</label>
             <div class="col-sm-4">
-                <select id="city" class="form-control">
-                    <option>Msk</option>
-                    <option>Spb</option>
-                    <option>Vol</option>
+                <select name="city" id="city" class="form-control">
+                    <!--<option value="" hidden disabled selected></option>-->
+                    <option value="" hidden></option>
+                    <option value="Msk">Msk</option>
+                    <option value="Spb">Spb</option>
+                    <option value="Vol">Vol</option>
                 </select>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2">Sex:</label>
             <div class="form-check form-check-inline col-sm-4 col align-self-end">
-                <input class="form-check-input" type="radio" name="sex" id="sex1" value="male" checked>
+                <!--<input class="form-check-input" type="radio" name="sex" id="sex1" value="male" checked>-->
+                <input class="form-check-input" type="radio" name="sex" id="sex1" value="male">
                 <label class="form-check-label" for="sex1">Male</label>
                 <input class="form-check-input" type="radio" name="sex" id="sex2" value="female">
                 <label class="form-check-label" for="sex2">Female</label>
@@ -112,11 +215,14 @@
             </div>
         </div>
         <div class="form-group">
+            <!--<div class="col-sm-offset-2 col-sm-10">-->
+                <!--<button type="submit" class="btn btn-default" onclick="return validate();">Submit</button>-->
+            <!--</div>-->
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" onclick="return validate();">Submit</button>
-            </div>
-            <div class="col-sm-offset-2 col-sm-10">
-                <br><button type="button" class="btn btn-default" onclick="addRow();">Add row</button>
+                <button type="button" class="btn btn-default" onclick="addRow();">Add row (js)</button><br>
+                <br>
+                <button type="button" class="btn btn-default" onclick="sendPerson();">Send person (ajax jquery)</button>
+                <button type="reset" class="btn btn-default">Clear form</button>
             </div>
         </div>
     </form>
@@ -133,21 +239,21 @@
                 <th>Description</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>John</td>
-                <td>Doe</td>
-                <td>Msk</td>
-                <td>male</td>
-                <td>desc</td>
-            </tr>
-            <tr>
-                <td>Mary</td>
-                <td>Moe</td>
-                <td>Spb</td>
-                <td>female</td>
-                <td>desc</td>
-            </tr>
+            <tbody id="datatable" onload="getPersons()">
+            <!--<tr>-->
+                <!--<td>John</td>-->
+                <!--<td>Doe</td>-->
+                <!--<td>Msk</td>-->
+                <!--<td>male</td>-->
+                <!--<td>desc</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>Mary</td>-->
+                <!--<td>Moe</td>-->
+                <!--<td>Spb</td>-->
+                <!--<td>female</td>-->
+                <!--<td>desc</td>-->
+            <!--</tr>-->
             </tbody>
         </table>
     </div>
