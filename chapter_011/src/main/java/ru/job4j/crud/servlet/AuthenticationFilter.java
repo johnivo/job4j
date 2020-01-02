@@ -30,7 +30,10 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
-        if (request.getRequestURI().contains("/signin")) {
+        if (request.getRequestURI().contains("/signin")
+                || request.getRequestURI().contains("/json")
+                || request.getRequestURI().contains("/index.html")
+        ) {
             filterChain.doFilter(req, resp);
         } else {
             HttpSession session = request.getSession();
