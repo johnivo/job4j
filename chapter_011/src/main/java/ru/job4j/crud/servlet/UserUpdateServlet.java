@@ -58,7 +58,13 @@ public class UserUpdateServlet extends HttpServlet {
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
+        String country = request.getParameter("country");
+        String city = request.getParameter("city");
+
         User user = new User(id, name, login, email, password, new Role(role));
+
+        user.setCountry(country);
+        user.setCity(city);
 
         if (service.update(user, id)) {
             response.sendRedirect(String.format("%s/", request.getContextPath()));

@@ -4,6 +4,7 @@ import ru.job4j.crud.datamodel.User;
 import ru.job4j.crud.store.MemoryStore;
 import ru.job4j.crud.store.Store;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,5 +59,15 @@ public class ValidateStub implements Validate {
     @Override
     public User isCredential(String login, String password) {
         return storage.isCredential(login, password);
+    }
+
+    @Override
+    public List<String> getCountries() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> getCities(String country) {
+        return new ArrayList<>();
     }
 }

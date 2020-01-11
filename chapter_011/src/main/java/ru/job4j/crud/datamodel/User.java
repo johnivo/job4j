@@ -24,6 +24,10 @@ public class User {
     private String password;
     private Role role;
 
+    //локация
+    private String country;
+    private String city;
+
     public User() {
     }
 
@@ -163,6 +167,22 @@ public class User {
         this.role = role;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -200,7 +220,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User{ id=%d, name=%s, login=%s, email=%s, createDate=%s, role=%s }",
-                id, name, login, email, createDate, role);
+        return String.format("User{ id=%d, name=%s, login=%s, email=%s, createDate=%s, role=%s, country=%s, city=%s }",
+                id, name, login, email, createDate, role, country, city);
     }
 }
