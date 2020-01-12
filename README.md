@@ -33,12 +33,12 @@ John Ivanov. Java internship repository. Mentor Petr Arsentev and team [Job4j](h
 
 **chapter_007.** SQL, JDBC: postgresql, sqlite.
 
-[**chapter_008.** OOD: SOLID, TDD. Contains several interesting tasks: Interactive calculator, Product warehouse, Structure to maintain menu, SimpleGenerator.](https://github.com/johnivo/job4j/tree/master/chapter_008  "chapter_008")
+[**chapter_008.** OOD: SOLID, TDD. Contains several interesting tasks: Interactive calculator, Product warehouse, Structure to maintain menu, SimpleGenerator.](https://github.com/johnivo/job4j/tree/master/chapter_008 "chapter_008")
 
 **chapter_009.** Garbage Collection: types of GC, types of references.
 
 **chapter_010.** Multithreading: threads, concurrency, synchronize, monitor, deadlock, non blocking algorithm, producer-consumer pattern, locks, thread pools.
 
-**chapter_011.** Servlet, JSP: servlets, jsp, web app, crud, filters, security, mockito, _html, ajax, css_.
+[**chapter_011.** Servlet, JSP: servlets, jsp, web app, crud, filters, security, mockito, _html, ajax, css_.](https://github.com/johnivo/job4j/tree/master/chapter_011#%D0%B2%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%BB%D1%8F-%D1%83%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F%D0%BC%D0%B8 "chapter_011")
 
 [**interview questions.** Questions and answers for interviews on Job4j topics.](https://github.com/johnivo/job4j/tree/master/interview_questions)
