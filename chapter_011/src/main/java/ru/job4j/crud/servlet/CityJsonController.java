@@ -33,8 +33,11 @@ public class CityJsonController extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
 
         PrintWriter pw = new PrintWriter(resp.getOutputStream());
+//        PrintWriter writer = resp.getWriter();
+//        writer.print(json);
         pw.append(json);
         pw.flush();
+
     }
 
     /**
@@ -53,10 +56,6 @@ public class CityJsonController extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         writer.print(json);
         writer.flush();
-//        или так
-//        PrintWriter writer = resp.getWriter();
-//        writer.print(json);
-//        writer.flush();
     }
 
 }

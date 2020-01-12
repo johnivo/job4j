@@ -12,23 +12,54 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         body {
-            background-color: #F8F8FF;
-        }
-        thead {
-            background-color: gainsboro;
+            background-color: ghostwhite;
         }
         h2 {
             color: #008080;
             text-align: left;
         }
         p {
-            font-family: Verdana,serif;
+            font-family: Verdana, serif;
             color: #008B8B;
             text-align: left;
             font-size: 15px;
         }
-        label {
+
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 13px;
+            border-radius: 5px;
+            border-spacing: 0;
+            text-align: center;
+            background-color: white;
+        }
+        th {
+            background: #BCEBDD;
             color: #008B8B;
+            font-size: 14px;
+            padding: 10px 10px;
+            text-align: center;
+        }
+        th, td {
+            border-style: solid;
+            border-width: 0 1px 1px 0;
+            border-color: gainsboro;
+        }
+        th:first-child {
+            border-top-left-radius: 5px;
+        }
+        th:last-child {
+            border-top-right-radius: 5px;
+            border-right: none;
+        }
+        tr:last-child td:first-child {
+            border-radius: 0 0 0 5px;
+        }
+        tr:last-child td:last-child {
+            border-radius: 0 0 5px 0;
+        }
+        tr td:last-child {
+            border-right: none;
         }
     </style>
 </head>
