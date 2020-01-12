@@ -11,21 +11,25 @@ import java.util.List;
  * @author John Ivanov (johnivo@mail.ru)
  * @since 15.11.2019
  */
-public interface Store<T extends User> {
+public interface Store {
 
-    void add(T user);
+    void add(User user);
 
-    void update(T user, Integer id);
+    void update(User user, Integer id);
 
     void delete(Integer id);
 
-    List<T> findAll();
+    List<User> findAll();
 
-    T findById(int id);
+    User findById(int id);
 
-    void uploadImage(T user);
+    void uploadImage(User user);
 
-    T findByLogin(String login);
+    User findByLogin(String login);
 
-    T isCredential(String login, String password);
+    User isCredential(String login, String password);
+
+    List<String> getCountries();
+
+    List<String> getCities(String country);
 }

@@ -4,7 +4,6 @@ import ru.job4j.crud.datamodel.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author John Ivanov (johnivo@mail.ru)
  * @since 15.11.2019
  */
-public class MemoryStore implements Store<User> {
+public class MemoryStore implements Store {
 
     /**
      * Eager loading - энергичная загрузка, создаем и инициализируем объект сразу после старта виртуальной машины.
@@ -27,6 +26,11 @@ public class MemoryStore implements Store<User> {
      * Поле содержит хранилище пользователей.
      */
     private final ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<>();
+
+    /**
+     * Ссылка на объект хранилища локаций.
+     */
+    private final LocationStore locations = LocationStore.getInstance();
 
     /**
      * Поле содержит базовый id пользователя, который далее инкрементируется на 1.
@@ -107,5 +111,15 @@ public class MemoryStore implements Store<User> {
             }
         }
         return user;
+    }
+
+    @Override
+    public List<String> getCountries() {
+        return locations.getCountries();
+    }
+
+    @Override
+    public List<String> getCities(String country) {
+        return locations.getCities(country);
     }
 }

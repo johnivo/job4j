@@ -15,7 +15,7 @@ import java.util.Properties;
  * @author John Ivanov (johnivo@mail.ru)
  * @since 25.11.2019
  */
-public class DBStore implements Store<User> {
+public class DBStore implements Store {
 
     private static final BasicDataSource SOURCE = new BasicDataSource();
     private static final DBStore INSTANCE = new DBStore();
@@ -28,6 +28,7 @@ public class DBStore implements Store<User> {
 
     /**
      * конструктор для тестов
+     *
      * @param connection
      */
     public DBStore(Connection connection) {
@@ -36,6 +37,7 @@ public class DBStore implements Store<User> {
 
     /**
      * Инициализирует соединение с базой данных.
+     *
      * @return true or false
      */
     public BasicDataSource init() {
@@ -61,7 +63,8 @@ public class DBStore implements Store<User> {
 
     @Override
     public void add(User user) {
-        String insert = "INSERT INTO users (name, login, email, createDate, photoId, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insert = "INSERT INTO users (name, login, email, createDate, photoId, password, role, city_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(insert)
         ) {
@@ -72,7 +75,8 @@ public class DBStore implements Store<User> {
             ps.setString(5, user.getPhotoId());
             ps.setString(6, user.getPassword());
             ps.setString(7, user.getRole().getRole());
-
+            int cityId = getCityId(user.getCity());
+            ps.setInt(8, cityId);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +85,8 @@ public class DBStore implements Store<User> {
 
     @Override
     public void update(User user, Integer id) {
-        String update = "UPDATE users SET name = ?, login = ?, email = ?, password = ?, role = ? WHERE id = ?";
+        String update = "UPDATE users SET name = ?, login = ?, email = ?, password = ?, role = ?, city_id = ? "
+                + "WHERE id = ?";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(update)
         ) {
@@ -90,7 +95,11 @@ public class DBStore implements Store<User> {
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getRole().getRole());
-            ps.setInt(6, id);
+
+            int cityId = getCityId(user.getCity());
+            ps.setInt(6, cityId);
+
+            ps.setInt(7, id);
 
             ps.executeUpdate();
         } catch (Exception e) {
@@ -130,7 +139,11 @@ public class DBStore implements Store<User> {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        String selectAll = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role FROM users AS u";
+        String selectAll = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role, u.city_id, "
+                + "city.name AS cityName, country.name AS countryName FROM users AS u "
+                + "LEFT OUTER JOIN city ON u.city_id = city.id "
+                + "LEFT OUTER JOIN country ON city.country_id = country.id "
+                + "ORDER BY u.id";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectAll)
         ) {
@@ -148,7 +161,11 @@ public class DBStore implements Store<User> {
     @Override
     public User findById(int id) {
         User user = new User();
-        String selectById = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role FROM users AS u WHERE id = ?";
+        String selectById = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role, u.city_id, "
+                + "city.name AS cityName, country.name AS countryName FROM users AS u "
+                + "LEFT OUTER JOIN city ON u.city_id = city.id "
+                + "LEFT OUTER JOIN country ON city.country_id = country.id "
+                + "WHERE u.id = ?";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectById)
         ) {
@@ -166,7 +183,11 @@ public class DBStore implements Store<User> {
     @Override
     public User findByLogin(String login) {
         User user = new User();
-        String selectByLogin = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role FROM users AS u WHERE login = ?";
+        String selectByLogin = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role, u.city_id, "
+                + "city.name AS cityName, country.name AS countryName FROM users AS u "
+                + "LEFT OUTER JOIN city ON u.city_id = city.id "
+                + "LEFT OUTER JOIN country ON city.country_id = country.id "
+                + "WHERE u.login = ?";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectByLogin)
         ) {
@@ -184,7 +205,7 @@ public class DBStore implements Store<User> {
     @Override
     public User isCredential(String login, String password) {
         User user = new User();
-        String credential = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role "
+        String credential = "SELECT u.id, u.name, u.login, u.email, u.createDate, u.photoId, u.password, u.role, u.city_id "
                 + "FROM users AS u WHERE login = ? AND password = ?";
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(credential)
@@ -202,16 +223,125 @@ public class DBStore implements Store<User> {
     }
 
     private User getUser(ResultSet rs) throws SQLException {
-        int id = rs.getInt(1);
-        String name = rs.getString(2); //или rs.getString("name")
-        String login = rs.getString(3);
-        String email = rs.getString(4);
-        LocalDateTime createDate = rs.getTimestamp(5).toLocalDateTime();
-        String photoId = rs.getString(6);
-        String password = rs.getString(7);
-        String role = rs.getString(8);
+        int id = rs.getInt("id");
+        String name = rs.getString("name"); //можно по индексам колонок rs.getString(2)
+        String login = rs.getString("login");
+        String email = rs.getString("email");
+        LocalDateTime createDate = rs.getTimestamp("createDate").toLocalDateTime();
+        String photoId = rs.getString("photoId");
+        String password = rs.getString("password");
+
         User user = new User(id, name, login, email, createDate, photoId, password);
+
+        String role = rs.getString("role");
         user.setRole(new Role(role));
+
+        int cityId = rs.getInt("city_id");
+
+        String cityName = getCityNameByCityId(cityId);
+        user.setCity(cityName);
+
+        String countryName = getCountryNameByCityId(cityId);
+        user.setCountry(countryName);
+
         return user;
     }
+
+    @Override
+    public List<String> getCountries() {
+        List<String> countries = new ArrayList<>();
+        String allCountries = "SELECT name FROM country ORDER BY name";
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement(allCountries)
+        ) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String country = rs.getString("name");
+                countries.add(country);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return countries;
+    }
+
+    @Override
+    public List<String> getCities(String country) {
+        List<String> cities = new ArrayList<>();
+        String listCities = "SELECT city.name FROM city "
+                + "INNER JOIN country ON city.country_id = country.id "
+                + "WHERE country.name = ? "
+                + "ORDER BY city.name";
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement(listCities)
+        ) {
+            ps.setString(1, country);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String city = rs.getString("name");
+                cities.add(city);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cities;
+    }
+
+    public int getCityId(String city) {
+        int id = -1;
+        String cityId = "SELECT id FROM city WHERE name = ?";
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement(cityId)
+        ) {
+            st.setString(1, city);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public String getCityNameByCityId(int id) {
+        String city = new String();
+        String cityName = "SELECT name FROM city WHERE id = ?";
+        if (id != -1) {
+            try (Connection connection = SOURCE.getConnection();
+                 PreparedStatement st = connection.prepareStatement(cityName)
+            ) {
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    city = rs.getString("name");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return city;
+    }
+
+    public String getCountryNameByCityId(int id) {
+        String country = new String();
+        String countryName = "SELECT country.name FROM city INNER JOIN country "
+                + "ON city.country_id = country.id "
+                + "WHERE city.id = ?;";
+        if (id != -1) {
+            try (Connection connection = SOURCE.getConnection();
+                 PreparedStatement st = connection.prepareStatement(countryName)
+            ) {
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    country = rs.getString("name");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return country;
+    }
+
 }
