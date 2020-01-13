@@ -44,7 +44,6 @@
         }
 
         $(document).ready(function () {
-            var country = "<c:out value="${user.country}"/>";
             $.ajax({
                 url: "./city",
                 method: "get",
@@ -52,33 +51,18 @@
                     var result = "<option></option>";
                     var countries = JSON.parse(data.responseText);
                     for (var i = 0; i < countries.length; i++) {
-                        var selected = country === countries[i] ? "selected" : "";
-                        result += "<option " + selected +" value=" + countries[i] + ">" + countries[i] + "</option>"
+                        result += "<option ";
+                        if(countries[i] === "${user.country}") {
+                            result += "selected ";
+                        }
+                        result += "value=\"" + countries[i] + "\">" + countries[i] + "</option>"
                     }
                     document.getElementById("country").innerHTML = result;
+                    getCity();
                 }
             });
-            fillCity();
         });
-        function fillCity() {
-            var country = "<c:out value="${user.country}"/>";
-            var city = "<c:out value="${user.city}"/>";
-            $.ajax({
-                url: "./city",
-                method: "post",
-                data: {"country" : country },
-                complete: function (data) {
-                    var result = "<option></option>";
-                    var cities = JSON.parse(data.responseText);
-                    for (var i = 0; i < cities.length; i++) {
-                        var selected = city === cities[i] ? "selected" : "";
-                        result += "<option " + selected + " value=" + cities[i] + ">" + cities[i] + "</option>";
-                    }
-                    document.getElementById("city").innerHTML = result;
-                }
-            });
-        }
-        function getCityByCountry() {
+        function getCity() {
             $.ajax({
                 url: "./city",
                 method: "post",
@@ -87,7 +71,11 @@
                     var result = "<option></option>";
                     var cities = JSON.parse(data.responseText);
                     for (var i = 0; i < cities.length; i++) {
-                        result += "<option value="+ cities[i] + ">" + cities[i] + "</option>";
+                        result += "<option ";
+                        if(cities[i] === "${user.city}") {
+                            result += "selected ";
+                        }
+                        result += "value=\"" + cities[i] + "\">" + cities[i] + "</option>";
                     }
                     document.getElementById("city").innerHTML = result;
                 }
@@ -195,7 +183,7 @@
             <div class="form-group row">
                 <label class="control-label col-sm-1" for="country">Country:</label>
                 <div class="col-sm-4">
-                    <select class="form-control" id="country" name="country" onchange="getCityByCountry()" required></select>
+                    <select class="form-control" id="country" name="country" onchange="getCity()" required></select>
                 </div>
             </div>
             <div class="form-group row">

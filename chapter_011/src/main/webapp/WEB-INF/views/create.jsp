@@ -47,7 +47,7 @@
                     var result = "<option></option>";
                     var countries = JSON.parse(data.responseText);
                     for (var i = 0; i < countries.length; i++) {
-                        result += "<option value=" + countries[i] + ">" + countries[i] + "</option>";
+                        result += "<option value=\"" + countries[i] + "\">" + countries[i] + "</option>";
                     }
                     document.getElementById("country").innerHTML = result;
                 }
@@ -63,7 +63,7 @@
                     var result = "<option></option>";
                     var cities = JSON.parse(data.responseText);
                     for (var i = 0; i < cities.length; i++) {
-                        result += "<option value=" + cities[i] + ">" + cities[i] + "</option>";
+                        result += "<option value=\"" + cities[i] + "\">" + cities[i] + "</option>";
                     }
                     document.getElementById("city").innerHTML = result;
                 }
