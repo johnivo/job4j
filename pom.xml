@@ -75,6 +75,7 @@
         <module>chapter_009</module>
         <module>chapter_010</module>
         <module>chapter_011</module>
+        <module>cinema</module>
     </modules>
 	
 	<dependencies>
