@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Cinema hall</title>
+
+</head>
+<body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+
+    $(
+        function() {
+            updateHall();
+            setInterval(updateHall, 5000);
+        }
+    );
+
+    function updateHall() {
+        $.ajax("./hall").done(function (data) {
+            var checkedId = $('input[name=seat]:checked').prop("id");
+            var resHead = '<tr>' +
+                '<th style="width: 120px;">Ряд / Место</th>';
+            for (var i = 0; i < data[0].seats.length; ++i) {
+                resHead += '<th>' + data[0].seats[i].place + '</th>';
+            }
+            var resBody = "";
+            for (var i = 0; i < data.length; ++i) {
+                resBody += '<tr><td>' + data[i].row + '</td>';
+                var seats = data[i].seats;
+                var row = data[i].row;
+                for (var j = 0; j < seats.length; ++j) {
+                    var place = seats[j].place;
+                    var price = seats[j].price;
+                    var booked = seats[j].booked;
+                    var curId = 'r' + row + 'p' + place;
+                    resBody += '<td';
+                    if (booked) {
+                        resBody += ' style="background-color: #ffb7b7"';
+                    }
+                    resBody += '><input id="' + curId +
+                        '" type="radio" name="seat" value="' + row + ':' + place + ':'
+                        + seats[j].price + '"';
+                    if (booked) {
+                        resBody += ' disabled';
+                    } else if (checkedId === curId) {
+                        resBody += 'checked';
+                    }
+                    resBody += '> Ряд ' + row + ', Место ' + place + ', Цена ' + price
+                        + ' р. </td>';
+                }
+                resBody += '</tr>';
+            }
+            $("#thead").html(resHead);
+            $("#tbody").html(resBody);
+        })
+    }
+
+    function payment() {
+        var radio = $('input[name=seat]:checked').val();
+        if (radio !== undefined) {
+            window.location.href = './payment.html?value=' + radio;
+        } else {
+            alert("Сначала нужно выбрать место.");
+        }
+    }
+
+</script>
+
+<div class="container">
+    <div class="row pt-3">
+        <h4>
+            Бронирование места на сеанс
+        </h4>
+        <table class="table table-bordered">
+            <thead id="thead">
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
+    <div class="row float-right">
+        <button type="button" class="btn btn-success" onclick="payment()">Оплатить</button>
+    </div>
+</div>
+</body>
+</html>
