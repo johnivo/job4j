@@ -8,7 +8,57 @@
         <version>2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging>
     <artifactId>cinema</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.6.2</version>
+                <configuration>
+                    <propertyFile>src/main/resources/app.properties</propertyFile>
+                    <!--<changeLogFile>${basedir}/db/master.xml</changeLogFile>-->
+                    <!--<url>${db.url}/cinema</url>-->
+                    <!--<driver>${db.driver}</driver>-->
+                    <!--<username>${db.username}</username>-->
+                    <!--<password>${db.password}</password>-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
