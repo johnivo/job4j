@@ -118,8 +118,9 @@ Session session = sessionFactory.openSession();
 ```
 
 Роль интерфейса Session:
-+ является оберткой для jdbc подключения к базе данных; (https://ru.wikipedia.org/wiki/Java_Database_Connectiv..)
-+ является фабрикой для транзакций (согласно официальной документации transaction — аllows the application to define units of work, что , по сути, означает что транзакция определяет границы операций связанных с базой данных).
++ является оберткой для jdbc подключения к базе данных; 
++ является фабрикой для транзакций (согласно официальной документации transaction — аllows the application to define units of work, 
+что , по сути, означает что транзакция определяет границы операций связанных с базой данных).
 + является хранителем обязательного кэша первого уровня.
 
 Жизненный цикл объекта session связан с началом и окончанием транзакции. 
@@ -432,3 +433,11 @@ This impacts read-transactions as well since you do or don't want to read uncomm
 be exposed to phantom reads, etc.
 
 [к оглавлению](#Hibernate)
+
+## Туториалы:
+
+Hibernate Tutorial https://www.tutorialspoint.com/hibernate/index.htm
+ 
+Hibernate ORM http://hibernate.org/orm/documentation/5.4/
+
+https://ru.wikipedia.org/wiki/Hibernate_(%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0)

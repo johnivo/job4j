@@ -220,6 +220,8 @@ https://postgrespro.ru/docs/postgresql/9.5/indexes-types
 
 ## 6. Какие типы соединений join таблиц существуют В чем их разница?
 
+![img](https://github.com/johnivo/job4j/blob/master/interview_questions/src/main/resources/sql_joins.png)
+
 + **`INNER JOIN`** Выбираются только совпадающие данные из объединяемых таблиц.
 
 + **`OUTER JOIN`** Такое объединение вернет совпадающие данные из объединяемых таблиц ПЛЮС дополнит выборку оставшимися 
@@ -236,6 +238,8 @@ https://postgrespro.ru/docs/postgresql/9.5/indexes-types
 + **`SELF JOIN`** соединение таблицы с этой же таблице.
 
 При использовании объединения новички часто забывают, что результирующая выборка может содержать дублирующиеся данные!
+
+https://ru.wikipedia.org/wiki/Join_(SQL)#INNER_JOIN
 
 `JOIN` в PostgreSQL
 https://postgrespro.ru/docs/postgresql/9.5/queries-table-expressions#queries-join
@@ -369,6 +373,10 @@ https://postgrespro.ru/docs/postgresql/9.5/tutorial-transactions
 + Durability долговечность обеспечивает сохраняемость данных. Т.е. эффект транзакции должен оставаться действенным даже 
 в случае системной ошибки. По этой причине, если в процессе выполнения транзакции происходит системная ошибка, то 
 осуществляется откат для всех выполненных инструкций этой транзакции.
+
+https://ru.wikipedia.org/wiki/ACID
+
+https://geekbrains.ru/posts/acid_cap_transactions
 
 [к оглавлению](#SQL)
 
