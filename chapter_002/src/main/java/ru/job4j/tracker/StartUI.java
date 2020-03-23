@@ -67,7 +67,8 @@ public class StartUI {
                 new ValidateInput(
                         new ConsoleInput()
                 ),
-                new Tracker(),
+//                new Tracker(),
+                new TrackerSQL(),
                 System.out::println
         ).init();
     }
